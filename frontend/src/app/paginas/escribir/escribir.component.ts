@@ -73,7 +73,7 @@ export class EscribirComponent {
     this.enviando = true;
     this.error = '';
     this.diario
-      .crearEntrada({ idUsuario: usuario.idUsuario, texto: this.texto })
+      .crearEntrada({ idUsuario: usuario.idUsuario, texto: this.texto }, usuario.nivel)
       .subscribe({
         next: (r) => {
           this.resultado = r;

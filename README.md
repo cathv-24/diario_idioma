@@ -1,10 +1,27 @@
 # 📖 Diario de Idiomas
 
+![Pages](https://img.shields.io/github/actions/workflow/status/cathv-24/diario_idioma/deploy-pages.yml?label=GitHub%20Pages)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Backend](https://img.shields.io/badge/backend-Spring%20Boot%204-brightgreen)
+![Frontend](https://img.shields.io/badge/frontend-Angular%2018-red)
+
 Un diario digital donde escribes tu día **en inglés** y la app te corrige la gramática
 **según tu nivel** (A1–C2), te explica cada error y te muestra **en qué temas estás fallando**.
 Aprendes mientras redactas tu día.
 
 > Por ahora solo inglés. La arquitectura está pensada para añadir más idiomas después.
+
+## 🌐 Demo en vivo
+
+**👉 https://cathv-24.github.io/diario_idioma/**
+
+La demo corre **100% en el navegador** con el corrector por reglas (modo demo, guarda tu
+historial en el navegador). No necesita backend.
+
+> **¿Por qué la demo no usa el backend?** GitHub Pages solo hospeda archivos estáticos
+> (el frontend Angular). El backend Spring Boot + base de datos hay que correrlo en local
+> (ver más abajo) o en un hosting propio. La app detecta si hay backend disponible: si no,
+> usa el corrector local automáticamente.
 
 ---
 

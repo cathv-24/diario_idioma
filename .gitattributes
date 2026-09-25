@@ -1,0 +1,15 @@
+# Normaliza los finales de línea para evitar avisos LF/CRLF entre Windows y CI.
+* text=auto eol=lf
+
+# Scripts de Windows con CRLF
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# El wrapper de Maven debe conservar LF
+mvnw text eol=lf
+
+# Binarios
+*.jar binary
+*.png binary
+*.ico binary
+*.jpg binary
