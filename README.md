@@ -2,135 +2,127 @@
 
 ![Pages](https://img.shields.io/github/actions/workflow/status/cathv-24/diario_idioma/deploy-pages.yml?label=GitHub%20Pages)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Backend](https://img.shields.io/badge/backend-Spring%20Boot%204-brightgreen)
-![Frontend](https://img.shields.io/badge/frontend-Angular%2018-red)
+![Backend](https://img.shields.io/badge/backend-Spring%20Boot-brightgreen)
+![Frontend](https://img.shields.io/badge/frontend-Angular-red)
 
-Un diario digital donde escribes tu día **en inglés** y la app te corrige la gramática
-**según tu nivel** (A1–C2), te explica cada error y te muestra **en qué temas estás fallando**.
-Aprendes mientras redactas tu día.
+Un diario para escribir tu día **en inglés** y que te corrija mientras escribes. Le cuentas cómo te fue, y la app te devuelve tu texto corregido, te explica en qué te equivocaste (según tu nivel) y te va mostrando en qué temas fallas más. La idea es aprender sin que se sienta como estudiar.
 
-> Por ahora solo inglés. La arquitectura está pensada para añadir más idiomas después.
+## Por qué lo hice
 
-## 🌐 Demo en vivo
+La verdad es que este proyecto nació de algo personal. Mi psicólogo me recomendó escribir un diario para desahogarme, para sacar lo que siento en el día, sea bueno o malo. Me encantó la idea, pero pensé: ¿y si además de desahogarme aprovecho para aprender algo?
+
+Yo sé inglés, pero básico, y justo estoy tratando de mejorarlo. El problema es que cuando escribo un diario a mano o en las notas del celular, no hay nada que me diga si lo estoy escribiendo bien, si usé mal un conector o si hay una mejor forma de decir las cosas. Así que se me ocurrió juntar las dos cosas: un diario donde escribo cómo fue mi día y, al corregirlo, se guarda solito en un historial (parecido a la app de Notas) y me va corrigiendo. Del tipo "oye, este conector no va, mejor usa este otro" o "vas bien, solo corrige esto".
+
+Y con el historial puedo ver cómo voy mejorando con el tiempo. Quizás en agosto escribía con varios errores y para septiembre ya escribo mejor. Esa es la gracia.
+
+## 🌐 Pruébalo aquí
 
 **👉 https://cathv-24.github.io/diario_idioma/**
 
-La demo corre **100% en el navegador** con el corrector por reglas (modo demo, guarda tu
-historial en el navegador). No necesita backend.
+Funciona directo en el navegador, no necesitas instalar nada. Escribe algo en inglés, dale a "Corregir mi día" y listo. Tu historial se guarda en tu propio navegador.
 
-> **¿Por qué la demo no usa el backend?** GitHub Pages solo hospeda archivos estáticos
-> (el frontend Angular). El backend Spring Boot + base de datos hay que correrlo en local
-> (ver más abajo) o en un hosting propio. La app detecta si hay backend disponible: si no,
-> usa el corrector local automáticamente.
+> **Nota:** la demo online usa un corrector que corre en el mismo navegador, porque GitHub Pages solo permite publicar la parte visual (el frontend). La parte del servidor (backend + base de datos) se corre en local, como explico más abajo. La app se da cuenta sola: si hay servidor lo usa, y si no, usa el corrector del navegador.
 
----
+## Qué hace
 
-## 🧱 Arquitectura
+- **Escribes tu día** en inglés y lo corriges con un clic.
+- Te corrige **según tu nivel** (A1 a C2). Si estás en nivel básico, las explicaciones te salen en español; si ya estás más avanzada, te las da en inglés.
+- Cada error viene **explicado** y con su categoría: ortografía, gramática, puntuación, vocabulario, artículos y mayúsculas.
+- Te da un **puntaje** del 0 al 100 y un **resumen de los temas en los que más fallas**, para que sepas qué reforzar.
+- Guarda todo en un **historial** para que veas tu progreso.
 
-Mismo estilo en capas que tu plantilla `apiproveedores` del curso de Arquitectura Web.
+## Cómo está hecho
+
+Lo armé con una arquitectura en capas, separando el backend del frontend.
 
 ```
 proyecto_diario_idiomas/
-├── backend/apidiario/        → API REST (Spring Boot 4, Java 21, PostgreSQL)
+├── backend/apidiario/        → API REST con Spring Boot (Java 21) + PostgreSQL
 │   └── src/main/java/com/diario/apidiario/
-│       ├── entidades/        → Usuario, EntradaDiario, Correccion  (JPA + Lombok)
+│       ├── entidades/        → Usuario, EntradaDiario, Correccion
 │       ├── enums/            → NivelIngles, CategoriaError
-│       ├── dto/              → objetos de transferencia
-│       ├── repositorios/     → JpaRepository + query methods + JPQL
-│       ├── servicios/        → lógica de negocio (ModelMapper entidad↔DTO)
-│       │   └── correccion/   → MOTOR HÍBRIDO de corrección
-│       ├── controladores/    → endpoints REST (@RestController)
-│       └── config/           → ModelMapper, CORS, OpenAPI, carga inicial, errores
+│       ├── dto/              → objetos para pasar datos entre capas
+│       ├── repositorios/     → acceso a datos (JPA)
+│       ├── servicios/        → la lógica; aquí vive el motor de corrección
+│       ├── controladores/    → los endpoints REST
+│       └── config/           → ModelMapper, CORS, Swagger, etc.
 │
-└── frontend/                 → App Angular 18 (standalone) + Tailwind CSS
+└── frontend/                 → App en Angular + Tailwind CSS
     └── src/app/
-        ├── modelos/          → interfaces que reflejan los DTO
-        ├── servicios/        → cliente HTTP + estado del usuario (signals)
-        ├── componentes/      → resultado de corrección (reutilizable)
+        ├── modelos/          → los tipos que reflejan la API
+        ├── servicios/        → cliente HTTP + corrector local + estado
+        ├── componentes/      → el resultado de la corrección
         └── paginas/          → escribir · historial
 ```
 
-### Motor de corrección híbrido
+### El motor de corrección
 
-La corrección vive detrás de la interfaz `ServicioCorreccion`, así que se puede
-cambiar la implementación sin tocar el resto de la app:
+Puse la corrección detrás de una interfaz (`ServicioCorreccion`) para poder cambiar cómo corrige sin tocar el resto de la app. Ahora mismo corrige con reglas, pero dejé listo el enganche para conectar un modelo de lenguaje más adelante.
 
-| Implementación            | Cuándo se usa                              | Qué hace |
-|---------------------------|--------------------------------------------|----------|
-| `CorrectorBasadoEnReglas` | `diario.corrector=reglas` (por defecto)    | Reglas + diccionarios: ortografía, verbos irregulares, contracciones, `a/an`, mayúsculas, puntuación. **Funciona sin internet ni API key.** |
-| `CorrectorLLM`            | `diario.corrector=llm` + `diario.llm.api-key` | Le pide las correcciones a Claude (Anthropic API). Si falla o no hay key, **cae de vuelta a las reglas**. |
+| Implementación | Cuándo se usa | Qué hace |
+|---|---|---|
+| `CorrectorBasadoEnReglas` | por defecto | Corrige con reglas y diccionarios (verbos irregulares, contracciones, `a/an`, mayúsculas, puntuación…). No necesita internet. |
+| `CorrectorLLM` | opcional | Le pide la corrección a un modelo de lenguaje. Si algo falla, vuelve solito a las reglas. |
 
-Este es el enfoque que elegiste: **empezar con reglas y dejar el hueco listo para el LLM.**
+### Tecnologías
 
----
+- **Backend:** Java 21, Spring Boot, Spring Data JPA, ModelMapper, Lombok, Swagger.
+- **Base de datos:** PostgreSQL (y H2 en memoria para probar sin instalar nada).
+- **Frontend:** Angular, TypeScript, Tailwind CSS.
+- **Herramientas:** Git y GitHub, GitHub Actions + GitHub Pages para el despliegue, Maven.
 
-## ▶️ Cómo ejecutarlo
+## Cómo correrlo en tu compu
 
-### Requisitos
-- Java 21, PostgreSQL, Node.js 18+.
+Necesitas Java 21, Node.js y (opcional) PostgreSQL.
 
-### 1) Base de datos
-Crea la base de datos (Hibernate crea las tablas solo con `ddl-auto=update`):
-```sql
-CREATE DATABASE db_diario_idiomas;
-```
-Ajusta usuario/contraseña en `backend/apidiario/src/main/resources/application.properties`
-si los tuyos son distintos (por defecto `postgres` / `postgre`).
+**La forma más rápida** (sin instalar base de datos, usa H2 en memoria):
 
-### 2) Backend (puerto 8080)
 ```bash
 cd backend/apidiario
-./mvnw spring-boot:run
+./mvnw spring-boot:run -Dspring-boot.run.profiles=h2
 ```
-Al arrancar crea un **usuario demo** (nivel A2) para probar de inmediato.
-Documentación de la API (Swagger): http://localhost:8080/swagger-ui.html
 
-### 3) Frontend (puerto 4200)
 ```bash
 cd frontend
 npm install
 npm start
 ```
-Abre http://localhost:4200 → escribe tu día → **Corregir mi día**.
-Cambia tu nivel desde el selector de la cabecera (arriba a la derecha).
 
----
+Abre http://localhost:4200 y ya. Al arrancar, el backend crea un usuario de prueba para que puedas escribir de una vez.
 
-## 🔌 Activar el LLM (Claude) más adelante
+**Con PostgreSQL** (si quieres que los datos se guarden de verdad): crea la base de datos `db_diario_idiomas`, revisa las credenciales en `application.properties` (se pueden pasar por variables de entorno) y arranca el backend sin el `-Dspring-boot.run.profiles=h2`.
 
-En `application.properties`:
-```properties
-diario.corrector=llm
-diario.llm.api-key=TU_API_KEY
-diario.llm.model=claude-sonnet-5
-```
-No hay que cambiar código: el resto de la app sigue igual.
+La documentación de la API queda en http://localhost:8080/swagger-ui.html
 
----
+## Los endpoints principales
 
-## 🌐 Endpoints principales
+| Método | Ruta | Para qué |
+|---|---|---|
+| POST | `/api/entrada` | Escribir una entrada y recibir la corrección |
+| GET | `/api/entradas/{idUsuario}` | Ver el historial de un usuario |
+| GET | `/api/entrada/{id}` | Ver el detalle de una entrada |
+| GET | `/api/usuarios` | Listar usuarios |
+| PUT | `/api/usuario` | Actualizar el usuario (por ejemplo, cambiar de nivel) |
 
-| Método | Ruta                       | Descripción |
-|--------|----------------------------|-------------|
-| POST   | `/api/entrada`             | Escribir una entrada y recibir la corrección |
-| GET    | `/api/entradas/{idUsuario}`| Historial de entradas de un usuario |
-| GET    | `/api/entrada/{id}`        | Detalle de una entrada |
-| GET    | `/api/usuarios`            | Listar usuarios |
-| PUT    | `/api/usuario`             | Actualizar usuario (p. ej. cambiar nivel) |
+Un ejemplo rápido:
 
-### Ejemplo
 ```bash
 curl -X POST http://localhost:8080/api/entrada \
   -H "Content-Type: application/json" \
   -d '{"idUsuario":1,"texto":"yesterday i goed to the park and i eated a apple . it was beatiful"}'
 ```
-Devuelve el texto corregido *("Yesterday I went to the park and I ate an apple. It was beautiful.")*,
-la lista de correcciones con su explicación y el resumen de temas a mejorar.
+
+Y te devuelve el texto corregido — *"Yesterday I went to the park and I ate an apple. It was beautiful."* — junto con la lista de errores explicados y el resumen de temas.
+
+## Lo que quiero agregar más adelante
+
+Tengo varias ideas para que crezca:
+
+- Un apartado de **lecciones** sobre los temas donde más fallo (por ejemplo, los *infinitives*), para entenderlos y practicarlos.
+- Un **historial de vocabulario**, para ver qué palabras nuevas voy usando con el tiempo, y que la app me **sugiera palabras** para ir subiendo de nivel poco a poco. Si ya estoy en avanzado, que no me sugiera palabras de principiante.
+- Un **módulo para practicar exámenes** tipo Cambridge, con plantillas de cartas formales e informales, essays y artículos, porque a varios amigos se les complicó el *grammar* en esa parte.
+- Soporte para **más idiomas**, cuentas de usuario y recordatorios para escribir cada día.
 
 ---
 
-## 🚀 Ideas para seguir creciendo
-- Más idiomas (el `NivelIngles` y el motor ya están desacoplados para generalizar).
-- Autenticación real (Spring Security) — encaja con el temario de tu curso.
-- Gráfica de progreso del puntaje en el tiempo (ya existe `promedioPuntajePorUsuario`).
-- Racha diaria y recordatorios para escribir cada día.
+Hecho con cariño mientras aprendo inglés y programo a la vez. 🌱
