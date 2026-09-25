@@ -16,7 +16,6 @@ Y con el historial puedo ver cómo voy mejorando con el tiempo. Quizás en agost
 
 Funciona directo en el navegador, no necesitas instalar nada. Escribe algo en inglés, dale a "Corregir mi día" y listo. Tu historial se guarda en tu propio navegador.
 
-> **Nota:** la demo online usa un corrector que corre en el mismo navegador, porque GitHub Pages solo permite publicar la parte visual (el frontend). La parte del servidor (backend + base de datos) se corre en local. La app se da cuenta sola: si hay servidor lo usa, y si no, usa el corrector del navegador.
 
 ## Qué hace
 
