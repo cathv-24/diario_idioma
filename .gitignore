@@ -1,0 +1,14 @@
+# Dependencias / builds
+**/node_modules/
+**/dist/
+**/target/
+**/.angular/
+# Logs
+**/logs/
+*.log
+# IDE / SO
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
