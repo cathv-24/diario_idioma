@@ -1,22 +1,16 @@
 package com.diario.apidiario.config;
 
-import com.diario.apidiario.entidades.Usuario;
+import com.diario.apidiario.entities.Usuario;
 import com.diario.apidiario.enums.NivelIngles;
-import com.diario.apidiario.repositorios.UsuarioRepositorio;
-import lombok.extern.slf4j.Slf4j;
+import com.diario.apidiario.repositories.UsuarioRepositorio;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
 
-/**
- * Crea un usuario de demostracion la primera vez que arranca la app,
- * para poder probar el diario sin registrar nada manualmente.
- */
 @Component
-@Slf4j
+@ConditionalOnProperty(name = "diario.demo.enabled", havingValue = "true")
 public class CargaInicial implements CommandLineRunner {
-
     private final UsuarioRepositorio usuarioRepositorio;
 
     public CargaInicial(UsuarioRepositorio usuarioRepositorio) {
@@ -26,13 +20,12 @@ public class CargaInicial implements CommandLineRunner {
     @Override
     public void run(String... args) {
         if (usuarioRepositorio.count() == 0) {
-            Usuario demo = new Usuario();
-            demo.setNombre("Estudiante Demo");
-            demo.setEmail("demo@diario.com");
-            demo.setNivel(NivelIngles.A2);
-            demo.setFechaRegistro(LocalDate.now());
-            usuarioRepositorio.save(demo);
-            log.info("Usuario demo creado (id=1, nivel A2).");
+            Usuario usuario = new Usuario();
+            usuario.setNombre("Estudiante Demo");
+            usuario.setEmail("demo@example.com");
+            usuario.setNivel(NivelIngles.A2);
+            usuario.setFechaRegistro(LocalDate.now());
+            usuarioRepositorio.save(usuario);
         }
     }
 }

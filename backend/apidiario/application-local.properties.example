@@ -1,0 +1,5 @@
+# Copia este archivo como application-local.properties en esta misma carpeta.
+# Reemplaza la contrasena. El archivo real esta excluido de Git.
+spring.datasource.url=jdbc:postgresql://localhost:5432/db_diario_idiomas
+spring.datasource.username=postgres
+spring.datasource.password=CAMBIAR_POR_TU_CONTRASENA_LOCAL
