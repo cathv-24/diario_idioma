@@ -174,7 +174,7 @@ Swagger actúa como cliente en este recorrido. Puede reemplazar temporalmente a 
 | Archivo / función | Papel |
 |---|---|
 | ModelMapperConfig.modelMapper | Publica un ModelMapper como bean reutilizable |
-| WebConfig.addCorsMappings | Permite que el navegador desde localhost:4200 lea respuestas de /api/** |
+| WebConfig.addCorsMappings | Permite que el navegador desde localhost:5173 o 127.0.0.1:5173 lea respuestas de /api/**; configurable por FRONTEND_ORIGIN |
 | OpenApiConfig.diarioOpenAPI | Configura título y descripción de Swagger |
 | CargaInicial.run | Crea un perfil demo si no existe ninguno; se puede desactivar con diario.demo.enabled=false |
 | application.properties | Configura servidor, PostgreSQL y comportamiento de JPA/logs |

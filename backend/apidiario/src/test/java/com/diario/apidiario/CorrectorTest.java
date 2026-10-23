@@ -43,4 +43,12 @@ class CorrectorTest {
         assertEquals(2, vocabulario.sugerir(texto, NivelIngles.B1).size());
         assertEquals(texto, corrector.corregir(texto, NivelIngles.B1).textoCorregido());
     }
+    @Test
+    void respetaCierresInformalesSinAgregarPuntoNiPenalizar() {
+        for (String texto : new String[]{"Today I feel happy", "A quiet day…", "What a day!", "Today I feel happy 🙂"}) {
+            var resultado = corrector.corregir(texto, NivelIngles.A2);
+            assertEquals(texto, resultado.textoCorregido());
+            assertTrue(resultado.correcciones().isEmpty());
+        }
+    }
 }

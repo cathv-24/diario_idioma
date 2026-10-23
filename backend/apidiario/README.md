@@ -61,7 +61,9 @@ Esta etapa enseña el flujo antes del login. Un perfil no es una cuenta autentic
 
 ## Frontend existente
 
-Se conservan los campos principales de los DTO y las rutas que consume tu Angular: `/api/usuarios`, `/api/usuario`, `/api/entrada` y `/api/entradas/{idUsuario}`. El servidor devuelve además `sugerenciasVocabulario`; el componente actual todavía no lo muestra. La edición, eliminación y reporte también requieren controles nuevos en Angular. Esta entrega verifica la API, no el navegador ni el frontend original.
+Se conservan los campos principales de los DTO y las rutas `/api/usuarios`, `/api/usuario`, `/api/entrada` y `/api/entradas/{idUsuario}`. El frontend actual usa React, Vite y TypeScript y consume estos contratos. CORS acepta por defecto `http://localhost:5173` y `http://127.0.0.1:5173`; `FRONTEND_ORIGIN` permite una lista separada por comas.
+
+El perfil optativo `neon` toma `NEON_JDBC_URL`, `NEON_DB_USERNAME` y `NEON_DB_PASSWORD` del entorno. El envio de metricas a n8n esta desactivado hasta configurar `N8N_ENABLED=true`, `N8N_WEBHOOK_URL` y `N8N_WEBHOOK_TOKEN`. Consultar [automatizaciones y configuracion](../../automations/README.md) para workflows, esquema SQL y limites de entrega.
 
 ## Pruebas
 

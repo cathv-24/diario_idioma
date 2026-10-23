@@ -12,3 +12,6 @@
 *.iml
 .DS_Store
 Thumbs.db
+.impeccable/review/
+.impeccable/review-final/
+**/*.tsbuildinfo

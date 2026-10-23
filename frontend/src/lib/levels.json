@@ -1,0 +1,314 @@
+{
+  "A1": {
+    "name": "Principiante",
+    "description": "Puedes comunicar información personal y resolver necesidades muy básicas con ayuda.",
+    "sections": [
+      {
+        "title": "Gramática",
+        "items": [
+          "Pronombres personales: I, you, he, she, it, we, they.",
+          "Verbo to be: afirmaciones, negaciones y preguntas.",
+          "Orden básico de las oraciones y preguntas con what, where, who, when, how.",
+          "Artículos: a, an, the.",
+          "Sustantivos en singular y plural.",
+          "Demostrativos: this, that, these, those.",
+          "Posesivos: my, your, her… y Anna’s book.",
+          "Presente simple: afirmaciones, negaciones y preguntas con do/does.",
+          "Adverbios básicos de frecuencia: always, usually, sometimes, never.",
+          "There is / there are.",
+          "Can / can’t para habilidades.",
+          "Imperativos: Open your book. Don’t run.",
+          "Preposiciones básicas de lugar y tiempo: in, on, at, under, next to.",
+          "Introducción al presente continuo: I am studying."
+        ]
+      },
+      {
+        "title": "Vocabulario",
+        "items": [
+          "Información personal, países y nacionalidades.",
+          "Números, fechas, horas y días.",
+          "Familia y descripción física sencilla.",
+          "Casa, objetos cotidianos y ropa.",
+          "Comida, compras y precios.",
+          "Rutinas, estudios, trabajos y pasatiempos.",
+          "Lugares de la ciudad y transporte básico."
+        ]
+      },
+      {
+        "title": "Expresión e interacción oral",
+        "items": [
+          "Presentarte y presentar a otra persona.",
+          "Preguntar y responder datos personales.",
+          "Describir tu rutina con frases sencillas.",
+          "Decir qué te gusta y qué sabes hacer.",
+          "Pedir comida, preguntar precios y solicitar ayuda.",
+          "Deletrear y pedir que repitan: Could you repeat that, please?"
+        ]
+      },
+      {
+        "title": "Otras habilidades",
+        "items": [
+          "Otras habilidades: leer letreros y mensajes muy sencillos; reconocer palabras familiares en un audio lento; escribir formularios y frases personales."
+        ]
+      }
+    ]
+  },
+  "A2": {
+    "name": "Básico",
+    "description": "Puedes desenvolverte en intercambios cotidianos y hablar de tu entorno, experiencias sencillas y planes.",
+    "sections": [
+      {
+        "title": "Gramática",
+        "items": [
+          "Consolidación del presente simple y continuo, incluyendo sus diferencias.",
+          "Pasado simple de to be: was / were.",
+          "Pasado simple: verbos regulares e irregulares; preguntas y negaciones con did.",
+          "Introducción al pasado continuo: I was sleeping.",
+          "Futuro con going to, presente continuo para planes y usos básicos de will.",
+          "Comparativos y superlativos.",
+          "Sustantivos contables e incontables.",
+          "Cantidades: some, any, much, many, a lot of, a few, a little.",
+          "How much / how many.",
+          "Obligación y consejos: have to, must, should.",
+          "Too / enough.",
+          "Adverbios de modo: slowly, carefully, well.",
+          "Infinitivos y gerundios frecuentes: want to go, enjoy reading.",
+          "Conectores: and, but, because, so, then.",
+          "Introducción al presente perfecto para experiencias: Have you ever…?"
+        ]
+      },
+      {
+        "title": "Vocabulario",
+        "items": [
+          "Viajes, vacaciones y alojamiento.",
+          "Salud y síntomas cotidianos.",
+          "Restaurantes, tiendas y servicios.",
+          "Emociones y personalidad.",
+          "Estudios, trabajo y tareas habituales.",
+          "Clima, actividades y acontecimientos personales.",
+          "Expresiones frecuentes: get up, go out, look for."
+        ]
+      },
+      {
+        "title": "Expresión e interacción oral",
+        "items": [
+          "Contar qué hiciste ayer o durante tus vacaciones.",
+          "Comparar personas, lugares y productos.",
+          "Explicar tus planes.",
+          "Hacer invitaciones, aceptarlas y rechazarlas.",
+          "Pedir y dar indicaciones.",
+          "Describir un problema sencillo y pedir una solución.",
+          "Mantener conversaciones breves con apoyo de la otra persona."
+        ]
+      },
+      {
+        "title": "Otras habilidades",
+        "items": [
+          "Otras habilidades: comprender avisos y conversaciones breves y claras; leer textos cotidianos cortos; escribir mensajes y correos sencillos."
+        ]
+      }
+    ]
+  },
+  "B1": {
+    "name": "Intermedio",
+    "description": "Puedes comunicarte con cierta independencia y explicar experiencias, decisiones y opiniones sobre temas familiares.",
+    "sections": [
+      {
+        "title": "Gramática",
+        "items": [
+          "Presente perfecto frente a pasado simple.",
+          "For, since, already, yet, just, ever, never.",
+          "Pasado simple frente a pasado continuo.",
+          "Pasado perfecto básico: When I arrived, she had left.",
+          "Diferencias entre las formas de futuro.",
+          "Condicional cero, primero y segundo.",
+          "Oraciones relativas: who, which, that, where.",
+          "Voz pasiva básica.",
+          "Estilo indirecto básico: She said that…",
+          "Modales de posibilidad: may, might, could.",
+          "Deducciones sencillas: must be, can’t be.",
+          "Hábitos pasados con used to.",
+          "Gerundio e infinitivo después de verbos frecuentes.",
+          "Conectores de contraste y organización: although, however, first, finally.",
+          "Introducción a las preguntas indirectas: Could you tell me where…?"
+        ]
+      },
+      {
+        "title": "Vocabulario",
+        "items": [
+          "Educación, empleo y metas personales.",
+          "Relaciones, experiencias y sentimientos.",
+          "Tecnología y medios de comunicación.",
+          "Salud, hábitos y estilo de vida.",
+          "Medioambiente y problemas cotidianos.",
+          "Phrasal verbs frecuentes y familias de palabras.",
+          "Combinaciones habituales: make a decision, take a break."
+        ]
+      },
+      {
+        "title": "Expresión e interacción oral",
+        "items": [
+          "Narrar una experiencia en orden.",
+          "Dar una opinión y explicar sus razones.",
+          "Explicar ventajas y desventajas sencillas.",
+          "Resolver la mayoría de las situaciones habituales de un viaje.",
+          "Participar en conversaciones espontáneas sobre temas conocidos.",
+          "Explicar una palabra que no recuerdas usando otras palabras.",
+          "Hacer una presentación breve y responder preguntas familiares."
+        ]
+      },
+      {
+        "title": "Otras habilidades",
+        "items": [
+          "Otras habilidades: seguir las ideas principales de un discurso claro; leer artículos accesibles; escribir textos conectados sobre experiencias y opiniones."
+        ]
+      }
+    ]
+  },
+  "B2": {
+    "name": "Intermedio alto",
+    "description": "Puedes desarrollar argumentos y mantener conversaciones con bastante fluidez sobre temas variados.",
+    "sections": [
+      {
+        "title": "Gramática",
+        "items": [
+          "Uso más preciso de los tiempos simples, continuos y perfectos.",
+          "Presente perfecto continuo.",
+          "Pasado perfecto continuo.",
+          "Futuro continuo y futuro perfecto.",
+          "Tercer condicional e introducción a condicionales mixtos.",
+          "Deseos y arrepentimientos: wish / if only.",
+          "Modales sobre el pasado: must have, might have, should have.",
+          "Pasiva en distintos tiempos y estructuras como It is believed that…",
+          "Estilo indirecto con distintos verbos: admit, suggest, warn.",
+          "Relativas explicativas y especificativas.",
+          "Causativas: have/get something done.",
+          "Diferencias de significado con gerundios e infinitivos.",
+          "Conectores más variados de contraste, causa y consecuencia."
+        ]
+      },
+      {
+        "title": "Vocabulario",
+        "items": [
+          "Sociedad, cultura, actualidad y economía cotidiana.",
+          "Trabajo, entrevistas y comunicación profesional.",
+          "Temas abstractos: responsabilidad, justicia, éxito o identidad.",
+          "Vocabulario técnico de tu área.",
+          "Colocaciones y phrasal verbs más variados.",
+          "Formación de palabras: prefijos y sufijos.",
+          "Diferencias entre lenguaje formal e informal."
+        ]
+      },
+      {
+        "title": "Expresión e interacción oral",
+        "items": [
+          "Defender una postura con argumentos y ejemplos.",
+          "Comparar alternativas y negociar decisiones.",
+          "Participar activamente en debates.",
+          "Explicar procesos y temas de tu especialidad.",
+          "Reformular cuando surge un malentendido.",
+          "Mantener una conversación relativamente extensa sin depender de un guion."
+        ]
+      },
+      {
+        "title": "Otras habilidades",
+        "items": [
+          "Otras habilidades: seguir argumentos y contenidos relativamente complejos; leer artículos con posturas distintas; escribir ensayos, informes y correos detallados."
+        ]
+      }
+    ]
+  },
+  "C1": {
+    "name": "Avanzado",
+    "description": "Puedes expresarte con flexibilidad y precisión en contextos sociales, académicos y profesionales.",
+    "sections": [
+      {
+        "title": "Gramática",
+        "items": [
+          "Inversión para énfasis: Rarely have I seen…",
+          "Oraciones enfáticas: What matters most is…",
+          "Cláusulas de participio: Having finished the task…",
+          "Condicionales mixtos y alternativas a if.",
+          "Modalidad avanzada: distintos grados de certeza, distancia y cortesía.",
+          "Elipsis y sustitución para evitar repeticiones.",
+          "Nominalización en textos formales.",
+          "Estructuras complejas de subordinación.",
+          "Manejo del énfasis, la información y la cohesión.",
+          "Cambios de estructura según el registro."
+        ]
+      },
+      {
+        "title": "Vocabulario",
+        "items": [
+          "Conceptos abstractos y especializados.",
+          "Matices entre palabras de significado parecido.",
+          "Colocaciones precisas y expresiones idiomáticas habituales.",
+          "Lenguaje académico y profesional.",
+          "Connotaciones y diferencias de registro.",
+          "Recursos para matizar: largely, arguably, to some extent."
+        ]
+      },
+      {
+        "title": "Expresión e interacción oral",
+        "items": [
+          "Desarrollar ideas complejas con una estructura clara.",
+          "Expresarte espontáneamente con pocas búsquedas evidentes de palabras.",
+          "Matizar acuerdos, desacuerdos y críticas.",
+          "Adaptar tu manera de hablar a la audiencia.",
+          "Gestionar turnos, interrupciones y aclaraciones.",
+          "Integrar información de distintas fuentes en una exposición."
+        ]
+      },
+      {
+        "title": "Otras habilidades",
+        "items": [
+          "Otras habilidades: interpretar significados implícitos; seguir discursos extensos; escribir textos complejos con buena organización y un tono adecuado."
+        ]
+      }
+    ]
+  },
+  "C2": {
+    "name": "Dominio muy avanzado",
+    "description": "Puedes comunicar significados sutiles con mucha precisión, incluso cuando el contenido es complejo.",
+    "sections": [
+      {
+        "title": "Gramática",
+        "items": [
+          "Control muy consistente de las estructuras anteriores.",
+          "Flexibilidad para reformular una idea sin perder sus matices.",
+          "Manejo de estructuras densas, ambiguas o poco frecuentes.",
+          "Uso intencional de énfasis y variaciones del orden habitual.",
+          "Adaptación gramatical al género, al propósito y al estilo.",
+          "Capacidad para detectar y corregir errores sutiles."
+        ]
+      },
+      {
+        "title": "Vocabulario",
+        "items": [
+          "Diferencias finas de significado, intensidad y connotación.",
+          "Expresiones idiomáticas, coloquiales y figuradas.",
+          "Ironía, dobles sentidos y referencias culturales, según el contexto.",
+          "Repertorio amplio para temas abstractos y especializados.",
+          "Selección precisa de palabras según la audiencia y el efecto buscado."
+        ]
+      },
+      {
+        "title": "Expresión e interacción oral",
+        "items": [
+          "Abordar discusiones complejas con soltura.",
+          "Expresar distinciones sutiles entre ideas.",
+          "Integrar y evaluar argumentos de varias fuentes.",
+          "Reformular con naturalidad cuando aparece una dificultad.",
+          "Usar entonación y énfasis para transmitir matices.",
+          "Ajustar tu discurso con mucha flexibilidad."
+        ]
+      },
+      {
+        "title": "Otras habilidades",
+        "items": [
+          "Otras habilidades: comprender contenidos muy exigentes y producir textos claros, precisos y de estructura compleja. C2 no significa saber todas las palabras ni tener un acento específico."
+        ]
+      }
+    ]
+  }
+}

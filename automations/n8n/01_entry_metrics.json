@@ -1,0 +1,114 @@
+{
+  "name": "Diario - metricas de entrada a Neon",
+  "active": false,
+  "nodes": [
+    {
+      "id": "f8e46d5d-b995-4ecc-8f23-d74439cc91cb",
+      "name": "Entrada creada",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "diario-entry-created",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "c14a9101-6e00-4fd0-aa62-379330b4996c"
+    },
+    {
+      "id": "816eb1e4-54e8-4d80-af30-3da4b341e9d0",
+      "name": "Validar metricas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const b = $json.body;\nif (!b || typeof b !== 'object' || Array.isArray(b)) throw new Error('Expected JSON body');\nconst keys = ['eventId','type','occurredAt','entryId','entryDate','level','score','correctionCount','wordCount'];\nif (Object.keys(b).length !== keys.length || keys.some(k => !(k in b))) throw new Error('Unexpected contract');\nif (b.type !== 'entry.created' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(b.eventId)) throw new Error('Invalid event');\nif (typeof b.occurredAt !== 'string' || !Number.isFinite(Date.parse(b.occurredAt)) || !/^\\d{4}-\\d{2}-\\d{2}T/.test(b.occurredAt)) throw new Error('Invalid timestamp');\nif (typeof b.entryDate !== 'string' || !/^\\d{4}-\\d{2}-\\d{2}$/.test(b.entryDate) || !Number.isFinite(Date.parse(b.entryDate)) || new Date(b.entryDate).toISOString().slice(0,10) !== b.entryDate) throw new Error('Invalid date');\nif (!['A1','A2','B1','B2','C1','C2'].includes(b.level)) throw new Error('Invalid level');\nfor (const k of ['entryId','score','correctionCount','wordCount']) if (!Number.isSafeInteger(b[k]) || b[k] < 0) throw new Error('Invalid numeric metric');\nif (b.entryId < 1 || b.wordCount < 1 || b.score > 100 || b.correctionCount > 100000 || b.wordCount > 1000000) throw new Error('Out of range');\nreturn {json: b};"
+      }
+    },
+    {
+      "id": "7a71a094-d3df-4e2a-89ed-c842c565b0a1",
+      "name": "Registrar en Neon",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        500,
+        0
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH inserted AS (\nINSERT INTO diary_automation.entry_events (event_id, occurred_at, entry_id, entry_date, level, score, correction_count, word_count)\nVALUES ($1::uuid, $2::timestamptz, $3::bigint, $4::date, $5, $6::integer, $7::integer, $8::integer)\nON CONFLICT (event_id) DO NOTHING RETURNING event_id\n) SELECT true AS accepted, EXISTS (SELECT 1 FROM inserted) AS inserted;",
+        "options": {
+          "queryReplacement": "={{ [$json.eventId, $json.occurredAt, $json.entryId, $json.entryDate, $json.level, $json.score, $json.correctionCount, $json.wordCount] }}"
+        }
+      }
+    },
+    {
+      "id": "79a0964a-2cbd-4127-900a-05a1682704d2",
+      "name": "Confirmar registro",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        760,
+        0
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseCode": 200
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Entrada creada": {
+      "main": [
+        [
+          {
+            "node": "Validar metricas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar metricas": {
+      "main": [
+        [
+          {
+            "node": "Registrar en Neon",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar en Neon": {
+      "main": [
+        [
+          {
+            "node": "Confirmar registro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Lima"
+  },
+  "pinData": {},
+  "tags": [],
+  "id": "abf45eed-4e18-4912-aa86-0595930a25c1"
+}

@@ -23,18 +23,23 @@ La aplicación tiene una demo en el navegador y un backend local. La idea de fon
 
 - Escribes tu día en inglés y solicitas la corrección.
 - El backend guarda el texto original, el corregido y las correcciones en PostgreSQL.
-- Puedes consultar el historial, editar entradas y eliminarlas desde la API.
+- Puedes consultar el historial, buscar por texto, filtrar por nivel, editar y eliminar entradas desde la interfaz.
+- Tu borrador conserva el texto, la fecha y la entrada que estás editando al recargar.
+- Puedes exportar tu historial como JSON y ver un gráfico de las últimas 12 entradas.
 - Cada corrección tiene una explicación y una categoría. Las explicaciones y las sugerencias de vocabulario se adaptan al nivel elegido, de A1 a C2.
 - La API ofrece un resumen de errores por categoría y un puntaje orientativo. Ese puntaje no mide tu dominio del inglés.
 
-El corrector actual funciona con **reglas limitadas**. Detecta casos como `goed`, `eated`, `recieve`, el pronombre `i` y algunos errores de puntuación. Todavía no comprende todo el texto ni revisa conectores de forma general. La corrección contextual con IA y una vista para comparar la evolución entre meses forman parte de lo que quiero desarrollar.
+El corrector actual funciona con **reglas limitadas**. Detecta casos como `goed`, `eated`, `recieve`, el pronombre `i` y errores concretos de ortografía. Todavía no comprende todo el texto ni revisa conectores de forma general. La corrección contextual con IA y una vista para comparar la evolución entre meses forman parte de lo que quiero desarrollar.
 
-La demo de GitHub Pages usa su propio corrector local y guarda el historial en el navegador. **No está conectada al PostgreSQL local.** Las funciones nuevas de edición, eliminación y resumen del backend todavía necesitan controles en el frontend.
+La demo de GitHub Pages usa su propio corrector local y guarda el historial en el navegador. **No está conectada a una API pública ni a Neon directamente.** En desarrollo, React consume Spring Boot y el backend guarda en PostgreSQL o Neon. Las credenciales de base de datos nunca llegan al navegador.
 
 ## Cómo está organizado
 
-- [`frontend/`](frontend/): interfaz en Angular y Tailwind, incluida la demo de GitHub Pages.
+- [`frontend/`](frontend/): interfaz en React, Vite, TypeScript y Tailwind CSS. Sustituye al frontend Angular a partir del nuevo alcance de octubre de 2026.
 - [`backend/apidiario/`](backend/apidiario/): API en Java 21 y Spring Boot 4.0.8, con Spring Data JPA, PostgreSQL y Swagger.
+- [`automations/`](automations/): flujos n8n para registrar métricas de creación y guardar un informe semanal agregado en Neon, sin enviar textos personales ni mensajes.
+
+La portada usa Instrument Serif e Inter, el vídeo facilitado como referencia y un bucle manual con fundidos. El vídeo se puede pausar y se respeta la preferencia de movimiento reducido.
 
 El backend está organizado en entidades, repositorios, interfaces de servicios, implementaciones, controladores y DTO. Es una sola aplicación por capas. Estoy usando la teoría de Arquitectura de Aplicaciones Web como referencia para entender y justificar cada parte.
 
@@ -77,7 +82,7 @@ Desde `backend/apidiario`:
 .\mvnw.cmd clean verify
 ```
 
-Se verificaron **7 pruebas sin fallos**, incluyendo peticiones HTTP con Tomcat y H2. También se comprobó localmente el guardado de entradas y correcciones en PostgreSQL. Las pruebas automatizadas no usan tu base personal.
+Se verificaron **11 pruebas sin fallos**, incluyendo peticiones HTTP con Tomcat/H2 y la integración opcional con n8n. Las pruebas automatizadas no usan tu base personal.
 
 ## Ejecutar el frontend local
 
@@ -88,7 +93,24 @@ npm ci
 npm start
 ```
 
-Abre [http://localhost:4200](http://localhost:4200). La configuración de desarrollo apunta al backend en `http://localhost:8080/api`.
+Abre la dirección que muestra Vite, normalmente [http://127.0.0.1:5173](http://127.0.0.1:5173). En desarrollo, `/api` pasa por el proxy de Vite hacia `http://127.0.0.1:8080`.
+
+Para probar el modo demo sin backend: `npm run build` y después `npm run preview`. La compilación de producción usa demo local si `VITE_API_URL` está vacía. No se cambia de API a demo silenciosamente cuando una petición falla.
+
+```powershell
+npm test
+npm run build
+```
+
+## Neon y n8n
+
+La conexión de Spring a Neon se configura de forma privada con TLS. El proyecto de desarrollo es `diario-idiomas`, rama `diario-app`, base `diario_idiomas`. No se migran automáticamente los datos de tu PostgreSQL anterior.
+
+- [Configuración y flujos n8n](automations/README.md)
+- [Esquema de métricas](automations/sql/001_automation_schema.sql)
+- [Verificación del frontend](frontend/VALIDACION.md)
+
+El webhook registra metadatos de las entradas nuevas de forma idempotente. El informe semanal guarda actividad agregada del motor, no un diagnóstico de aprendizaje. Ambos flujos requieren una instancia de n8n en ejecución; subir los JSON al repositorio no los activa por sí solo.
 
 ## Guías del backend
 
@@ -101,3 +123,7 @@ Abre [http://localhost:4200](http://localhost:4200). La configuración de desarr
 ## Estado del proyecto
 
 Esta versión del backend es para aprendizaje y uso local. Los perfiles todavía no tienen login ni autenticación. Antes de ofrecer diarios privados para varias personas, falta implementar autenticación, autorización y controles para que cada persona acceda a sus propias entradas.
+
+### Escritura cotidiana y niveles
+
+El editor utiliza Inter para facilitar la lectura. No se añade ni penaliza la falta de punto final. La guía A1–C2 incluye gramática, vocabulario, expresión oral y otras habilidades a partir del material aportado; el nivel se elige por autoevaluación y orienta las preguntas de escritura. No se estima ni certifica el nivel MCER con el puntaje del corrector. Las entradas históricas conservan sus correcciones; al editarlas se aplican las reglas actuales.

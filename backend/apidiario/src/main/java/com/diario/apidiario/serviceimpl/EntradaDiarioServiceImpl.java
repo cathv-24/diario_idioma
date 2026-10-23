@@ -6,6 +6,8 @@ import com.diario.apidiario.enums.CategoriaError;
 import com.diario.apidiario.exceptions.*;
 import com.diario.apidiario.repositories.*;
 import com.diario.apidiario.services.*;
+import com.diario.apidiario.automations.EntradaGuardadaEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,8 @@ public class EntradaDiarioServiceImpl implements EntradaDiarioService {
     private CorreccionService correccionService;
     @Autowired
     private VocabularioService vocabularioService;
+    @Autowired
+    private ApplicationEventPublisher events;
 
     @Override
     @Transactional
@@ -38,6 +42,7 @@ public class EntradaDiarioServiceImpl implements EntradaDiarioService {
         entrada.setFechaCreacion(LocalDateTime.now());
         preparar(entrada, request);
         EntradaDiario guardada = entradaRepositorio.save(entrada);
+        events.publishEvent(EntradaGuardadaEvent.from(guardada));
         log.debug("Entrada {} creada con {} correcciones", guardada.getIdEntrada(), guardada.getCorrecciones().size());
         return aDTO(guardada);
     }

@@ -40,11 +40,6 @@ public class CorreccionServiceImpl implements CorreccionService {
                     explicar(nivel, "Empieza el texto con mayuscula.", "Start the text with a capital letter."));
             t = mayuscula + t.substring(1);
         }
-        if (!t.isBlank() && !t.matches("(?s).*[.!?]$")) {
-            agregar(correcciones, CategoriaError.PUNTUACION, "fin del texto", ".",
-                    explicar(nivel, "Falta un signo de cierre al final.", "Add final punctuation."));
-            t = t + ".";
-        }
         return new ResultadoCorreccion(t, correcciones);
     }
 

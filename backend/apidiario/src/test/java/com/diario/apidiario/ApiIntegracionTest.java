@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /** Prueba la API real con Tomcat, servicios y JPA; no simula los repositorios. */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = {"diario.demo.enabled=false", "logging.file.name=target/test-api.log"})
+        properties = {"diario.demo.enabled=false", "diario.automation.enabled=false", "logging.file.name=target/test-api.log"})
 @ActiveProfiles("h2")
 class ApiIntegracionTest {
     @Value("${local.server.port}")
@@ -81,12 +81,12 @@ class ApiIntegracionTest {
         assertTrue(esquema.body().contains("sugerenciasVocabulario"));
         assertEquals(200, enviar("GET", "/swagger-ui/index.html", null).statusCode());
         var request = HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + puerto + "/api/entrada"))
-                .header("Origin", "http://localhost:4200")
+                .header("Origin", "http://localhost:5173")
                 .header("Access-Control-Request-Method", "POST")
                 .method("OPTIONS", HttpRequest.BodyPublishers.noBody()).build();
         var respuesta = http.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, respuesta.statusCode());
-        assertEquals("http://localhost:4200", respuesta.headers().firstValue("Access-Control-Allow-Origin").orElseThrow());
+        assertEquals("http://localhost:5173", respuesta.headers().firstValue("Access-Control-Allow-Origin").orElseThrow());
     }
 
     private HttpResponse<String> enviar(String metodo, String ruta, String json) throws Exception {
