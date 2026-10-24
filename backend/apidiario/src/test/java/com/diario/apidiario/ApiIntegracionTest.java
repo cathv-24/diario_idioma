@@ -62,7 +62,7 @@ class ApiIntegracionTest {
   assertEquals(200,alice.send("GET","/api/entrada/"+entry,null).statusCode());
  }
  @Test void rechazaAnonimosCsrfAusenteYClavesIncorrectas() throws Exception {
-  var session=new Session();assertEquals(401,session.send("GET","/api/entradas/1",null).statusCode());
+  var session=new Session();var anonymous=session.send("GET","/api/entradas/1",null);assertEquals(401,anonymous.statusCode());assertTrue(anonymous.body().contains("sesión"),anonymous.body());
   var request=HttpRequest.newBuilder(URI.create("http://127.0.0.1:"+port+"/api/auth/register")).header("Content-Type","application/json").POST(HttpRequest.BodyPublishers.ofString("{}")).build();
   assertEquals(403,session.client.send(request,HttpResponse.BodyHandlers.ofString()).statusCode());
   assertEquals(401,session.send("POST","/api/auth/login","username=missing%40example.com&password=wrong").statusCode());

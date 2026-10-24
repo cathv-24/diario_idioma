@@ -65,15 +65,15 @@ public class SecurityConfig {
 
      .successHandler((req,res,auth) -> {res.setStatus(204);})
 
-     .failureHandler((req,res,ex) -> {res.setStatus(401);res.setContentType("application/json");res.getWriter().write("{\"mensaje\":\"Correo o contraseña incorrectos\"}");}))
+     .failureHandler((req,res,ex) -> {res.setStatus(401);res.setContentType("application/json;charset=UTF-8");res.getWriter().write("{\"mensaje\":\"Correo o contraseña incorrectos\"}");}))
 
    .logout(l -> l.logoutUrl("/api/auth/logout").invalidateHttpSession(true).deleteCookies("JSESSIONID")
 
      .logoutSuccessHandler((req,res,auth) -> res.setStatus(204)))
 
-   .exceptionHandling(e -> e.authenticationEntryPoint((req,res,ex) -> {res.setStatus(401);res.setContentType("application/json");res.getWriter().write("{\"mensaje\":\"Inicia sesión para abrir tu diario\"}");})
+   .exceptionHandling(e -> e.authenticationEntryPoint((req,res,ex) -> {res.setStatus(401);res.setContentType("application/json;charset=UTF-8");res.getWriter().write("{\"mensaje\":\"Inicia sesión para abrir tu diario\"}");})
 
-     .accessDeniedHandler((req,res,ex) -> {res.setStatus(403);res.setContentType("application/json");res.getWriter().write("{\"mensaje\":\"Solicitud no autorizada; vuelve a iniciar sesión\"}");}))
+     .accessDeniedHandler((req,res,ex) -> {res.setStatus(403);res.setContentType("application/json;charset=UTF-8");res.getWriter().write("{\"mensaje\":\"Solicitud no autorizada; vuelve a iniciar sesión\"}");}))
 
    .headers(h -> h.contentSecurityPolicy(c -> c.policyDirectives("default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self' https://d8j0ntlcm91z4.cloudfront.net; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'")));
 
@@ -82,4 +82,3 @@ public class SecurityConfig {
  }
 
 }
-

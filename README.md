@@ -135,3 +135,7 @@ El Dockerfile construye React y Spring Boot y sirve ambos bajo el mismo dominio 
 Cada persona crea su propia cuenta con una contraseña de al menos 12 caracteres. Se puede abrir el mismo historial desde distintos dispositivos. Las sesiones caducan tras 12 horas de inactividad y se cierran al reiniciar el servidor; basta iniciar sesión nuevamente. Los borradores se guardan por cuenta en el navegador y no se sincronizan hasta guardar la entrada. No hay recuperación automática de contraseña ni verificación por correo en esta versión. Los perfiles de práctica anteriores sin contraseña no se pueden reclamar por email.
 
 El plan gratuito de Render puede suspender el servicio tras inactividad; la primera apertura puede tardar. Neon conserva las entradas aunque Render se reinicie. Las automatizaciones n8n anteriores continúan configuradas localmente; no se expone n8n ni se envían eventos desde Render hasta configurar una instancia remota privada. Una publicación desde URL pública de Git requiere despliegues manuales desde el panel de Render para incorporar nuevos commits.
+
+## Aplicación pública
+
+[Abre Diario de Idiomas](https://diario-idiomas.onrender.com/#escribir). Crea tu cuenta y usa el mismo correo y contraseña en tus dispositivos. El servicio funciona en el plan gratuito de Render, con las entradas persistidas en Neon. La primera apertura tras inactividad puede tardar.
