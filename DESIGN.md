@@ -53,3 +53,5 @@ No prometer corrección contextual con IA. No presentar puntajes como diagnósti
 ## Ajuste para escritura cotidiana
 
 Editor y resultado: Inter 18 px, 17 px en móvil, interlineado 1.85 y fondo blanco liso. Instrument Serif se reserva para títulos. La guía de niveles usa divulgación progresiva con details/summary; las preguntas acompañan el nivel elegido. La pantalla de escritura ofrece las tres entradas recientes. Al abrir la aplicación sin ruta, un perfil existente llega al editor.
+
+El acceso ofrece pestañas Iniciar sesión / Crear cuenta, campos con autocompletado apropiado y mensajes de carga/error. Las contraseñas no se guardan en localStorage; el servidor mantiene una sesión HttpOnly. Cerrar sesión vacía la vista de entradas y el editor.

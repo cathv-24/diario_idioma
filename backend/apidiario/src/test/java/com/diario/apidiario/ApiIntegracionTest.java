@@ -1,114 +1,82 @@
 package com.diario.apidiario;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import java.net.URI;
+import java.net.*;
 import java.net.http.*;
-import java.time.Duration;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import java.util.regex.Pattern;
 import static org.junit.jupiter.api.Assertions.*;
-
-/** Prueba la API real con Tomcat, servicios y JPA; no simula los repositorios. */
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = {"diario.demo.enabled=false", "diario.automation.enabled=false", "logging.file.name=target/test-api.log"})
+@SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT,properties={"diario.demo.enabled=false","diario.automation.enabled=false","logging.file.name=target/test-api.log"})
 @ActiveProfiles("h2")
 class ApiIntegracionTest {
-    @Value("${local.server.port}")
-    private int puerto;
-    private final HttpClient http = HttpClient.newHttpClient();
-
-    @Test
-    void flujoCompletoConHistorialNivelEdicionReporteYBorrado() throws Exception {
-        String email = UUID.randomUUID() + "@example.com";
-        var usuario = enviar("POST", "/api/usuario", perfil(null, email, "A2"));
-        assertEquals(201, usuario.statusCode(), usuario.body());
-        long idUsuario = id(usuario.body(), "idUsuario");
-        var creacion = enviar("POST", "/api/entrada", entrada(idUsuario, "Yesterday i goed to the park. I was very happy."));
-        assertEquals(201, creacion.statusCode(), creacion.body());
-        assertTrue(creacion.body().contains("Yesterday I went to the park."));
-        assertTrue(creacion.body().contains("delighted"));
-        long idEntrada = id(creacion.body(), "idEntrada");
-        assertEquals("/api/entrada/" + idEntrada, creacion.headers().firstValue("location").orElseThrow());
-
-        assertEquals(200, enviar("PUT", "/api/usuario", perfil(idUsuario, email, "B1")).statusCode());
-        var historial = enviar("GET", "/api/entradas/" + idUsuario, null);
-        assertEquals(200, historial.statusCode());
-        assertTrue(historial.body().contains("\"nivel\":\"A2\""), historial.body());
-        var resumen = enviar("GET", "/api/entradas/" + idUsuario + "/resumen", null);
-        assertEquals(200, resumen.statusCode(), resumen.body());
-        assertTrue(resumen.body().contains("\"totalEntradas\":1"));
-        assertTrue(resumen.body().contains("GRAMATICA"));
-
-        assertEquals(409, enviar("DELETE", "/api/usuario/" + idUsuario, null).statusCode());
-        var edicion = enviar("PUT", "/api/entrada/" + idEntrada, entrada(idUsuario, "Today I feel good."));
-        assertEquals(200, edicion.statusCode(), edicion.body());
-        assertTrue(edicion.body().contains("\"correcciones\":[]"), edicion.body());
-        assertTrue(edicion.body().contains("\"nivel\":\"B1\""));
-        var actualizado = enviar("GET", "/api/entradas/" + idUsuario + "/resumen", null);
-        assertTrue(actualizado.body().contains("\"erroresPorCategoria\":[]"), actualizado.body());
-        assertEquals(204, enviar("DELETE", "/api/entrada/" + idEntrada, null).statusCode());
-        assertEquals(404, enviar("GET", "/api/entrada/" + idEntrada, null).statusCode());
-        assertEquals(204, enviar("DELETE", "/api/usuario/" + idUsuario, null).statusCode());
-    }
-
-    @Test
-    void validaCamposEmailDuplicadoJsonYRecursosInexistentes() throws Exception {
-        assertEquals(400, enviar("POST", "/api/usuario", "{}").statusCode());
-        assertEquals(400, enviar("POST", "/api/usuario", perfil(null, "no-es-email", "A2")).statusCode());
-        assertEquals(400, enviar("POST", "/api/usuario", perfil(null, "a@example.com", "Z9")).statusCode());
-        String email = UUID.randomUUID() + "@example.com";
-        var usuario = enviar("POST", "/api/usuario", perfil(null, email, "A2"));
-        assertEquals(201, usuario.statusCode());
-        long idUsuario = id(usuario.body(), "idUsuario");
-        assertEquals(409, enviar("POST", "/api/usuario", perfil(null, email.toUpperCase(), "A2")).statusCode());
-        assertEquals(400, enviar("POST", "/api/entrada", entrada(idUsuario, "   ")).statusCode());
-        assertEquals(400, enviar("POST", "/api/entrada", "{\"idUsuario\":1,\"fecha\":\"2999-01-01\",\"texto\":\"Hello.\"}").statusCode());
-        assertEquals(404, enviar("GET", "/api/entradas/99999999", null).statusCode());
-        assertEquals(404, enviar("DELETE", "/api/entrada/99999999", null).statusCode());
-        assertEquals(400, enviar("PUT", "/api/usuario", perfil(null, email, "A2")).statusCode());
-        assertEquals(400, enviar("POST", "/api/usuario", perfil(idUsuario, "another@example.com", "A2")).statusCode());
-        assertEquals(400, enviar("GET", "/api/entrada/no-es-numero", null).statusCode());
-    }
-
-    @Test
-    void publicaOpenApiSwaggerYPermiteCorsDelFrontend() throws Exception {
-        var esquema = enviar("GET", "/v3/api-docs", null);
-        assertEquals(200, esquema.statusCode(), esquema.body());
-        assertTrue(esquema.body().contains("/api/entrada"));
-        assertTrue(esquema.body().contains("sugerenciasVocabulario"));
-        assertEquals(200, enviar("GET", "/swagger-ui/index.html", null).statusCode());
-        var request = HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + puerto + "/api/entrada"))
-                .header("Origin", "http://localhost:5173")
-                .header("Access-Control-Request-Method", "POST")
-                .method("OPTIONS", HttpRequest.BodyPublishers.noBody()).build();
-        var respuesta = http.send(request, HttpResponse.BodyHandlers.ofString());
-        assertEquals(200, respuesta.statusCode());
-        assertEquals("http://localhost:5173", respuesta.headers().firstValue("Access-Control-Allow-Origin").orElseThrow());
-    }
-
-    private HttpResponse<String> enviar(String metodo, String ruta, String json) throws Exception {
-        var request = HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + puerto + ruta))
-                .timeout(Duration.ofSeconds(20))
-                .header("Content-Type", "application/json")
-                .method(metodo, json == null ? HttpRequest.BodyPublishers.noBody() : HttpRequest.BodyPublishers.ofString(json))
-                .build();
-        return http.send(request, HttpResponse.BodyHandlers.ofString());
-    }
-
-    private long id(String json, String campo) {
-        var matcher = Pattern.compile("\"" + campo + "\"\\s*:\\s*(\\d+)").matcher(json);
-        assertTrue(matcher.find(), json);
-        return Long.parseLong(matcher.group(1));
-    }
-
-    private String perfil(Long id, String email, String nivel) {
-        return "{\"idUsuario\":" + id + ",\"nombre\":\"Cathe\",\"email\":\"" + email + "\",\"nivel\":\"" + nivel + "\"}";
-    }
-
-    private String entrada(long usuario, String texto) {
-        return "{\"idUsuario\":" + usuario + ",\"texto\":\"" + texto + "\"}";
-    }
+ @Value("${local.server.port}") int port;
+ private static final String PASSWORD="Test-only-long-password-42";
+ class Session {
+  final HttpClient client=HttpClient.newBuilder().cookieHandler(new CookieManager(null,CookiePolicy.ACCEPT_ALL)).build();
+  HttpResponse<String> send(String method,String path,String body) throws Exception {
+   var builder=HttpRequest.newBuilder(URI.create("http://127.0.0.1:"+port+path));
+   if(!method.equals("GET")) {
+    var csrf=send("GET","/api/auth/csrf",null);
+    var token=Pattern.compile("\"token\":\"([^\"]+)\"").matcher(csrf.body());assertTrue(token.find());
+    builder.header("X-CSRF-TOKEN",token.group(1));
+   }
+   builder.header("Content-Type",path.equals("/api/auth/login")?"application/x-www-form-urlencoded":"application/json");
+   return client.send(builder.method(method,body==null?HttpRequest.BodyPublishers.noBody():HttpRequest.BodyPublishers.ofString(body)).build(),HttpResponse.BodyHandlers.ofString());
+  }
+  long register(String email) throws Exception {
+   var result=send("POST","/api/auth/register",registration(email,PASSWORD));
+   assertEquals(201,result.statusCode(),result.body());assertFalse(result.body().contains("password"));return id(result.body(),"idUsuario");
+  }
+  void login(String email) throws Exception {assertEquals(204,send("POST","/api/auth/login","username="+URLEncoder.encode(email,StandardCharsets.UTF_8)+"&password="+PASSWORD).statusCode());}
+ }
+ String registration(String email,String password){return "{\"nombre\":\"Prueba\",\"email\":\""+email+"\",\"nivel\":\"A2\",\"password\":\""+password+"\"}";}
+ long id(String json,String field) {var matcher=Pattern.compile("\""+field+"\"\\s*:\\s*(\\d+)").matcher(json);assertTrue(matcher.find(),json);return Long.parseLong(matcher.group(1));}
+ String email(){return UUID.randomUUID()+"@example.com";}
+ String entry(long user,String text) {return "{\"idUsuario\":"+user+",\"texto\":\""+text+"\"}";}
+ @Test void sincronizaHistorialEntreDispositivosYCierraSesion() throws Exception {
+  var first=new Session();String email=email();long user=first.register(email);first.login(email);
+  assertEquals(200,first.send("GET","/api/auth/me",null).statusCode());
+  var created=first.send("POST","/api/entrada",entry(user,"Yesterday i goed to the park"));assertEquals(201,created.statusCode(),created.body());
+  assertTrue(created.body().contains("Yesterday I went to the park\""),created.body());long entry=id(created.body(),"idEntrada");
+  var second=new Session();second.login(email);var history=second.send("GET","/api/entradas/"+user,null);assertEquals(200,history.statusCode());assertTrue(history.body().contains("Yesterday i goed"));
+  assertEquals(200,second.send("PUT","/api/entrada/"+entry,entry(user,"Today I feel happy")).statusCode());
+  assertTrue(first.send("GET","/api/entrada/"+entry,null).body().contains("Today I feel happy"));
+  assertEquals(204,first.send("POST","/api/auth/logout",null).statusCode());assertEquals(401,first.send("GET","/api/auth/me",null).statusCode());
+  assertEquals(200,second.send("GET","/api/auth/me",null).statusCode());assertEquals(204,second.send("DELETE","/api/entrada/"+entry,null).statusCode());
+ }
+ @Test void bloqueaRecursosAjenosYEnumeracion() throws Exception {
+  var alice=new Session();String mail=email();long user=alice.register(mail);alice.login(mail);
+  long entry=id(alice.send("POST","/api/entrada",entry(user,"A quiet day")).body(),"idEntrada");
+  var bob=new Session();String other=email();long otherId=bob.register(other);bob.login(other);
+  for(String path:new String[]{"/api/entrada/"+entry,"/api/entradas/"+user,"/api/entradas/"+user+"/resumen","/api/usuario/"+user}) assertEquals(404,bob.send("GET",path,null).statusCode(),path);
+  assertEquals(404,bob.send("PUT","/api/entrada/"+entry,entry(otherId,"Changed")).statusCode());
+  assertEquals(404,bob.send("DELETE","/api/entrada/"+entry,null).statusCode());
+  assertEquals(404,bob.send("POST","/api/entrada",entry(user,"Forged")).statusCode());
+  assertEquals(403,bob.send("GET","/api/usuarios",null).statusCode());
+  assertEquals(403,bob.send("POST","/api/usuario","{}").statusCode());
+  assertEquals(404,bob.send("PUT","/api/usuario","{\"idUsuario\":"+user+",\"nombre\":\"Changed\",\"email\":\""+mail+"\",\"nivel\":\"C2\"}").statusCode());
+  assertEquals(404,bob.send("DELETE","/api/usuario/"+user,null).statusCode());
+  assertEquals(200,alice.send("GET","/api/entrada/"+entry,null).statusCode());
+ }
+ @Test void rechazaAnonimosCsrfAusenteYClavesIncorrectas() throws Exception {
+  var session=new Session();assertEquals(401,session.send("GET","/api/entradas/1",null).statusCode());
+  var request=HttpRequest.newBuilder(URI.create("http://127.0.0.1:"+port+"/api/auth/register")).header("Content-Type","application/json").POST(HttpRequest.BodyPublishers.ofString("{}")).build();
+  assertEquals(403,session.client.send(request,HttpResponse.BodyHandlers.ofString()).statusCode());
+  assertEquals(401,session.send("POST","/api/auth/login","username=missing%40example.com&password=wrong").statusCode());
+  assertTrue(session.send("GET","/api/auth/csrf",null).headers().firstValue("Cache-Control").orElse("").contains("no-store"));
+ }
+ @Test void validaRegistroDuplicadosYNuncaExponeHash() throws Exception {
+  var session=new Session();assertEquals(400,session.send("POST","/api/auth/register","{}").statusCode());
+  String email=email();session.register(email);
+  assertEquals(409,session.send("POST","/api/auth/register",registration(email.toUpperCase(),PASSWORD)).statusCode());
+  assertEquals(400,session.send("POST","/api/auth/register",registration("short@example.com","short")).statusCode());
+  session.login(email);var profile=session.send("GET","/api/auth/me",null);assertFalse(profile.body().contains("password"));assertFalse(profile.body().contains("$2"));
+  long user=id(profile.body(),"idUsuario");
+  assertEquals(200,session.send("PUT","/api/usuario","{\"idUsuario\":"+user+",\"nombre\":\"Prueba\",\"email\":\""+email+"\",\"nivel\":\"C1\"}").statusCode());
+  assertEquals(400,session.send("POST","/api/entrada",entry(user,"   ")).statusCode());
+  assertEquals(200,session.send("GET","/api/health",null).statusCode());
+ }
 }

@@ -17,3 +17,5 @@ El motor existente aplica reglas limitadas, no una corrección contextual con IA
 
 ## Visual commitments
 La usuaria proporcionó una dirección concreta: blanco, negro, gris #6F6F6F, Instrument Serif e Inter, portada cinematográfica con vídeo proporcionado y fundidos de 0,5 segundos. Adaptar textos al diario en español. Imagen generada solo si es necesaria.
+
+La versión conectada admite cuentas privadas y acceso entre dispositivos. Los borradores permanecen por cuenta en el navegador; las entradas guardadas se sincronizan con Neon. GitHub Pages es una demo separada.

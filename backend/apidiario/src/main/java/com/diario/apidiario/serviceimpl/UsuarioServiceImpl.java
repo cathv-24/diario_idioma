@@ -62,7 +62,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new ConflictoException("El email pertenece a otro usuario");
         }
         usuario.setNombre(dto.getNombre().strip());
-        usuario.setEmail(email);
+        if (!email.equals(usuario.getEmail())) throw new SolicitudInvalidaException("El correo de acceso no se puede cambiar desde este formulario");
         usuario.setNivel(dto.getNivel());
         return aDTO(usuarioRepositorio.save(usuario));
     }

@@ -72,3 +72,9 @@ El perfil optativo `neon` toma `NEON_JDBC_URL`, `NEON_DB_USERNAME` y `NEON_DB_PA
 ```
 
 Las pruebas HTTP necesitan permiso para abrir un puerto temporal local. No usan la base PostgreSQL real ni llaman a proveedores de IA.
+
+## Cuentas y acceso privado
+
+Registro `POST /api/auth/register`; acceso por formulario `POST /api/auth/login`; perfil actual `GET /api/auth/me`; cerrar sesión `POST /api/auth/logout`. Las escrituras requieren el token obtenido de `GET /api/auth/csrf`. No hay acceso anónimo a entradas ni listado de usuarios. El identificador del principal se fija al autenticar; cada ruta comprueba la propiedad, incluso si se manipulan IDs en el cuerpo o URL. Las contraseñas nunca se devuelven en DTO.
+
+Las pruebas HTTP verifican registro, validación, CSRF, credenciales incorrectas, cierre de sesión, acceso desde dos clientes y aislamiento de todos los recursos. Los perfiles previos con hash nulo no admiten login. La limitación de intentos de acceso es local al proceso (30 cada diez minutos por dirección); no se usa como contador distribuido.

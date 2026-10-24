@@ -22,3 +22,7 @@ Los datos usados para verificación son sintéticos. El corrector es limitado y 
 - Regresión: cierres sin signo, con puntos suspensivos, exclamación y emoji conservados sin penalización.
 - Guía A1–C2 y preguntas por nivel; revisión estática independiente aprobada.
 - Vista móvil verificada: Inter de 17 px, borrador conservado y sin desbordamiento horizontal.
+
+## Acceso desde distintos dispositivos
+
+El build con VITE_API_URL=/api usa la cuenta del servidor. Las pruebas HTTP del backend utilizan clientes con cookies independientes: sincronización entre sesiones e imposibilidad de acceder a entradas ajenas. Las sesiones, contraseñas y CSRF no se almacenan en localStorage; los borradores usan claves por cuenta.

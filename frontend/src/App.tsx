@@ -26,6 +26,7 @@ import {
   Copy,
   CheckCircle2,
 } from "lucide-react";
+import AuthPanel from "./components/AuthPanel";
 import LevelGuide from "./components/LevelGuide";
 import levelGuide from "./lib/levels.json";
 import { practice } from "./lib/practice";
@@ -50,9 +51,15 @@ function currentView(): View {
   const hash = location.hash.slice(1);
   return hash in labels ? (hash as View) : "inicio";
 }
-function readDraft(): { text: string; date: string; editing?: number } {
+function readDraft(profileId?: number): {
+  text: string;
+  date: string;
+  editing?: number;
+} {
   try {
-    const raw = localStorage.getItem("diario.v2.draft");
+    const raw = profileId
+      ? localStorage.getItem(`diario.v3.draft.${profileId}`)
+      : null;
     if (!raw) return { text: "", date: localDate() };
     try {
       const draft = JSON.parse(raw);
@@ -74,6 +81,7 @@ function readDraft(): { text: string; date: string; editing?: number } {
 
 export default function App() {
   const [view, setView] = useState<View>(currentView);
+  const [authLoading, setAuthLoading] = useState(true);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [entries, setEntries] = useState<Entry[]>([]);
   const [loading, setLoading] = useState(false);
@@ -96,6 +104,24 @@ export default function App() {
   const [tab, setTab] = useState<"corregido" | "original">("corregido");
   const [copied, setCopied] = useState(false);
   const editor = useRef<HTMLTextAreaElement>(null);
+  const draftSnapshot = useRef({profile, text, date, editing});
+  draftSnapshot.current = {profile, text, date, editing};
+  const flushDraft = () => {
+    const current = draftSnapshot.current;
+    if (!current.profile) return;
+    try { localStorage.setItem(`diario.v3.draft.${current.profile.idUsuario}`, JSON.stringify({text:current.text,date:current.date,editing:current.editing})); } catch { /* El texto sigue en el editor si el almacenamiento está lleno. */ }
+  };
+  useEffect(() => {
+    const expired = () => {
+      flushDraft();
+      setProfile(null);
+      setEntries([]);
+      setSelected(null);
+      setNotice("");
+    };
+    window.addEventListener("diario:session-expired", expired);
+    return () => window.removeEventListener("diario:session-expired", expired);
+  }, []);
   useEffect(() => {
     const fn = () => {
       setView(currentView());
@@ -108,11 +134,17 @@ export default function App() {
       .then((p) => {
         setProfile(p);
         if (p) {
- setLevel(p.nivel);
- if (!location.hash) { location.hash = "escribir"; setView("escribir"); }
-}
+          const draft = readDraft(p.idUsuario);
+          setText(draft.text); setDate(draft.date); setEditing(draft.editing);
+          setLevel(p.nivel);
+          if (!location.hash) {
+            location.hash = "escribir";
+            setView("escribir");
+          }
+        }
       })
-      .catch((e) => setError(e.message));
+      .catch((e) => setError(e.message))
+      .finally(() => setAuthLoading(false));
     return () => window.removeEventListener("hashchange", fn);
   }, []);
   useEffect(() => {
@@ -135,10 +167,11 @@ export default function App() {
     };
   }, [profile]);
   useEffect(() => {
+    if (!profile || authLoading) return;
     const id = setTimeout(() => {
       try {
         localStorage.setItem(
-          "diario.v2.draft",
+          `diario.v3.draft.${profile.idUsuario}`,
           JSON.stringify({ text, date, editing }),
         );
         setDraftState(text ? "Borrador guardado en este navegador" : "");
@@ -147,7 +180,7 @@ export default function App() {
       }
     }, 500);
     return () => clearTimeout(id);
-  }, [text, date, editing]);
+  }, [text, date, editing, profile?.idUsuario, authLoading]);
   useEffect(() => {
     if (!notice) return;
     const id = setTimeout(() => setNotice(""), 5000);
@@ -162,25 +195,6 @@ export default function App() {
     setDate(localDate());
     setError("");
     go("escribir");
-  };
-  const onCreateProfile = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    setSaving(true);
-    setError("");
-    try {
-      const p = await api.createProfile(
-        String(data.get("nombre")).trim(),
-        String(data.get("email")).trim(),
-        level,
-      );
-      setProfile(p);
-      setNotice("Tu espacio está listo. Empieza con lo que tengas en mente.");
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "No pudimos crear el perfil.");
-    } finally {
-      setSaving(false);
-    }
   };
   const changeLevel = async (value: Level) => {
     if (!profile) {
@@ -203,6 +217,7 @@ export default function App() {
   const submit = async (e: FormEvent) => {
     e.preventDefault();
     if (!profile || !text.trim() || saving) return;
+    flushDraft();
     setSaving(true);
     setError("");
     try {
@@ -424,15 +439,13 @@ export default function App() {
                   href="#como-funciona"
                   onClick={(e) => {
                     e.preventDefault();
-                    document
-                      .getElementById("como-funciona")
-                      ?.scrollIntoView({
-                        behavior: window.matchMedia(
-                          "(prefers-reduced-motion: reduce)",
-                        ).matches
-                          ? "instant"
-                          : "smooth",
-                      });
+                    document.getElementById("como-funciona")?.scrollIntoView({
+                      behavior: window.matchMedia(
+                        "(prefers-reduced-motion: reduce)",
+                      ).matches
+                        ? "instant"
+                        : "smooth",
+                    });
                   }}
                 >
                   Un pequeño hábito, una nueva voz
@@ -553,10 +566,38 @@ export default function App() {
         ) : (
           <div className="workspace-shell">
             <div className="workspace-top">
+              {profile && (
+                <button
+                  className="text-link"
+                  disabled={saving}
+                  onClick={async () => {
+                    try {
+                      flushDraft();
+                  await api.logout();
+                      setProfile(null);
+                      setEntries([]);
+                      setSelected(null);
+                      setText("");
+                      setEditing(undefined);
+                      setError("");
+                      setNotice("");
+                      go("escribir");
+                    } catch (error) {
+                      setError(
+                        error instanceof Error
+                          ? error.message
+                          : "No pudimos cerrar la sesión.",
+                      );
+                    }
+                  }}
+                >
+                  Cerrar sesión
+                </button>
+              )}
               <span className="workspace-mode">
                 {api.apiMode ? <Cloud size={15} /> : <HardDrive size={15} />}{" "}
                 {api.apiMode
-                  ? "Modo API · uso local"
+                  ? "Tu diario privado · sincronizado"
                   : "Modo demo · datos en este navegador"}
               </span>
               <label className="level-select">
@@ -568,7 +609,9 @@ export default function App() {
                   onChange={(e) => void changeLevel(e.target.value as Level)}
                 >
                   {levels.map((l) => (
-                    <option key={l} value={l}>{l} — {levelGuide[l].name}</option>
+                    <option key={l} value={l}>
+                      {l} — {levelGuide[l].name}
+                    </option>
                   ))}
                 </select>
                 <ChevronDown size={13} />
@@ -618,9 +661,8 @@ export default function App() {
                   <strong>Una aplicación que también está aprendiendo.</strong>
                   <p>
                     Esta versión utiliza reglas de corrección limitadas. Su
-                    puntaje es orientativo. El backend todavía no incorpora
-                    login: úsalo localmente y con textos de práctica. En la
-                    demo, tus entradas permanecen en tu navegador.
+                    puntaje es orientativo. La versión conectada guarda tus entradas
+                    en una cuenta privada. La demo guarda los datos en este navegador.
                   </p>
                 </div>
                 <button className="button dark" onClick={newEntry}>
@@ -628,70 +670,26 @@ export default function App() {
                   <ArrowUpRight size={17} />
                 </button>
               </section>
+            ) : authLoading ? (
+              <div className="empty-state" role="status">
+                <LoaderCircle className="spin" size={26} />
+                <p>Abriendo tu diario…</p>
+              </div>
             ) : !profile ? (
-              <section className="onboarding">
-                <div>
-                  <BookOpen size={28} strokeWidth={1.1} />
-                  <h1>
-                    Hagamos espacio
-                    <br />
-                    <em>para tu historia.</em>
-                  </h1>
-                  <p>
-                    Elige cómo quieres que te llamemos y tu nivel actual. Puedes
-                    cambiarlo después.
-                  </p>
-                  <p className="small-muted">
-                    {api.apiMode
-                      ? "Este perfil de aprendizaje no incluye contraseña ni login. Usa datos de prueba."
-                      : "La demo funciona en este navegador. El correo no se envía a ningún servidor."}
-                  </p>
-                </div>
-                <form onSubmit={onCreateProfile}>
-                  <label>
-                    Tu nombre
-                    <input
-                      name="nombre"
-                      required
-                      maxLength={80}
-                      placeholder="¿Cómo te llamamos?"
-                      autoComplete="given-name"
-                    />
-                  </label>
-                  <label>
-                    Correo del perfil
-                    <input
-                      type="email"
-                      name="email"
-                      required
-                      maxLength={100}
-                      placeholder="tu@ejemplo.com"
-                      autoComplete="email"
-                    />
-                  </label>
-                  <label>
-                    Tu nivel de inglés
-                    <select
-                      value={level}
-                      onChange={(e) => setLevel(e.target.value as Level)}
-                    >
-                      {levels.map((l) => (
-                        <option key={l} value={l}>{l} — {levelGuide[l].name}</option>
-                      ))}
-                    </select>
-                  </label>
-                  <button className="button dark" disabled={saving}>
-                    {saving ? (
-                      <LoaderCircle className="spin" size={17} />
-                    ) : (
-                      <>
-                        Crear mi espacio
-                        <ArrowRight size={17} />
-                      </>
-                    )}
-                  </button>
-                </form>
-              </section>
+              <AuthPanel
+                onError={setError}
+                onProfile={(p) => {
+                  setProfile(p);
+                  setLevel(p.nivel);
+                  setSelected(null);
+                  const draft = readDraft(p.idUsuario);
+                  setText(draft.text);
+                  setDate(draft.date);
+                  setEditing(draft.editing);
+                  setError("");
+                  setNotice("Tu diario está listo.");
+                }}
+              />
             ) : view === "escribir" ? (
               <>
                 <div className="page-title">
@@ -917,15 +915,21 @@ export default function App() {
                     </form>
                     <aside className="writing-companion">
                       <h2>Una idea para escribir</h2>
-                      <p>{level} · {practice[level].focus}</p>
+                      <p>
+                        {level} · {practice[level].focus}
+                      </p>
                       <div className="writing-prompt">
                         <span>SI NO SABES POR DÓNDE EMPEZAR</span>
-                        <p lang="en">{practice[level].prompts[prompt % practice[level].prompts.length]}</p>
+                        <p lang="en">
+                          {
+                            practice[level].prompts[
+                              prompt % practice[level].prompts.length
+                            ]
+                          }
+                        </p>
                         <button
                           className="text-link light"
-                          onClick={() =>
-                            setPrompt(prompt + 1)
-                          }
+                          onClick={() => setPrompt(prompt + 1)}
                         >
                           Otra idea
                           <ArrowRight size={15} />
@@ -937,14 +941,33 @@ export default function App() {
                     </aside>
                   </section>
                 )}
-                {!selected && entries.length > 0 && <section className="recent-entries">
-                  <div className="section-title"><h2>Vuelve a tus palabras</h2><a href="#historial">Ver todo el historial</a></div>
-                  {entries.slice(0, 3).map(entry => <button key={entry.idEntrada} onClick={() => {setSelected(entry); setTab("corregido"); window.scrollTo({top: 0});}}>
-                    <time dateTime={entry.fecha}>{dateLabel(entry.fecha)}</time>
-                    <span lang="en">{entry.textoOriginal.slice(0, 110)}{entry.textoOriginal.length > 110 ? "…" : ""}</span>
-                    <ArrowRight size={18}/>
-                  </button>)}
-                </section>}
+                {!selected && entries.length > 0 && (
+                  <section className="recent-entries">
+                    <div className="section-title">
+                      <h2>Vuelve a tus palabras</h2>
+                      <a href="#historial">Ver todo el historial</a>
+                    </div>
+                    {entries.slice(0, 3).map((entry) => (
+                      <button
+                        key={entry.idEntrada}
+                        onClick={() => {
+                          setSelected(entry);
+                          setTab("corregido");
+                          window.scrollTo({ top: 0 });
+                        }}
+                      >
+                        <time dateTime={entry.fecha}>
+                          {dateLabel(entry.fecha)}
+                        </time>
+                        <span lang="en">
+                          {entry.textoOriginal.slice(0, 110)}
+                          {entry.textoOriginal.length > 110 ? "…" : ""}
+                        </span>
+                        <ArrowRight size={18} />
+                      </button>
+                    ))}
+                  </section>
+                )}
               </>
             ) : view === "historial" ? (
               <>
@@ -980,7 +1003,9 @@ export default function App() {
                   >
                     <option value="todos">Todos los niveles</option>
                     {levels.map((l) => (
-                      <option key={l} value={l}>{l} — {levelGuide[l].name}</option>
+                      <option key={l} value={l}>
+                        {l} — {levelGuide[l].name}
+                      </option>
                     ))}
                   </select>
                   <button
@@ -1199,7 +1224,7 @@ export default function App() {
             )}
             <p className="workspace-footnote">
               {api.apiMode
-                ? "Uso local de aprendizaje. El perfil no es una cuenta autenticada."
+                ? "Tus entradas se guardan en tu cuenta. El borrador permanece en este dispositivo."
                 : "Tus entradas de demo se guardan en este navegador. Exporta una copia para conservarlas."}
             </p>
           </div>

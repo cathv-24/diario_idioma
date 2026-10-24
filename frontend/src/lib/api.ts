@@ -6,17 +6,44 @@ const base =
 export const apiMode = Boolean(base);
 export const STORAGE_KEY = "diario.v2.entries";
 const PROFILE_KEY = "diario.v2.profile";
+export class SessionExpiredError extends Error {}
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 20000);
+  const timer = setTimeout(() => controller.abort(), 90000);
   try {
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+      ...((options.headers as Record<string, string>) || {}),
+    };
+    if (
+      options.method &&
+      !["GET", "HEAD", "OPTIONS"].includes(options.method)
+    ) {
+      const response = await fetch(base + "/auth/csrf", {
+        credentials: "include",
+        cache: "no-store",
+        signal: controller.signal,
+      });
+      if (!response.ok)
+        throw new Error("No pudimos preparar la sesión. Vuelve a intentarlo.");
+      const csrf = await response.json();
+      headers[csrf.headerName] = csrf.token;
+    }
     const response = await fetch(base + path, {
       ...options,
+      credentials: "include",
+      cache: "no-store",
       signal: controller.signal,
-      headers: { "Content-Type": "application/json", ...options.headers },
+      headers,
     });
     if (!response.ok) {
       const data = await response.json().catch(() => ({}));
+      if (response.status === 401 && path !== "/auth/login") {
+        window.dispatchEvent(new Event("diario:session-expired"));
+        throw new SessionExpiredError(
+          "Tu sesión terminó. Inicia sesión para continuar; tu borrador sigue en este dispositivo.",
+        );
+      }
       throw new Error(
         data.mensaje ||
           `No pudimos completar la solicitud (${response.status}).`,
@@ -26,12 +53,33 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   } catch (error) {
     if (error instanceof TypeError)
       throw new Error(
-        "No podemos conectar con el servidor. Tu borrador sigue aquí. Comprueba que la API esté encendida.",
+        "No podemos conectar con el servidor. Tu borrador sigue aquí. Si el servicio está despertando, espera un momento y reintenta.",
+      );
+    if (error instanceof DOMException && error.name === "AbortError")
+      throw new Error(
+        "El servidor está tardando. Tu borrador sigue aquí; vuelve a intentarlo en un momento.",
       );
     throw error;
   } finally {
     clearTimeout(timer);
   }
+}
+export async function login(email: string, password: string): Promise<Profile> {
+  await request<void>("/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      username: email.trim().toLowerCase(),
+      password,
+    }),
+  });
+  const profile = await request<Profile>("/auth/me");
+  localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+  return profile;
+}
+export async function logout() {
+  if (apiMode) await request<void>("/auth/logout", { method: "POST" });
+  localStorage.removeItem(PROFILE_KEY);
 }
 function readLocal(): Entry[] {
   try {
@@ -54,9 +102,10 @@ function saveLocal(entries: Entry[]) {
 export async function loadProfile(): Promise<Profile | null> {
   if (apiMode) {
     try {
-      return JSON.parse(localStorage.getItem(PROFILE_KEY) || "null");
-    } catch {
-      return null;
+      return await request<Profile>("/auth/me");
+    } catch (error) {
+      if (error instanceof SessionExpiredError) return null;
+      throw error;
     }
   }
   try {
@@ -69,13 +118,15 @@ export async function createProfile(
   nombre: string,
   email: string,
   nivel: Level,
+  password?: string,
 ): Promise<Profile> {
   const profile = apiMode
-    ? await request<Profile>("/usuario", {
+    ? await request<Profile>("/auth/register", {
         method: "POST",
-        body: JSON.stringify({ nombre, email, nivel }),
+        body: JSON.stringify({ nombre, email, nivel, password }),
       })
     : { idUsuario: 1, nombre, email, nivel };
+  if (apiMode) return login(email, password || "");
   localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
   return profile;
 }

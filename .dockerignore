@@ -1,0 +1,11 @@
+.git
+**/node_modules
+**/dist
+**/target
+**/logs
+**/*.log
+**/.env
+**/.env.*
+**/application-local.properties
+.impeccable
+**/*.tsbuildinfo

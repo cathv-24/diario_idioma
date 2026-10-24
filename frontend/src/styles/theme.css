@@ -2149,32 +2149,157 @@ textarea {
 }
 
 /* Lectura sostenida y escritura cotidiana. */
-.editor-paper textarea, .result-text { font-family: "Inter", system-ui, sans-serif; font-size: 18px; font-weight: 400; letter-spacing: normal; line-height: 1.85; color: #252b25; background: #fff; background-image: none; }
-.workspace-shell .page-title { margin: 24px 0; }
-.workspace-shell .page-title h1 { font-size: clamp(36px, 4vw, 52px); }
-.writing-companion h2 { font-size: 30px; line-height: 1.15; }
-.level-select select { max-width: 240px; }
-.level-guide { border-bottom: 1px solid #dedfd8; padding: 0 0 18px; margin-bottom: 20px; font-size: 14px; line-height: 1.7; }
-.level-guide summary { cursor: pointer; color: #354332; padding: 10px 0; font-weight: 600; }
-.level-guide summary:focus-visible { outline: 2px solid #465c3d; outline-offset: 3px; }
-.level-guide p { margin: 10px 0; max-width: 75ch; }
-.level-note { color: #62695e; font-size: 13px; }
-.level-guide-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 36px; margin-top: 20px; }
-.level-guide-grid h3 { font-family: Inter, sans-serif; font-size: 16px; }
-.level-guide-grid ul { padding-left: 20px; }
-.level-guide-grid li { margin: 6px 0; }
-.recent-entries { margin-top: 36px; }
-.recent-entries h2 { font-size: 28px; }
-.recent-entries a { color: #354332; font-size: 14px; }
-.recent-entries > button { width: 100%; text-align: left; display: grid; grid-template-columns: 190px 1fr 20px; gap: 20px; padding: 20px 0; border: 0; border-bottom: 1px solid #dedfd8; background: transparent; color: #252b25; cursor: pointer; line-height: 1.6; }
-.recent-entries time { color: #62695e; font-size: 13px; }
-.recent-entries > button:hover { background: #f5f6f1; }
+.editor-paper textarea,
+.result-text {
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.85;
+  color: #252b25;
+  background: #fff;
+  background-image: none;
+}
+.workspace-shell .page-title {
+  margin: 24px 0;
+}
+.workspace-shell .page-title h1 {
+  font-size: clamp(36px, 4vw, 52px);
+}
+.writing-companion h2 {
+  font-size: 30px;
+  line-height: 1.15;
+}
+.level-select select {
+  max-width: 240px;
+}
+.level-guide {
+  border-bottom: 1px solid #dedfd8;
+  padding: 0 0 18px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.level-guide summary {
+  cursor: pointer;
+  color: #354332;
+  padding: 10px 0;
+  font-weight: 600;
+}
+.level-guide summary:focus-visible {
+  outline: 2px solid #465c3d;
+  outline-offset: 3px;
+}
+.level-guide p {
+  margin: 10px 0;
+  max-width: 75ch;
+}
+.level-note {
+  color: #62695e;
+  font-size: 13px;
+}
+.level-guide-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 36px;
+  margin-top: 20px;
+}
+.level-guide-grid h3 {
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+}
+.level-guide-grid ul {
+  padding-left: 20px;
+}
+.level-guide-grid li {
+  margin: 6px 0;
+}
+.recent-entries {
+  margin-top: 36px;
+}
+.recent-entries h2 {
+  font-size: 28px;
+}
+.recent-entries a {
+  color: #354332;
+  font-size: 14px;
+}
+.recent-entries > button {
+  width: 100%;
+  text-align: left;
+  display: grid;
+  grid-template-columns: 190px 1fr 20px;
+  gap: 20px;
+  padding: 20px 0;
+  border: 0;
+  border-bottom: 1px solid #dedfd8;
+  background: transparent;
+  color: #252b25;
+  cursor: pointer;
+  line-height: 1.6;
+}
+.recent-entries time {
+  color: #62695e;
+  font-size: 13px;
+}
+.recent-entries > button:hover {
+  background: #f5f6f1;
+}
 @media (max-width: 640px) {
- .editor-paper textarea, .result-text { font-size: 17px; line-height: 1.85; }
- .level-guide-grid { grid-template-columns: 1fr; }
- .level-select select { max-width: 190px; }
- .recent-entries > button { grid-template-columns: 1fr 20px; gap: 8px; }
- .recent-entries time { grid-column: 1 / -1; }
+  .editor-paper textarea,
+  .result-text {
+    font-size: 17px;
+    line-height: 1.85;
+  }
+  .level-guide-grid {
+    grid-template-columns: 1fr;
+  }
+  .level-select select {
+    max-width: 190px;
+  }
+  .recent-entries > button {
+    grid-template-columns: 1fr 20px;
+    gap: 8px;
+  }
+  .recent-entries time {
+    grid-column: 1 / -1;
+  }
 }
 
-@media (max-width: 640px) { .recent-entries .section-title { display: block; } .recent-entries .section-title h2 { margin-bottom: 12px; } }
+@media (max-width: 640px) {
+  .recent-entries .section-title {
+    display: block;
+  }
+  .recent-entries .section-title h2 {
+    margin-bottom: 12px;
+  }
+}
+
+.auth-switch {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.auth-switch button {
+  padding: 12px 18px;
+  border: 1px solid #c5c9be;
+  background: white;
+  color: #303b2d;
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+}
+.auth-switch button[aria-pressed="true"] {
+  background: #303b2d;
+  color: white;
+  border-color: #303b2d;
+}
+.auth-switch button:focus-visible {
+  outline: 2px solid #526848;
+  outline-offset: 3px;
+}
+.onboarding > div > form {
+  display: grid;
+  gap: 20px;
+}

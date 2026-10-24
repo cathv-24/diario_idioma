@@ -82,7 +82,7 @@ Desde `backend/apidiario`:
 .\mvnw.cmd clean verify
 ```
 
-Se verificaron **11 pruebas sin fallos**, incluyendo peticiones HTTP con Tomcat/H2 y la integración opcional con n8n. Las pruebas automatizadas no usan tu base personal.
+Se verificaron **12 pruebas sin fallos**, incluyendo peticiones HTTP con Tomcat/H2 y la integración opcional con n8n. Las pruebas automatizadas no usan tu base personal.
 
 ## Ejecutar el frontend local
 
@@ -122,8 +122,16 @@ El webhook registra metadatos de las entradas nuevas de forma idempotente. El in
 
 ## Estado del proyecto
 
-Esta versión del backend es para aprendizaje y uso local. Los perfiles todavía no tienen login ni autenticación. Antes de ofrecer diarios privados para varias personas, falta implementar autenticación, autorización y controles para que cada persona acceda a sus propias entradas.
+La versión conectada incluye registro e inicio de sesión, contraseñas con BCrypt, sesión HttpOnly y protección CSRF. La API verifica la propiedad de cada perfil y entrada. El historial se guarda en Neon y se comparte entre dispositivos al entrar a la misma cuenta. La demo de GitHub Pages conserva únicamente datos locales.
 
 ### Escritura cotidiana y niveles
 
 El editor utiliza Inter para facilitar la lectura. No se añade ni penaliza la falta de punto final. La guía A1–C2 incluye gramática, vocabulario, expresión oral y otras habilidades a partir del material aportado; el nivel se elige por autoevaluación y orienta las preguntas de escritura. No se estima ni certifica el nivel MCER con el puntaje del corrector. Las entradas históricas conservan sus correcciones; al editarlas se aplican las reglas actuales.
+
+## Publicación para varias personas
+
+El Dockerfile construye React y Spring Boot y sirve ambos bajo el mismo dominio HTTPS en Render. Seleccionar **Free** y región Oregon. Configurar `NEON_JDBC_URL` (con `sslmode=verify-full&sslfactory=org.postgresql.ssl.DefaultJavaSSLFactory`), `NEON_DB_USERNAME` y `NEON_DB_PASSWORD` como variables privadas. Usar `/api/health` para la comprobación de salud. El puerto y perfil de producción ya están configurados.
+
+Cada persona crea su propia cuenta con una contraseña de al menos 12 caracteres. Se puede abrir el mismo historial desde distintos dispositivos. Las sesiones caducan tras 12 horas de inactividad y se cierran al reiniciar el servidor; basta iniciar sesión nuevamente. Los borradores se guardan por cuenta en el navegador y no se sincronizan hasta guardar la entrada. No hay recuperación automática de contraseña ni verificación por correo en esta versión. Los perfiles de práctica anteriores sin contraseña no se pueden reclamar por email.
+
+El plan gratuito de Render puede suspender el servicio tras inactividad; la primera apertura puede tardar. Neon conserva las entradas aunque Render se reinicie. Las automatizaciones n8n anteriores continúan configuradas localmente; no se expone n8n ni se envían eventos desde Render hasta configurar una instancia remota privada. Una publicación desde URL pública de Git requiere despliegues manuales desde el panel de Render para incorporar nuevos commits.

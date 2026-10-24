@@ -20,6 +20,10 @@ public class Usuario {
     @Column(nullable = false, length = 80)
     private String nombre;
 
+    // Null en perfiles antiguos: nunca se pueden reclamar solo con el email.
+    @Column(length = 100)
+    private String passwordHash;
+
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
