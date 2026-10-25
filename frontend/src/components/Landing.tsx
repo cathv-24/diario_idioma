@@ -1,8 +1,12 @@
-import { ArrowRight, BookOpen, CheckCircle2, CheckCheck, PenLine } from "lucide-react";
+import { ArrowRight, BookOpen, CheckCircle2, CheckCheck, Cloud, PenLine } from "lucide-react";
 import JournalArt from "./JournalArt";
 
 export default function Landing({ onStart }: { onStart: () => void }) {
   return <div className="journal-landing">
+    <div className="day-atmosphere" aria-hidden="true">
+      <Cloud className="day-cloud day-cloud-left"/><Cloud className="day-cloud day-cloud-right"/><Cloud className="day-cloud day-cloud-small"/>
+      {Array.from({length:12}, (_, index) => <span key={index}/>)}
+    </div>
     <div className="night-atmosphere" aria-hidden="true">{Array.from({length:18}, (_, index) => <span key={index}/>)}</div>
     <section className="journal-hero section-shell">
       

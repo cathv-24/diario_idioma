@@ -142,16 +142,18 @@ export default function AuthPanel({
               Contraseña
               <input
                 name="password"
+                aria-label="Contraseña"
+                aria-describedby={register ? "password-help" : undefined}
                 type="password"
                 required
-                minLength={register ? 12 : 1}
+                minLength={register ? 8 : 1}
                 maxLength={64}
                 autoComplete={register ? "new-password" : "current-password"}
                 disabled={busy}
               />
               {register && (
-                <span className="small-muted">
-                  Al menos 12 caracteres. Usa una contraseña que puedas recordar
+                <span className="small-muted" id="password-help">
+                  Al menos 8 caracteres. Usa una contraseña que puedas recordar
                   o guardar en tu gestor.
                 </span>
               )}

@@ -167,7 +167,7 @@ El contrato aprobado está en `.impeccable/surfaces/diario-redesign.md`. Los tok
 - Escritura amplia, estable y explicaciones cercanas al cambio.
 - Seis escenas ilustradas que cambian de paleta según el tema.
 - Navegación lateral en escritorio, cabecera compacta en móvil e historial en filas.
-- Atmósfera nocturna en portada y superficies sólidas para escribir.
+- Atmósfera suave en todas las vistas: degradado cálido de día y cielo degradado con estrellas de noche; superficie sólida para escribir.
 
 ## Colors
 
@@ -177,9 +177,11 @@ Salvia `accent` identifica enlaces, aprendizaje y acciones principales de día. 
 
 ### Neutral
 
-El tema claro combina `background` crema, `surface` papel cálido y tinta marrón. En oscuro, el degradado radial mantiene el centro `dark-background` (#151e2e) hasta el 38% y termina en `night-vignette` (#101724). La tarjeta usa `dark-surface` (#1b2537). La barra inferior de la tarjeta de ejemplo, el pie del editor y el banner final usan `dark-nav` (#131b29). Esta barra es el pie de la tarjeta: la cabecera pública nocturna es transparente intencionalmente; la barra lateral del espacio de trabajo sí usa `dark-nav`.
+El tema claro combina `background` crema, `surface` papel cálido y tinta marrón. Todas las vistas claras reciben un degradado radial cálido: en la base pasa por #fffdf5, `background` y #f2eddf; el contenido interno suma un halo dorado tenue. Solo la portada añade tres nubes lineales, doce puntos dorados y dos halos cálidos. Su banner final usa un degradado arena de #dbc29f a #d2b48d y #d9bc96.
 
-El halo lavanda es discreto y queda detrás del ejemplo; los campos de escritura son sólidos. `mark` y `mark-ink` distinguen los cambios; `danger` se reserva para errores y acciones destructivas. Las relaciones de contraste de texto se registran en el sidecar como pares calculados, sin equiparar esta medición a una auditoría completa de accesibilidad.
+En oscuro, el degradado radial de la base mantiene el centro `dark-background` (#151e2e) hasta el 38% y termina en `night-vignette` (#101724). El contenido de todas las vistas internas añade halos azul y lavanda y dieciocho estrellas decorativas detrás de las superficies. La portada tiene otras dieciocho estrellas propias y un halo lavanda junto al ejemplo. La tarjeta usa `dark-surface` (#1b2537). La barra inferior de la tarjeta de ejemplo, el pie del editor y el banner final usan `dark-nav` (#131b29). Esta barra es el pie de la tarjeta: la cabecera pública nocturna es transparente intencionalmente; la barra lateral del espacio de trabajo sí usa `dark-nav`.
+
+El halo lavanda es discreto y queda detrás del ejemplo; el editor nocturno usa `dark-surface` sólido. `mark` y `mark-ink` distinguen los cambios; `danger` se reserva para errores y acciones destructivas. Las relaciones de contraste de texto se registran en el sidecar como pares calculados, sin equiparar esta medición a una auditoría completa de accesibilidad.
 
 ## Typography
 
@@ -195,19 +197,21 @@ El editor conserva columna flexible y acompañante de 272px; el resultado tiene 
 
 La portada centra titular y acciones. Debajo, tres escenas se sitúan a la izquierda y el ejemplo de corrección a la derecha (1.15fr / 1fr, separación 50px). En 1100px se ajustan a columnas iguales y 26px; hasta 880px se apilan. Hasta 640px, cada escena es una fila con ilustración de 108px y texto, seguida por el ejemplo.
 
+**The Whole-Journal Sky Rule.** El degradado pertenece también a historial, progreso, acceso y editor; las estrellas del modo oscuro van detrás del contenido, nunca sobre el texto editable. En claro, las nubes pertenecen solo a la portada.
+
 ## Elevation & Depth
 
-El papel y las superficies seleccionadas usan sombra ambiental: claro `0 12px 36px rgb(79 67 43 / 7%)`; oscuro `0 16px 40px rgb(8 15 27 / 22%)`. El ejemplo nocturno añade borde fino #9e93bc y `0 9px 32px rgb(9 13 23 / 40%), 0 0 24px rgb(147 125 190 / 9%)`. Un halo radial lavanda `rgb(96 74 138 / 15%)` acompaña la tarjeta sin cubrir el texto. Las estrellas son detalles de portada, no una capa sobre el editor.
+El papel y las superficies seleccionadas usan sombra ambiental: claro `0 12px 36px rgb(79 67 43 / 7%)`; oscuro `0 16px 40px rgb(8 15 27 / 22%)`. El ejemplo nocturno añade borde fino #9e93bc y `0 9px 32px rgb(9 13 23 / 40%), 0 0 24px rgb(147 125 190 / 9%)`. Un halo radial lavanda `rgb(96 74 138 / 15%)` acompaña la tarjeta sin cubrir el texto. Las estrellas se ven en la portada y detrás de las vistas internas; el editor es un plano sólido encima de ellas.
 
 ## Shapes
 
-Botones y campos usan 9px; navegación de trabajo 8px; papel de editor y resultado 10px; ejemplo 11px; banner nocturno 16px; selector de tema 24px. Las correcciones inline conservan 3px. El historial permanece en filas sin tarjetas. El fondo orgánico del ejemplo diurno usa `34% 8% 18% 7% / 10% 5% 12% 5%`; en oscuro se retira para dejar visible el cielo.
+Botones y campos usan 9px; navegación de trabajo 8px; papel de editor y resultado 10px; ejemplo 11px; banner nocturno 16px; selector de tema 24px. Las correcciones inline conservan 3px. El historial permanece en filas sin tarjetas. El halo del ejemplo diurno tiene esquinas suaves de 26px; en oscuro se retira para dejar visible el cielo.
 
 ## Components
 
 - **Editor:** fecha, contador y borrador acompañan el campo amplio. Guardar muestra carga y un fallo conserva el texto. No se exige punto final. Barra superior e inferior mezclan `soft` al 45% con `surface`; el pie nocturno utiliza #131b29.
 - **Correcciones:** los fragmentos inequívocamente localizables son botones resaltados que enfocan su explicación. Si un rango no reproduce el texto, se conserva el resultado real sin resaltar una palabra equivocada. Original/Corregido usa `aria-pressed`.
-- **Acceso:** formulario disponible durante la comprobación de sesión. Al comenzar el acceso se cancela esa comprobación, limitada a 15 segundos. Peticiones de acceso de más de 4 segundos muestran aviso.
+- **Acceso:** formulario disponible durante la comprobación de sesión. Al comenzar el acceso se cancela esa comprobación, limitada a 15 segundos. Peticiones de acceso de más de 4 segundos muestran aviso. En registro, el campo anuncia y exige un mínimo de ocho caracteres; la API aplica el mismo mínimo.
 - **Navegación y foco:** ruta activa con `aria-current`; menú con `aria-expanded`; enlace para saltar al contenido. La navegación activa de trabajo usa `soft` y `accent`, sin subrayado; la navegación pública conserva el subrayado. Foco visible de 3px con separación de 3px; el editor usa 2px de acento por dentro.
 - **Tema:** primera visita según el dispositivo; sigue sus cambios mientras no haya elección manual. El selector marca la elección manual y la guarda en `diario.theme`; posteriores visitas priorizan ese valor. El diseño, la ilustración y `theme-color` cambian juntos.
 - **Ilustraciones:** tres escenas por tema (escribir, aprender y recordar), en un sprite WebP transparente de 1536×1024, cuadrícula 3×2, 224658 bytes. Proceden de la hoja de seis iconos aportada por la usuaria, preparada con image_gen para retirar etiquetas y fondos antes de codificarla como WebP. No son el archivo original sin procesamiento. Procedencia y prompt en `frontend/src/assets/journal-illustrations.provenance.json` y `journal-illustrations.webp.json`. `JournalArt` las recorta por posición CSS y las marca como decorativas con `aria-hidden`.
@@ -219,6 +223,7 @@ Botones y campos usan 9px; navegación de trabajo 8px; papel de editor y resulta
 
 - Respetar las referencias ilustradas de la usuaria y mantener las seis escenas con procedencia documentada.
 - Mantener jerarquía, orden funcional y legibilidad en claro, oscuro y móvil.
+- Extender la atmósfera a todas las vistas del tema y mantener el área de escritura sólida.
 - Distinguir el pie oscuro de la tarjeta de la cabecera pública transparente.
 - Mostrar guardado, espera, error y estado vacío con texto explícito.
 - Diferenciar entradas en cuenta, borradores locales y datos de demo.

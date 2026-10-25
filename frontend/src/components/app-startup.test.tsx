@@ -25,6 +25,16 @@ afterEach(() => {
 });
 
 describe("sesión inicial y acceso concurrente", () => {
+  it("muestra ocho caracteres como mínimo al crear una cuenta", async () => {
+    location.hash = "#escribir";
+    apiMock.loadProfile.mockResolvedValue(null);
+    render(<App />);
+    fireEvent.click(screen.getByRole("button", { name: "Crear cuenta" }));
+    const password = screen.getByLabelText("Contraseña") as HTMLInputElement;
+    expect(password.minLength).toBe(8);
+    expect(screen.getByText(/Al menos 8 caracteres/)).toBeTruthy();
+  });
+
   it("sigue el dispositivo hasta elegir un tema y recuerda esa elección al volver", async () => {
     location.hash = "#inicio";
     apiMock.loadProfile.mockResolvedValue(null);

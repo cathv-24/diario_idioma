@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-25T06:04:49.437236+00:00",
+  "generatedAt": "2026-10-25T06:59:36+00:00",
   "title": "Design System: Diario de Idiomas",
   "sourceFiles": [
     "frontend/src/styles/theme.css",
@@ -9,7 +9,8 @@
     "frontend/src/App.tsx",
     "frontend/src/lib/theme.ts",
     "frontend/src/components/Landing.tsx",
-    "frontend/src/components/JournalArt.tsx"
+    "frontend/src/components/JournalArt.tsx",
+    "frontend/src/components/AuthPanel.tsx"
   ],
   "extensions": {
     "colorMeta": {
@@ -337,6 +338,14 @@
         "value": "640px"
       }
     ],
+    "atmosphere": {
+      "lightAllViews": "Base radial #fffdf5 → #f8f4e9 → #f2eddf; las vistas internas suman un halo dorado tenue.",
+      "lightLandingOnly": "Tres nubes lineales y doce puntos dorados; halos cálidos y banner final arena (#dbc29f → #d2b48d → #d9bc96).",
+      "darkAllViews": "Base radial nocturna #151e2e → #101724; las vistas internas suman halos azul/lavanda y dieciocho estrellas detrás del contenido.",
+      "darkLandingOnly": "Dieciocho estrellas propias y un halo lavanda detrás de la tarjeta de ejemplo.",
+      "writingSurface": "El editor oscuro y el papel de resultados mantienen #1b2537 sólido encima de la atmósfera.",
+      "source": "frontend/src/styles/journal.css; frontend/src/App.tsx; frontend/src/components/Landing.tsx"
+    },
     "themeBindings": {
       "light": {
         "bg": "{colors.background}",
@@ -395,7 +404,7 @@
         "preview-bg": "{colors.dark-preview-bg}"
       }
     },
-    "previewNotes": "Snippets describen aspecto, no ejecutan guardado, acceso ni cambio de tema. CSS variables heredan de la app; fallbacks muestran claro. Fuentes autoalojadas del proyecto. Capturas actuales de portada en 1440px y 390px revisadas en ambos temas; capturas anteriores de otras vistas respaldan estructura, no todos los acabados actuales.",
+    "previewNotes": "Snippets describen aspecto, no ejecutan guardado, acceso ni cambio de tema. CSS variables heredan de la app; fallbacks muestran claro. Fuentes autoalojadas del proyecto. Capturas locales revisadas: landing-light.png, landing-dark.png, desktop.png, mobile.png, history-dark.png, auth-real-dark.png y auth-real-light.png en .impeccable/review/. La inspección local no certifica un nuevo despliegue.",
     "themePreference": {
       "initial": "saved manual choice, otherwise prefers-color-scheme",
       "followSystem": "until a manual choice",
@@ -570,9 +579,10 @@
     "northStar": "Diario de día y de noche",
     "overview": "**Creative North Star: \"Diario de día y de noche\"**\n\nUn diario personal ilustrado donde contar lo vivido y entender pequeños cambios del inglés. Las referencias aportadas por la usuaria gobiernan el ambiente: papel crema y salvia durante el día; azul noche, lavanda y luz cálida de noche. Instrument Serif acompaña títulos y marca; Inter mantiene legibles la escritura y los controles.\n\nEl contrato aprobado está en `.impeccable/surfaces/diario-redesign.md`. Los tokens provienen de `frontend/src/styles/theme.css`, sus ajustes finales de `journal.css` y las fuentes de `fonts.css`. Se conserva el orden funcional del editor, historial, correcciones, progreso y acceso.",
     "keyCharacteristics": [
-      "Crema y salvia de día; azul noche, lavanda y luz cálida de noche.",
-      "Seis escenas según el tema, preparadas desde la referencia de la usuaria.",
-      "Escritura amplia, navegación estable e historial en filas."
+      "Escritura amplia, estable y explicaciones cercanas al cambio.",
+      "Seis escenas ilustradas que cambian de paleta según el tema.",
+      "Navegación lateral en escritorio, cabecera compacta en móvil e historial en filas.",
+      "Atmósfera suave en todas las vistas: degradado cálido de día y cielo degradado con estrellas de noche; superficie sólida para escribir."
     ],
     "rules": [
       {
@@ -584,11 +594,17 @@
         "name": "User Reference",
         "body": "Referencias de la usuaria gobiernan paleta e ilustraciones.",
         "section": "colors"
+      },
+      {
+        "name": "Whole-Journal Sky",
+        "body": "El degradado pertenece también a historial, progreso, acceso y editor; las estrellas del modo oscuro van detrás del contenido, nunca sobre el texto editable. En claro, las nubes pertenecen solo a la portada.",
+        "section": "layout"
       }
     ],
     "dos": [
       "Respetar las referencias ilustradas de la usuaria y mantener las seis escenas con procedencia documentada.",
       "Mantener jerarquía, orden funcional y legibilidad en claro, oscuro y móvil.",
+      "Extender la atmósfera a todas las vistas del tema y mantener el área de escritura sólida.",
       "Distinguir el pie oscuro de la tarjeta de la cabecera pública transparente.",
       "Mostrar guardado, espera, error y estado vacío con texto explícito.",
       "Diferenciar entradas en cuenta, borradores locales y datos de demo."

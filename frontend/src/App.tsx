@@ -416,7 +416,7 @@ export default function App() {
   );
   return (
     <div
-      className={`app ${view !== "inicio" ? "workspace-app" : ""}`}
+      className={`app ${view !== "inicio" ? "workspace-app" : ""} ${view === "escribir" ? "workspace-writing" : ""}`}
       data-theme={theme}
     >
       <a
@@ -492,6 +492,7 @@ export default function App() {
         </div>
       )}
       <main id="contenido" tabIndex={-1}>
+        {view !== "inicio" && <div className="workspace-sky" aria-hidden="true">{Array.from({ length: 18 }, (_, index) => <span key={index} />)}</div>}
         {view === "inicio" ? (
           <Landing onStart={newEntry} />
         ) : (

@@ -2,7 +2,7 @@
 
 ## Platform
 
-Web, con una aplicación conectada y una demo local separada.
+Web. La aplicación conectada y la demo local son experiencias separadas.
 
 ## Stack
 
@@ -18,7 +18,7 @@ Unir el hábito personal de escribir un diario con la práctica del inglés. Esc
 
 ## Capabilities and Constraints
 
-- Cuentas privadas con registro, inicio y cierre de sesión, contraseñas con BCrypt, sesiones HttpOnly y protección CSRF. La API comprueba la propiedad de perfiles y entradas; `/api/usuarios` no ofrece una lista pública.
+- Cuentas privadas con registro, inicio y cierre de sesión, contraseñas con BCrypt, sesiones HttpOnly y protección CSRF. El registro exige entre 8 y 64 caracteres de contraseña en el formulario y en la API; el backend también limita su tamaño a 72 bytes para BCrypt. La API comprueba la propiedad de perfiles y entradas; `/api/usuarios` no ofrece una lista pública.
 - Crear, editar, eliminar y buscar entradas; filtrar por nivel, exportar historial como JSON y consultar categorías y puntajes de las últimas entradas.
 - Guardado de entradas en Neon para acceder desde distintos dispositivos con la misma cuenta. Los borradores permanecen por cuenta en el navegador hasta guardar; no se sincronizan como borradores.
 - Corrector basado en reglas limitadas, sin corrección contextual con IA. El puntaje es orientativo y no mide ni certifica dominio MCER. No se exige ni penaliza la falta de punto final.
@@ -30,7 +30,7 @@ Unir el hábito personal de escribir un diario con la práctica del inglés. Esc
 
 ## Visual commitments
 
-Dirección aprobada: «Diario de día y de noche», según las referencias visuales de la usuaria. Claro crema/salvia; oscuro con centro #151E2E, viñeta #101724, tarjeta #1B2537 y pie de tarjeta/banner #131B29. La cabecera pública nocturna es transparente intencionalmente. Instrument Serif en títulos y marca; Inter Variable en escritura y controles, editor de 20px/18px. Botones de 9px, papel de 10px, sombras ambientales e historial en filas. Navegación lateral de 224px en escritorio y cabecera compacta hasta 880px; se conserva el orden funcional.
+Dirección aprobada: «Diario de día y de noche», según las referencias visuales de la usuaria. El degradado crema cálido cubre portada y vistas internas claras; la portada suma nubes lineales, puntos dorados y un banner final cálido. El degradado azul nocturno y las estrellas puntuales cubren portada y todas las vistas internas oscuras. Su centro es #151E2E, la viñeta #101724, la tarjeta #1B2537 y el pie de tarjeta/banner #131B29. El editor nocturno conserva una superficie sólida para leer y escribir; la cabecera pública nocturna es transparente intencionalmente. Instrument Serif en títulos y marca; Inter Variable en escritura y controles, editor de 20px/18px. Botones de 9px, papel de 10px, sombras ambientales e historial en filas. Navegación lateral de 224px en escritorio y cabecera compacta hasta 880px; se conserva el orden funcional.
 
 Las seis ilustraciones aportadas se prepararon con image_gen para quitar etiquetas y fondos y se codificaron en un sprite WebP transparente 3×2 (~225KB), con procedencia en `frontend/src/assets/journal-illustrations.provenance.json`. Primera visita según el dispositivo, seguimiento de cambios hasta una elección manual y preferencia manual persistente. Titular, tarjeta y cambio tienen entradas breves; las estrellas terminan en 4.5 segundos. Movimiento reducido y hover con puntero preciso; texto editable estable, salvo la entrada heredada del contenedor de papel. Sin vídeo. Contrato: `.impeccable/surfaces/diario-redesign.md`; tokens y detalles: DESIGN.md y `.impeccable/design.json`.
 

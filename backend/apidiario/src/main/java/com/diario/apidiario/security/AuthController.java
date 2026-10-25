@@ -16,7 +16,7 @@ import java.util.Map;
 public class AuthController {
  private final UsuarioService users; private final UsuarioRepositorio repository; private final PasswordEncoder encoder; private final Access access;
  public AuthController(UsuarioService users, UsuarioRepositorio repository, PasswordEncoder encoder, Access access) {this.users=users;this.repository=repository;this.encoder=encoder;this.access=access;}
- public record Register(@NotBlank @Size(max=80) String nombre, @NotBlank @Email @Size(max=100) String email, @NotNull NivelIngles nivel, @NotBlank @Size(min=12,max=64) String password) {}
+ public record Register(@NotBlank @Size(max=80) String nombre, @NotBlank @Email @Size(max=100) String email, @NotNull NivelIngles nivel, @NotBlank @Size(min=8,max=64) String password) {}
  @GetMapping("/auth/csrf") public Map<String,String> csrf(CsrfToken token) {return Map.of("token",token.getToken(),"headerName",token.getHeaderName());}
  @PostMapping("/auth/register") @Transactional public ResponseEntity<UsuarioDTO> register(@Valid @RequestBody Register data) {
   if(data.password().getBytes(java.nio.charset.StandardCharsets.UTF_8).length>72) throw new com.diario.apidiario.exceptions.SolicitudInvalidaException("La contraseña debe ocupar como máximo 72 bytes");

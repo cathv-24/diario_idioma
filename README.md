@@ -12,7 +12,7 @@ Y con el historial puedo ver cómo voy mejorando con el tiempo. Quizás en agost
 
 ## 🌐 Pruébalo aquí
 
-[Abre Diario de Idiomas](https://diario-idiomas.onrender.com)
+[Abre Diario de Idiomas](https://diario-idiomas.vercel.app)
 
 Funciona en el navegador, sin instalar nada. Crea una cuenta, escribe tu día en inglés y guarda la entrada para revisar sus correcciones. Tu historial queda en tu cuenta y puedes abrirlo desde distintos dispositivos. El servicio gratuito puede tardar en despertar tras un periodo de inactividad.
 
@@ -42,7 +42,7 @@ La demo de GitHub Pages usa su propio corrector local y guarda el historial en e
 - [`backend/apidiario/`](backend/apidiario/): API en Java 21 y Spring Boot 4.0.8, con Spring Data JPA, PostgreSQL y Swagger.
 - [`automations/`](automations/): flujos n8n preparados localmente para métricas de creación y un informe semanal agregado en Neon, sin textos personales ni mensajes. No están habilitados en cloud.
 
-El diario combina navegación lateral, correcciones seleccionables y temas de día y noche: crema/salvia y azul/lavanda con luz cálida. Las seis ilustraciones se prepararon desde la referencia aportada; el tema sigue al dispositivo hasta una elección manual, que queda guardada. El [sistema visual](DESIGN.md) documenta colores, tipografía, movimiento breve y adaptación móvil.
+El diario combina navegación lateral, correcciones seleccionables y temas de día y noche. Un degradado crema cálido acompaña las pantallas claras; la portada añade nubes, puntos dorados y un banner cálido. En las pantallas oscuras hay un degradado azul con estrellas puntuales, y el papel del editor permanece sólido para escribir con claridad. Las seis ilustraciones se prepararon desde la referencia aportada; el tema sigue al dispositivo hasta una elección manual, que queda guardada. El [sistema visual](DESIGN.md) documenta colores, tipografía, movimiento breve y adaptación móvil.
 
 El formulario de acceso aparece mientras se comprueba la sesión en segundo plano. Al empezar a iniciar sesión o crear cuenta se cancela esa comprobación previa, que tiene un límite de 15 segundos. Si una petición de acceso tarda más de 4 segundos, aparece un aviso para mantener la página abierta. Esto permite usar el formulario sin esperar a que termine la comprobación; el servidor gratuito todavía puede necesitar tiempo para despertar.
 
@@ -137,7 +137,7 @@ El editor utiliza Inter Variable para facilitar la lectura; Instrument Serif se 
 
 El Dockerfile construye React y Spring Boot y sirve ambos bajo el mismo dominio HTTPS en Render. Seleccionar **Free** y región Oregon. Configurar `NEON_JDBC_URL` (con `sslmode=verify-full&sslfactory=org.postgresql.ssl.DefaultJavaSSLFactory`), `NEON_DB_USERNAME` y `NEON_DB_PASSWORD` como variables privadas. Usar `/api/health` para la comprobación de salud. El puerto y perfil de producción ya están configurados.
 
-Cada persona crea su propia cuenta con una contraseña de al menos 12 caracteres. Se puede abrir el mismo historial desde distintos dispositivos. Las sesiones caducan tras 12 horas de inactividad y se cierran al reiniciar el servidor; basta iniciar sesión nuevamente. Los borradores se guardan por cuenta en el navegador y no se sincronizan hasta guardar la entrada. No hay recuperación automática de contraseña ni verificación por correo en esta versión. Los perfiles de práctica anteriores sin contraseña no se pueden reclamar por email.
+Cada persona crea su propia cuenta con una contraseña de al menos 8 caracteres. Se puede abrir el mismo historial desde distintos dispositivos. Las sesiones caducan tras 12 horas de inactividad y se cierran al reiniciar el servidor; basta iniciar sesión nuevamente. Los borradores se guardan por cuenta en el navegador y no se sincronizan hasta guardar la entrada. No hay recuperación automática de contraseña ni verificación por correo en esta versión. Los perfiles de práctica anteriores sin contraseña no se pueden reclamar por email.
 
 El plan gratuito de Render puede suspender el servicio tras inactividad; la primera apertura puede tardar. Neon conserva las entradas aunque Render se reinicie. Las automatizaciones n8n anteriores continúan configuradas localmente; no se expone n8n ni se envían eventos desde Render hasta configurar una instancia remota privada. Una publicación desde URL pública de Git requiere despliegues manuales desde el panel de Render para incorporar nuevos commits.
 

@@ -79,4 +79,14 @@ class ApiIntegracionTest {
   assertEquals(400,session.send("POST","/api/entrada",entry(user,"   ")).statusCode());
   assertEquals(200,session.send("GET","/api/health",null).statusCode());
  }
+ @Test void admiteOchoCaracteresYRechazaSiete() throws Exception {
+  var session=new Session();
+  assertEquals(400,session.send("POST","/api/auth/register",registration(email(),"aB3!xY7")).statusCode());
+  var email=email();
+  var response=session.send("POST","/api/auth/register",registration(email,"aB3!xY7?"));
+  assertEquals(201,response.statusCode(),response.body());
+  assertFalse(response.body().contains("password"));
+  var login=session.send("POST","/api/auth/login","username="+URLEncoder.encode(email,StandardCharsets.UTF_8)+"&password="+URLEncoder.encode("aB3!xY7?",StandardCharsets.UTF_8));
+  assertEquals(204,login.statusCode(),login.body());
+ }
 }
