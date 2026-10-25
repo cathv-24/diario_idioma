@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-25T06:59:36+00:00",
+  "generatedAt": "2026-10-25T07:24:23+00:00",
   "title": "Design System: Diario de Idiomas",
   "sourceFiles": [
     "frontend/src/styles/theme.css",
@@ -339,8 +339,8 @@
       }
     ],
     "atmosphere": {
-      "lightAllViews": "Base radial #fffdf5 → #f8f4e9 → #f2eddf; las vistas internas suman un halo dorado tenue.",
-      "lightLandingOnly": "Tres nubes lineales y doce puntos dorados; halos cálidos y banner final arena (#dbc29f → #d2b48d → #d9bc96).",
+      "lightAllViews": "Degradado crema a arena visible en portada e interiores; halo dorado y matiz salvia tenue, con dieciocho puntos y estrellas doradas detrás de cada vista interna.",
+      "lightLandingOnly": "Dieciocho puntos y estrellas doradas, sin nubes vectoriales; el cierre no tiene fondo propio y deja continuar el degradado.",
       "darkAllViews": "Base radial nocturna #151e2e → #101724; las vistas internas suman halos azul/lavanda y dieciocho estrellas detrás del contenido.",
       "darkLandingOnly": "Dieciocho estrellas propias y un halo lavanda detrás de la tarjeta de ejemplo.",
       "writingSurface": "El editor oscuro y el papel de resultados mantienen #1b2537 sólido encima de la atmósfera.",
@@ -597,7 +597,7 @@
       },
       {
         "name": "Whole-Journal Sky",
-        "body": "El degradado pertenece también a historial, progreso, acceso y editor; las estrellas del modo oscuro van detrás del contenido, nunca sobre el texto editable. En claro, las nubes pertenecen solo a la portada.",
+        "body": "El degradado pertenece también a historial, progreso, acceso y editor en ambos temas; las estrellas van detrás del contenido, nunca sobre el texto editable. La portada clara usa estrellas doradas en vez de nubes vectoriales.",
         "section": "layout"
       }
     ],

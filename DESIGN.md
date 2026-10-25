@@ -177,7 +177,7 @@ Salvia `accent` identifica enlaces, aprendizaje y acciones principales de día. 
 
 ### Neutral
 
-El tema claro combina `background` crema, `surface` papel cálido y tinta marrón. Todas las vistas claras reciben un degradado radial cálido: en la base pasa por #fffdf5, `background` y #f2eddf; el contenido interno suma un halo dorado tenue. Solo la portada añade tres nubes lineales, doce puntos dorados y dos halos cálidos. Su banner final usa un degradado arena de #dbc29f a #d2b48d y #d9bc96.
+El tema claro combina `background` crema, `surface` papel cálido y tinta marrón. Todas las vistas claras reciben un degradado de crema a arena, con halos cálidos y un matiz salvia tenue en las vistas internas. La portada añade dieciocho puntos y estrellas doradas; las demás vistas tienen otras dieciocho marcas discretas detrás del contenido. El cierre de la portada no tiene fondo propio: una línea fina lo separa y deja continuar el degradado de la página.
 
 En oscuro, el degradado radial de la base mantiene el centro `dark-background` (#151e2e) hasta el 38% y termina en `night-vignette` (#101724). El contenido de todas las vistas internas añade halos azul y lavanda y dieciocho estrellas decorativas detrás de las superficies. La portada tiene otras dieciocho estrellas propias y un halo lavanda junto al ejemplo. La tarjeta usa `dark-surface` (#1b2537). La barra inferior de la tarjeta de ejemplo, el pie del editor y el banner final usan `dark-nav` (#131b29). Esta barra es el pie de la tarjeta: la cabecera pública nocturna es transparente intencionalmente; la barra lateral del espacio de trabajo sí usa `dark-nav`.
 
@@ -197,7 +197,7 @@ El editor conserva columna flexible y acompañante de 272px; el resultado tiene 
 
 La portada centra titular y acciones. Debajo, tres escenas se sitúan a la izquierda y el ejemplo de corrección a la derecha (1.15fr / 1fr, separación 50px). En 1100px se ajustan a columnas iguales y 26px; hasta 880px se apilan. Hasta 640px, cada escena es una fila con ilustración de 108px y texto, seguida por el ejemplo.
 
-**The Whole-Journal Sky Rule.** El degradado pertenece también a historial, progreso, acceso y editor; las estrellas del modo oscuro van detrás del contenido, nunca sobre el texto editable. En claro, las nubes pertenecen solo a la portada.
+**The Whole-Journal Sky Rule.** El degradado pertenece también a historial, progreso, acceso y editor en ambos temas; las estrellas quedan detrás del contenido y nunca sobre el texto editable. La portada clara usa estrellas doradas en lugar de nubes vectoriales.
 
 ## Elevation & Depth
 
