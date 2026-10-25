@@ -39,9 +39,6 @@ La demo de GitHub Pages usa su propio corrector local y guarda el historial en e
 - [`backend/apidiario/`](backend/apidiario/): API en Java 21 y Spring Boot 4.0.8, con Spring Data JPA, PostgreSQL y Swagger.
 - [`automations/`](automations/): flujos n8n para registrar métricas de creación y guardar un informe semanal agregado en Neon, sin enviar textos personales ni mensajes.
 
-La portada usa Instrument Serif e Inter, el vídeo facilitado como referencia y un bucle manual con fundidos. El vídeo se puede pausar y se respeta la preferencia de movimiento reducido.
-
-El backend está organizado en entidades, repositorios, interfaces de servicios, implementaciones, controladores y DTO. Es una sola aplicación por capas. Estoy usando la teoría de Arquitectura de Aplicaciones Web como referencia para entender y justificar cada parte.
 
 ## Ejecutar el backend
 
