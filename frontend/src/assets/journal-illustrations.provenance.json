@@ -1,0 +1,7 @@
+{
+  "source": "User supplied six-icon illustration sheet; prepared with built-in image_gen",
+  "reference": "codex-clipboard-496aee7c-c0cc-475a-9a0d-9bf131a7dd4c.png",
+  "generation": "exec-d788f64d-d408-46f4-a4a0-fa7290435116.png",
+  "prompt": "Edit the provided six-icon illustration sheet for use as a transparent website sprite. Preserve the six existing hand-drawn illustrations as faithfully as possible, same characters, objects, poses, colors, uneven pen outlines and watercolor fills. NO redesign, NO simplified replacement. Remove ALL text labels and remove the solid white upper background and solid navy lower background, replacing ONLY those backgrounds with real transparent alpha. Preserve the organic cream/lavender backdrop shapes that belong to each illustration. Arrange the same six illustrations in an evenly spaced exact 3-column by 2-row transparent sprite sheet, each centered inside its own equal-sized cell with 10% transparent padding, no overlap. Upper row: daylight woman at desk with window/plant/coffee, annotated page with green/coral highlights, calendar/open notebook/pencil/leaves. Lower row: night woman with laptop/desk lamp/window/moon/coffee, annotated lavender page with moon/stars, night calendar/open notebook/candle/string lights. Output landscape 3:2 aspect ratio sheet, six cells. Absolutely no words or captions. Keep original illustrative detail and warm hand-drawn character. Transparent background.",
+  "processing": "WebP encoding at quality88, same1536x1024 dimensions and alpha, no compositional edits."
+}

@@ -30,7 +30,9 @@ Unir el hábito personal de escribir un diario con la práctica del inglés. Esc
 
 ## Visual commitments
 
-Dirección aprobada: un cuaderno personal legible. Instrument Serif en títulos y marca, Inter Variable en escritura y controles, fondo blanco cálido, tinta y oliva discreto; tema oscuro opcional. Acciones principales oscuras en claro, radios mínimos de 3px e historial en filas planas. Navegación lateral en escritorio, cabecera compacta en móvil, editor de 20px/18px y resaltado de cambios con explicaciones. La portada muestra el producto sin vídeo. El contrato de superficie está en `.impeccable/surfaces/diario-redesign.md`; los tokens actuales se documentan en DESIGN.md.
+Dirección aprobada: «Diario de día y de noche», según las referencias visuales de la usuaria. Claro crema/salvia; oscuro con centro #151E2E, viñeta #101724, tarjeta #1B2537 y pie de tarjeta/banner #131B29. La cabecera pública nocturna es transparente intencionalmente. Instrument Serif en títulos y marca; Inter Variable en escritura y controles, editor de 20px/18px. Botones de 9px, papel de 10px, sombras ambientales e historial en filas. Navegación lateral de 224px en escritorio y cabecera compacta hasta 880px; se conserva el orden funcional.
+
+Las seis ilustraciones aportadas se prepararon con image_gen para quitar etiquetas y fondos y se codificaron en un sprite WebP transparente 3×2 (~225KB), con procedencia en `frontend/src/assets/journal-illustrations.provenance.json`. Primera visita según el dispositivo, seguimiento de cambios hasta una elección manual y preferencia manual persistente. Titular, tarjeta y cambio tienen entradas breves; las estrellas terminan en 4.5 segundos. Movimiento reducido y hover con puntero preciso; texto editable estable, salvo la entrada heredada del contenedor de papel. Sin vídeo. Contrato: `.impeccable/surfaces/diario-redesign.md`; tokens y detalles: DESIGN.md y `.impeccable/design.json`.
 
 ## Publication and evidence
 
@@ -40,4 +42,4 @@ URL principal: [Diario de Idiomas](https://diario-idiomas.vercel.app). Vercel Ho
 
 El formulario aparece sin esperar la comprobación de sesión en segundo plano. Esa comprobación se cancela al iniciar un acceso nuevo y tiene un límite de 15 segundos. La API gratuita aún puede tardar al despertar; separar el frontend no elimina ese arranque en frío.
 
-Validación: 17 pruebas actuales de frontend; 12 pruebas previas de backend con Tomcat/H2; registro, inicio de sesión, guardado y recuperación real del historial desde Vercel hasta Neon. Las pruebas H2 por sí solas no prueban persistencia en PostgreSQL. La revisión independiente aprobó la fusión local y los cambios de arranque; la comprobación de publicación se documenta aparte.
+Validación: 18 pruebas actuales de frontend; 12 pruebas previas de backend con Tomcat/H2; registro, inicio de sesión, guardado y recuperación real del historial desde Vercel hasta Neon. Las pruebas H2 por sí solas no prueban persistencia en PostgreSQL. La revisión independiente aprobó la fusión local y los cambios de arranque; la comprobación de publicación se documenta aparte.

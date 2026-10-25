@@ -30,6 +30,8 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import AuthPanel from "./components/AuthPanel";
+import Landing from "./components/Landing";
+import { initialTheme, savedTheme, type Theme } from "./lib/theme";
 import LevelGuide from "./components/LevelGuide";
 import levelGuide from "./lib/levels.json";
 import { practice } from "./lib/practice";
@@ -84,19 +86,26 @@ function readDraft(profileId?: number): {
 
 export default function App() {
   const [activeCorrection, setActiveCorrection] = useState<number | null>(null);
-  const [theme, setTheme] = useState(() => {
-    try {
-      return localStorage.getItem("diario.theme") || "light";
-    } catch {
-      return "light";
-    }
-  });
+  const [theme, setTheme] = useState<Theme>(initialTheme);
+  const manualTheme = useRef(savedTheme() !== null);
+  const chooseTheme = () => {
+    const next = theme === "light" ? "dark" : "light";
+    manualTheme.current = true;
+    setTheme(next);
+    try { localStorage.setItem("diario.theme", next); } catch { /* Preferencia opcional. */ }
+  };
   useEffect(() => {
-    try {
-      localStorage.setItem("diario.theme", theme);
-    } catch {
-      /* Preferencia opcional. */
-    }
+    const media = window.matchMedia?.("(prefers-color-scheme: dark)");
+    const followDevice = (event: MediaQueryListEvent) => {
+      if (!manualTheme.current) setTheme(event.matches ? "dark" : "light");
+    };
+    media?.addEventListener("change", followDevice);
+    return () => media?.removeEventListener("change", followDevice);
+  }, []);
+  useEffect(() => {
+    document.documentElement.style.colorScheme = theme;
+    document.documentElement.style.backgroundColor = theme === "dark" ? "#151e2e" : "#f8f4e9";
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", theme === "dark" ? "#151e2e" : "#f8f4e9");
   }, [theme]);
   const [view, setView] = useState<View>(currentView);
   const [authLoading, setAuthLoading] = useState(true);
@@ -440,12 +449,14 @@ export default function App() {
           <div className="nav-actions">
             <button
               className="icon-button theme-toggle"
+              aria-pressed={theme === "dark"}
               aria-label={
                 theme === "light" ? "Activar modo oscuro" : "Activar modo claro"
               }
-              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+              onClick={chooseTheme}
             >
               {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
+              <span className="theme-label">{theme === "light" ? "Claro" : "Oscuro"}</span>
             </button>
             <button className="button dark nav-cta" onClick={newEntry}>
               {profile ? "Escribir mi día" : "Empezar mi diario"}
@@ -482,123 +493,7 @@ export default function App() {
       )}
       <main id="contenido" tabIndex={-1}>
         {view === "inicio" ? (
-          <>
-            <section className="hero section-shell">
-              <div className="hero-content">
-                <h1>
-                  Tu día, tus palabras.
-                  <br />
-                  <em>Tu inglés, un poco mejor.</em>
-                </h1>
-                <p className="hero-description">
-                  Escribe lo que viviste, entiende tus errores y vuelve a tus
-                  recuerdos. Un pequeño espacio para ti y para el inglés que
-                  estás aprendiendo.
-                </p>
-                <button className="button dark hero-cta" onClick={newEntry}>
-                  Empezar mi diario
-                  <ArrowRight size={18} />
-                </button>
-                <p className="hero-caption">
-                  <BookOpen size={16} /> Un diario personal. Una forma de
-                  practicar.
-                </p>
-              </div>
-              <div
-                className="landing-example"
-                aria-label="Ejemplo de una entrada y sus correcciones"
-              >
-                <div className="demo-toolbar">
-                  <span>
-                    <PenLine size={16} />
-                    Una pequeña historia
-                  </span>
-                  <span>Ejemplo · A2</span>
-                </div>
-                <p className="demo-question">What made you smile today?</p>
-                <p className="demo-writing" lang="en">
-                  Yesterday <del>i goed</del> <mark>I went</mark> to the park.
-                  <br />I felt happy and a little more relaxed.
-                </p>
-                <div className="demo-explanation">
-                  <CheckCircle2 size={20} />
-                  <div>
-                    <strong>Una forma nueva de contar lo mismo</strong>
-                    <p>
-                      El pasado de «go» es «went». Tu historia conserva tu voz.
-                    </p>
-                  </div>
-                </div>
-                <div className="demo-footer">
-                  <span>
-                    <CheckCheck size={16} />
-                    Escribe · entiende · guarda
-                  </span>
-                  <span>Sin punto final obligatorio</span>
-                </div>
-              </div>
-            </section>
-            <section className="how-section section-shell" id="como-funciona">
-              <div className="section-heading">
-                <h2>
-                  Lo que te pasa también
-                  <br />
-                  puede enseñarte inglés.
-                </h2>
-                <p>
-                  El hábito es escribir. El aprendizaje está en entender un
-                  pequeño cambio cada vez.
-                </p>
-              </div>
-              <ol className="learning-steps">
-                <li>
-                  <PenLine size={23} />
-                  <div>
-                    <h3>Haz espacio para tu día</h3>
-                    <p>
-                      Una conversación, algo que sentiste o ese detalle que
-                      quieres recordar. Escribe en inglés, como puedas.
-                    </p>
-                  </div>
-                </li>
-                <li>
-                  <BookOpen size={23} />
-                  <div>
-                    <h3>Entiende cada corrección</h3>
-                    <p>
-                      Compara tus palabras y explora las explicaciones, con
-                      preguntas de escritura según tu nivel.
-                    </p>
-                  </div>
-                </li>
-                <li>
-                  <CalendarDays size={23} />
-                  <div>
-                    <h3>Vuelve a tus historias</h3>
-                    <p>
-                      Encuentra tus entradas y los temas que aparecen en tus
-                      correcciones. Tus palabras cuentan tu recorrido.
-                    </p>
-                  </div>
-                </li>
-              </ol>
-              <p className="honest-caption">
-                El corrector actual reconoce patrones concretos. No revisa todo
-                el contexto ni determina tu nivel de inglés.
-              </p>
-            </section>
-            <section className="closing section-shell">
-              <BookOpen size={32} />
-              <div>
-                <h2>Empieza con algo de hoy.</h2>
-                <p>No necesitas una historia extraordinaria para escribir.</p>
-              </div>
-              <button className="button dark" onClick={newEntry}>
-                Escribir mi primera entrada
-                <ArrowRight size={18} />
-              </button>
-            </section>
-          </>
+          <Landing onStart={newEntry} />
         ) : (
           <div className={`workspace-shell ${!profile ? "auth-shell" : ""}`}>
             <div className="workspace-top">

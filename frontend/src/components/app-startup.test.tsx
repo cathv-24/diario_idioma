@@ -21,9 +21,35 @@ afterEach(() => {
   cleanup();
   vi.clearAllMocks();
   localStorage.clear();
+  vi.unstubAllGlobals();
 });
 
 describe("sesión inicial y acceso concurrente", () => {
+  it("sigue el dispositivo hasta elegir un tema y recuerda esa elección al volver", async () => {
+    location.hash = "#inicio";
+    apiMock.loadProfile.mockResolvedValue(null);
+    const changes = new Set<(event: { matches: boolean }) => void>();
+    const media = {
+      matches: true,
+      addEventListener: (_: string, listener: (event: { matches: boolean }) => void) => changes.add(listener),
+      removeEventListener: (_: string, listener: (event: { matches: boolean }) => void) => changes.delete(listener),
+    };
+    vi.stubGlobal("matchMedia", () => media);
+    const first = render(<App />);
+    expect(screen.getByRole("button", { name: "Activar modo claro" }).getAttribute("aria-pressed")).toBe("true");
+    expect(localStorage.getItem("diario.theme")).toBeNull();
+    await act(async () => { changes.forEach((change) => change({ matches: false })); });
+    fireEvent.click(screen.getByRole("button", { name: "Activar modo oscuro" }));
+    expect(localStorage.getItem("diario.theme")).toBe("dark");
+    await act(async () => { changes.forEach((change) => change({ matches: false })); });
+    expect(screen.getByRole("button", { name: "Activar modo claro" })).toBeTruthy();
+    first.unmount();
+    expect(changes.size).toBe(0);
+    media.matches = false;
+    render(<App />);
+    expect(screen.getByRole("button", { name: "Activar modo claro" })).toBeTruthy();
+  });
+
   it("permite entrar mientras la sesión inicial tarda y descarta su respuesta antigua", async () => {
     location.hash = "#escribir";
     let finishCheck!: (profile: Profile) => void;

@@ -1,45 +1,69 @@
 ---
 name: Diario de Idiomas
-description: Un cuaderno personal legible que convierte errores concretos en aprendizaje.
+description: Un diario personal ilustrado, de día y de noche, para escribir y entender pequeños cambios.
 colors:
-  background: "#fafaf8"
-  surface: "#ffffff"
-  soft: "#f0f0ea"
-  ink: "#242521"
-  muted: "#696a63"
-  accent: "#5b654c"
-  accent-hover: "#444e37"
-  line: "#e2e3db"
-  focus: "#687653"
-  mark: "#ecefdc"
-  mark-ink: "#3c482b"
+  background: "#f8f4e9"
+  surface: "#fffdf7"
+  soft: "#eeeade"
+  ink: "#302d28"
+  muted: "#686358"
+  accent: "#536749"
+  accent-hover: "#3e5136"
+  line: "#dcd7c8"
+  focus: "#647b55"
+  mark: "#dce4d1"
+  mark-ink: "#35492f"
   danger: "#b42332"
   danger-soft: "#fff0f0"
-  nav: "#ffffff"
-  action: "#242521"
-  action-ink: "#ffffff"
-  dark-background: "#191a17"
-  dark-surface: "#20211d"
-  dark-soft: "#2b2d25"
-  dark-ink: "#edeee7"
-  dark-muted: "#b4b7aa"
-  dark-accent: "#bbc6a3"
-  dark-accent-hover: "#d1d9bd"
-  dark-line: "#3a3d32"
-  dark-focus: "#bbc6a3"
-  dark-mark: "#343c26"
-  dark-mark-ink: "#e1e8cb"
+  nav: "#f8f4e9"
+  action: "#536749"
+  action-ink: "#fffdf7"
+  art-ground: "#eee7d4"
+  art-line: "#665044"
+  art-paper: "#fff9e9"
+  art-leaf: "#9cae8c"
+  art-clay: "#c7937c"
+  art-skin: "#e6bb98"
+  art-hair: "#92694f"
+  art-window: "#e5eadc"
+  art-gold: "#c99b53"
+  preview-bg: "#e8ecdf"
+  dark-background: "#151e2e"
+  dark-surface: "#1b2537"
+  dark-soft: "#263147"
+  dark-ink: "#f6eddf"
+  dark-muted: "#c0c8d2"
+  dark-accent: "#cbbfe6"
+  dark-accent-hover: "#e3d5fa"
+  dark-line: "#45546a"
+  dark-focus: "#e4ca94"
+  dark-mark: "#4d4868"
+  dark-mark-ink: "#f0e7ff"
   dark-danger: "#ffacb4"
-  dark-danger-soft: "#382327"
-  dark-nav: "#1b1c18"
-  dark-action: "#edeee7"
-  dark-action-ink: "#20211d"
+  dark-danger-soft: "#422c3c"
+  dark-nav: "#131b29"
+  dark-action: "#f0d49c"
+  dark-action-ink: "#302a21"
+  dark-art-ground: "#303e59"
+  dark-art-line: "#202d43"
+  dark-art-paper: "#aeb5d4"
+  dark-art-leaf: "#7d9a97"
+  dark-art-clay: "#8b7ea3"
+  dark-art-skin: "#c4b4b6"
+  dark-art-hair: "#4d526f"
+  dark-art-window: "#1c2939"
+  dark-art-gold: "#f0d49c"
+  dark-preview-bg: "#131b29"
+  night-vignette: "#101724"
+  night-card-border: "#9e93bc"
+  night-banner-border: "#46516a"
+  night-action-hover: "#ffe4b3"
 typography:
   display:
     fontFamily: "Instrument Serif, Georgia, serif"
-    fontSize: "clamp(44px, 4.7vw, 64px)"
+    fontSize: "clamp(43px, 4.1vw, 64px)"
     fontWeight: 400
-    lineHeight: 1.08
+    lineHeight: 1.13
     letterSpacing: "-0.025em"
   headline:
     fontFamily: "Instrument Serif, Georgia, serif"
@@ -73,10 +97,14 @@ typography:
     fontWeight: 550
     lineHeight: 1.5
 rounded:
-  field: "3px"
-  button: "3px"
-  paper: "3px"
+  field: "9px"
+  button: "9px"
+  paper: "10px"
   flat: "0"
+  navigation: "8px"
+  preview: "11px"
+  night-banner: "16px"
+  theme-toggle: "24px"
 spacing:
   small: "8px"
   medium: "16px"
@@ -103,9 +131,9 @@ components:
     typography: "{typography.editor}"
     padding: "30px 30px 18px"
   navigation-active:
-    backgroundColor: "transparent"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.field}"
+    backgroundColor: "{colors.soft}"
+    textColor: "{colors.accent}"
+    rounded: "{rounded.navigation}"
   correction-mark:
     backgroundColor: "{colors.mark}"
     textColor: "{colors.mark-ink}"
@@ -114,87 +142,92 @@ components:
     backgroundColor: "transparent"
     rounded: "{rounded.flat}"
     padding: "20px 0"
+  landing-card:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.preview}"
+  night-banner:
+    backgroundColor: "{colors.dark-nav}"
+    textColor: "{colors.dark-ink}"
+    rounded: "{rounded.night-banner}"
 ---
 
 # Design System: Diario de Idiomas
 
 ## Overview
 
-**Creative North Star: "Un cuaderno personal legible"**
+**Creative North Star: "Diario de día y de noche"**
 
-La escritura ocupa el centro. Instrument Serif en títulos y marca, Inter en el diario y los controles, blanco y tinta con oliva discreto acompañan el hábito de contar el día y entender cambios concretos. La dirección aprobada está en `.impeccable/surfaces/diario-redesign.md`; los valores se extraen de `frontend/src/styles/theme.css` y `fonts.css`.
+Un diario personal ilustrado donde contar lo vivido y entender pequeños cambios del inglés. Las referencias aportadas por la usuaria gobiernan el ambiente: papel crema y salvia durante el día; azul noche, lavanda y luz cálida de noche. Instrument Serif acompaña títulos y marca; Inter mantiene legibles la escritura y los controles.
 
-La aplicación combina un espacio de trabajo con navegación estable, un historial para releer y una portada que muestra el producto mediante un ejemplo rotulado. El tema oscuro conserva la jerarquía y utiliza los colores de su propio conjunto.
+El contrato aprobado está en `.impeccable/surfaces/diario-redesign.md`. Los tokens provienen de `frontend/src/styles/theme.css`, sus ajustes finales de `journal.css` y las fuentes de `fonts.css`. Se conserva el orden funcional del editor, historial, correcciones, progreso y acceso.
 
 **Key Characteristics:**
 
-- Texto de escritura amplio y explicaciones cercanas al cambio.
-- Tinta para acciones principales, oliva discreto para cambios y aprendizaje.
-- Navegación lateral en escritorio y cabecera compacta en móvil.
-- Temas claro y oscuro, sin vídeo de fondo.
+- Escritura amplia, estable y explicaciones cercanas al cambio.
+- Seis escenas ilustradas que cambian de paleta según el tema.
+- Navegación lateral en escritorio, cabecera compacta en móvil e historial en filas.
+- Atmósfera nocturna en portada y superficies sólidas para escribir.
 
 ## Colors
 
 ### Primary
 
-El oliva discreto identifica enlaces, correcciones y foco de aprendizaje. Los botones principales usan tinta y texto blanco en claro; en oscuro emplean una acción clara con texto oscuro. La navegación activa se distingue mediante texto y subrayado.
+Salvia `accent` identifica enlaces, aprendizaje y acciones principales de día. El tema nocturno utiliza lavanda para enlaces y correcciones, y luz cálida para la acción principal; cada tema tiene su propio conjunto de tokens. El hover principal nocturno usa `night-action-hover`. El color acompaña etiquetas, estados y bordes.
 
 ### Neutral
 
-El blanco cálido distingue el fondo de las superficies blancas. Tinta oscura, texto secundario y líneas finas sostienen la jerarquía. En oscuro cambian fondo, superficie, navegación, texto y bordes; no se aplica una inversión automática.
+El tema claro combina `background` crema, `surface` papel cálido y tinta marrón. En oscuro, el degradado radial mantiene el centro `dark-background` (#151e2e) hasta el 38% y termina en `night-vignette` (#101724). La tarjeta usa `dark-surface` (#1b2537). La barra inferior de la tarjeta de ejemplo, el pie del editor y el banner final usan `dark-nav` (#131b29). Esta barra es el pie de la tarjeta: la cabecera pública nocturna es transparente intencionalmente; la barra lateral del espacio de trabajo sí usa `dark-nav`.
 
-Un oliva pálido distingue fragmentos corregidos. El rojo se reserva para errores y acciones destructivas.
-
-**The Meaningful Color Rule.** El color comunica acción, selección o estado; acompaña etiquetas, texto y bordes para que el significado no dependa solo del tono.
+El halo lavanda es discreto y queda detrás del ejemplo; los campos de escritura son sólidos. `mark` y `mark-ink` distinguen los cambios; `danger` se reserva para errores y acciones destructivas. Las relaciones de contraste de texto se registran en el sidecar como pares calculados, sin equiparar esta medición a una auditoría completa de accesibilidad.
 
 ## Typography
 
-Instrument Serif sirve para títulos, marca y preguntas de escritura. Inter Variable sirve para texto del diario, controles y explicaciones. Ambas familias se importan desde paquetes de Fontsource y se entregan con los recursos de la aplicación.
+Instrument Serif 400, normal e italic, se reserva para títulos, marca y preguntas. Inter Variable sirve para escritura, controles y explicaciones. Las fuentes se importan de Fontsource y se sirven con el frontend.
 
-La portada usa el rol display; el título del espacio de trabajo usa headline. El editor usa el rol editor y cambia a editor-mobile hasta 640px. El resultado mantiene 20px en escritorio y 18px en móvil, con interlineado 1.9. Los controles y explicaciones son más pequeños sin competir con el diario.
-
-**The Writing First Rule.** No reducir el texto del diario para acomodar controles secundarios.
+El titular de portada usa display; hasta 640px es de 42px, interlineado 1.12. El editor conserva Inter de 20px/18px con interlineado 1.85; el resultado usa 1.9. No reducir el diario para acomodar controles secundarios. La demostración de portada tiene su propia escala responsiva, distinta del editor real.
 
 ## Layout
 
-Fuera de Inicio, la navegación de escritorio ocupa una barra lateral fija de 224px. El contenido tiene un ancho máximo de 1360px y margen izquierdo equivalente a la barra. Hasta 880px, la barra se convierte en cabecera sticky con menú desplegable.
+La barra lateral fija del espacio de trabajo mide 224px; contenido y pie reservan ese margen. El contenido mantiene un máximo de 1360px; la navegación tiene máximo de 1320px. Hasta 880px, la navegación de trabajo se convierte en cabecera sticky y menú desplegable.
 
-El editor usa una columna flexible y un acompañante de 272px; el resultado combina texto y explicaciones de 310px. Los anchos se ajustan en 1180px. Entre 881px y 1000px se apilan los paneles para preservar lectura. Hasta 640px, editor y resultado utilizan una columna y márgenes compactos.
+El editor conserva columna flexible y acompañante de 272px; el resultado tiene explicaciones de 310px. Se ajustan anchos en 1180px y se apilan paneles entre 881px y 1000px. Hasta 640px, el espacio de trabajo utiliza una columna con márgenes compactos. El historial conserva filas planas.
 
-La portada usa dos columnas de texto y ejemplo del producto, y se apila en móvil. El historial usa filas planas con fecha, extracto y acciones por entrada. Las métricas parten de entradas reales; los estados vacíos indican qué acción permite avanzar.
+La portada centra titular y acciones. Debajo, tres escenas se sitúan a la izquierda y el ejemplo de corrección a la derecha (1.15fr / 1fr, separación 50px). En 1100px se ajustan a columnas iguales y 26px; hasta 880px se apilan. Hasta 640px, cada escena es una fila con ilustración de 108px y texto, seguida por el ejemplo.
 
 ## Elevation & Depth
 
-La superficie es plana, sin sombras en ninguno de los temas. Separadores finos y diferencias tonales organizan el contenido. No se usa cristal sobre un paisaje ni una capa de vídeo.
+El papel y las superficies seleccionadas usan sombra ambiental: claro `0 12px 36px rgb(79 67 43 / 7%)`; oscuro `0 16px 40px rgb(8 15 27 / 22%)`. El ejemplo nocturno añade borde fino #9e93bc y `0 9px 32px rgb(9 13 23 / 40%), 0 0 24px rgb(147 125 190 / 9%)`. Un halo radial lavanda `rgb(96 74 138 / 15%)` acompaña la tarjeta sin cubrir el texto. Las estrellas son detalles de portada, no una capa sobre el editor.
 
 ## Shapes
 
-Campos, botones y papel tienen un radio mínimo de 3px. El historial y las preguntas se organizan como filas o bloques planos con separadores, sin tarjetas redondeadas. Las correcciones inline mantienen esquinas mínimas para permanecer dentro de la línea del texto.
+Botones y campos usan 9px; navegación de trabajo 8px; papel de editor y resultado 10px; ejemplo 11px; banner nocturno 16px; selector de tema 24px. Las correcciones inline conservan 3px. El historial permanece en filas sin tarjetas. El fondo orgánico del ejemplo diurno usa `34% 8% 18% 7% / 10% 5% 12% 5%`; en oscuro se retira para dejar visible el cielo.
 
 ## Components
 
-- **Editor:** fecha, contador y estado del borrador acompañan el campo. Guardar muestra carga; un fallo conserva el texto. No se exige punto final.
-- **Correcciones:** los fragmentos localizables son botones resaltados. Seleccionarlos marca el cambio y enfoca su explicación. Si los rangos no reproducen inequívocamente el texto corregido, se muestra el resultado real sin resaltar una palabra equivocada.
-- **Original / Corregido:** botones con estado `aria-pressed`; conservan el texto de cada versión.
-- **Acceso:** el formulario se muestra mientras la sesión se comprueba en segundo plano. Al iniciar una operación de acceso se cancela la comprobación previa; esta tiene un límite de 15 segundos. Durante una petición de acceso que tarda más de 4 segundos aparece un aviso de espera.
-- **Navegación:** ruta activa con `aria-current`, menú móvil con `aria-expanded`, enlace para saltar al contenido que enfoca el main sin cambiar la ruta.
-- **Tema:** selector claro/oscuro con preferencia local persistida.
-- **Movimiento:** transición de botones de 180ms; entrada del papel de 320ms y 5px solo desde 881px; indicador de carga giratorio. La preferencia de movimiento reducido elimina animaciones y transiciones y usa desplazamiento inmediato. El texto que se está escribiendo permanece estable.
+- **Editor:** fecha, contador y borrador acompañan el campo amplio. Guardar muestra carga y un fallo conserva el texto. No se exige punto final. Barra superior e inferior mezclan `soft` al 45% con `surface`; el pie nocturno utiliza #131b29.
+- **Correcciones:** los fragmentos inequívocamente localizables son botones resaltados que enfocan su explicación. Si un rango no reproduce el texto, se conserva el resultado real sin resaltar una palabra equivocada. Original/Corregido usa `aria-pressed`.
+- **Acceso:** formulario disponible durante la comprobación de sesión. Al comenzar el acceso se cancela esa comprobación, limitada a 15 segundos. Peticiones de acceso de más de 4 segundos muestran aviso.
+- **Navegación y foco:** ruta activa con `aria-current`; menú con `aria-expanded`; enlace para saltar al contenido. La navegación activa de trabajo usa `soft` y `accent`, sin subrayado; la navegación pública conserva el subrayado. Foco visible de 3px con separación de 3px; el editor usa 2px de acento por dentro.
+- **Tema:** primera visita según el dispositivo; sigue sus cambios mientras no haya elección manual. El selector marca la elección manual y la guarda en `diario.theme`; posteriores visitas priorizan ese valor. El diseño, la ilustración y `theme-color` cambian juntos.
+- **Ilustraciones:** tres escenas por tema (escribir, aprender y recordar), en un sprite WebP transparente de 1536×1024, cuadrícula 3×2, 224658 bytes. Proceden de la hoja de seis iconos aportada por la usuaria, preparada con image_gen para retirar etiquetas y fondos antes de codificarla como WebP. No son el archivo original sin procesamiento. Procedencia y prompt en `frontend/src/assets/journal-illustrations.provenance.json` y `journal-illustrations.webp.json`. `JournalArt` las recorta por posición CSS y las marca como decorativas con `aria-hidden`.
+- **Movimiento:** titular 650ms; apertura de tarjeta 750ms; revelado del cambio 700ms con demora de 300ms. Las estrellas hacen dos destellos de 1800ms con demoras máximas de 900ms: terminan en 4500ms y permanecen estáticas. Botones transicionan 180ms; el desplazamiento de hover de −1px solo se activa con hover y puntero preciso. Se conserva la entrada previa del papel de 320ms/5px desde 881px, sin animar el texto mientras se escribe o lee. El indicador de carga gira mientras hay petición. Movimiento reducido elimina animaciones y transiciones, y usa desplazamiento inmediato.
 
 ## Do's and Don'ts
 
 ### Do
 
-- Mantener el diario legible y las explicaciones conectadas al cambio.
-- Conservar la misma jerarquía en claro, oscuro y móvil.
+- Respetar las referencias ilustradas de la usuaria y mantener las seis escenas con procedencia documentada.
+- Mantener jerarquía, orden funcional y legibilidad en claro, oscuro y móvil.
+- Distinguir el pie oscuro de la tarjeta de la cabecera pública transparente.
 - Mostrar guardado, espera, error y estado vacío con texto explícito.
-- Diferenciar entradas en la cuenta de borradores locales y datos de demo.
+- Diferenciar entradas en cuenta, borradores locales y datos de demo.
 
 ### Don't
 
-- No reintroducir vídeo, Nunito o el acento verde azulado.
+- No sustituir las escenas por iconos SVG simplificados ni incrustar el mockup como página.
+- No añadir vídeo, parallax o destellos decorativos infinitos.
 - No usar serif en el texto editable ni convertir el historial en tarjetas.
-- No presentar reglas limitadas como corrección contextual con IA.
-- No presentar puntajes como diagnóstico o certificación MCER.
+- No presentar reglas limitadas como corrección contextual con IA ni puntajes como certificación MCER.
 - No inventar testimonios, rachas ni estadísticas.
-- No animar el texto mientras se escribe o se lee.
+- No animar el texto durante la escritura o lectura.

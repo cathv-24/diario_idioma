@@ -1,462 +1,241 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-25T00:58:54.793Z",
+  "generatedAt": "2026-10-25T06:04:49.437236+00:00",
   "title": "Design System: Diario de Idiomas",
   "sourceFiles": [
     "frontend/src/styles/theme.css",
+    "frontend/src/styles/journal.css",
     "frontend/src/styles/fonts.css",
     "frontend/src/App.tsx",
-    "frontend/src/components/InlineCorrections.tsx"
+    "frontend/src/lib/theme.ts",
+    "frontend/src/components/Landing.tsx",
+    "frontend/src/components/JournalArt.tsx"
   ],
   "extensions": {
     "colorMeta": {
       "background": {
         "displayName": "background",
-        "role": "neutral",
-        "tonalRamp": [
-          "oklch(15% 0.0026 106.45)",
-          "oklch(26% 0.0026 106.45)",
-          "oklch(38% 0.0026 106.45)",
-          "oklch(49% 0.0026 106.45)",
-          "oklch(61% 0.0026 106.45)",
-          "oklch(72% 0.0026 106.45)",
-          "oklch(84% 0.0026 106.45)",
-          "oklch(95% 0.0026 106.45)"
-        ]
+        "role": "neutral"
       },
       "surface": {
         "displayName": "surface",
-        "role": "neutral",
-        "tonalRamp": [
-          "oklch(15% 0.0000 89.88)",
-          "oklch(26% 0.0000 89.88)",
-          "oklch(38% 0.0000 89.88)",
-          "oklch(49% 0.0000 89.88)",
-          "oklch(61% 0.0000 89.88)",
-          "oklch(72% 0.0000 89.88)",
-          "oklch(84% 0.0000 89.88)",
-          "oklch(95% 0.0000 89.88)"
-        ]
+        "role": "neutral"
       },
       "soft": {
         "displayName": "soft",
-        "role": "neutral",
-        "tonalRamp": [
-          "oklch(15% 0.0080 106.55)",
-          "oklch(26% 0.0080 106.55)",
-          "oklch(38% 0.0080 106.55)",
-          "oklch(49% 0.0080 106.55)",
-          "oklch(61% 0.0080 106.55)",
-          "oklch(72% 0.0080 106.55)",
-          "oklch(84% 0.0080 106.55)",
-          "oklch(95% 0.0080 106.55)"
-        ]
+        "role": "neutral"
       },
       "ink": {
         "displayName": "ink",
-        "role": "neutral",
-        "tonalRamp": [
-          "oklch(15% 0.0074 118.33)",
-          "oklch(26% 0.0074 118.33)",
-          "oklch(38% 0.0074 118.33)",
-          "oklch(49% 0.0074 118.33)",
-          "oklch(61% 0.0074 118.33)",
-          "oklch(72% 0.0074 118.33)",
-          "oklch(84% 0.0074 118.33)",
-          "oklch(95% 0.0074 118.33)"
-        ]
+        "role": "neutral"
       },
       "muted": {
         "displayName": "muted",
-        "role": "neutral",
-        "tonalRamp": [
-          "oklch(15% 0.0108 113.37)",
-          "oklch(26% 0.0108 113.37)",
-          "oklch(38% 0.0108 113.37)",
-          "oklch(49% 0.0108 113.37)",
-          "oklch(61% 0.0108 113.37)",
-          "oklch(72% 0.0108 113.37)",
-          "oklch(84% 0.0108 113.37)",
-          "oklch(95% 0.0108 113.37)"
-        ]
+        "role": "neutral"
       },
       "accent": {
         "displayName": "accent",
-        "role": "primary",
-        "tonalRamp": [
-          "oklch(15% 0.0404 125.57)",
-          "oklch(26% 0.0404 125.57)",
-          "oklch(38% 0.0404 125.57)",
-          "oklch(49% 0.0404 125.57)",
-          "oklch(61% 0.0404 125.57)",
-          "oklch(72% 0.0404 125.57)",
-          "oklch(84% 0.0404 125.57)",
-          "oklch(95% 0.0404 125.57)"
-        ]
+        "role": "primary"
       },
       "accent-hover": {
         "displayName": "accent hover",
-        "role": "primary",
-        "tonalRamp": [
-          "oklch(15% 0.0391 127.14)",
-          "oklch(26% 0.0391 127.14)",
-          "oklch(38% 0.0391 127.14)",
-          "oklch(49% 0.0391 127.14)",
-          "oklch(61% 0.0391 127.14)",
-          "oklch(72% 0.0391 127.14)",
-          "oklch(84% 0.0391 127.14)",
-          "oklch(95% 0.0391 127.14)"
-        ]
+        "role": "primary"
       },
       "line": {
         "displayName": "line",
-        "role": "neutral",
-        "tonalRamp": [
-          "oklch(15% 0.0108 112.38)",
-          "oklch(26% 0.0108 112.38)",
-          "oklch(38% 0.0108 112.38)",
-          "oklch(49% 0.0108 112.38)",
-          "oklch(61% 0.0108 112.38)",
-          "oklch(72% 0.0108 112.38)",
-          "oklch(84% 0.0108 112.38)",
-          "oklch(95% 0.0108 112.38)"
-        ]
+        "role": "neutral"
       },
       "focus": {
         "displayName": "focus",
-        "role": "neutral",
-        "tonalRamp": [
-          "oklch(15% 0.0547 125.86)",
-          "oklch(26% 0.0547 125.86)",
-          "oklch(38% 0.0547 125.86)",
-          "oklch(49% 0.0547 125.86)",
-          "oklch(61% 0.0547 125.86)",
-          "oklch(72% 0.0547 125.86)",
-          "oklch(84% 0.0547 125.86)",
-          "oklch(95% 0.0547 125.86)"
-        ]
+        "role": "neutral"
       },
       "mark": {
         "displayName": "mark",
-        "role": "semantic",
-        "tonalRamp": [
-          "oklch(15% 0.0253 114.16)",
-          "oklch(26% 0.0253 114.16)",
-          "oklch(38% 0.0253 114.16)",
-          "oklch(49% 0.0253 114.16)",
-          "oklch(61% 0.0253 114.16)",
-          "oklch(72% 0.0253 114.16)",
-          "oklch(84% 0.0253 114.16)",
-          "oklch(95% 0.0253 114.16)"
-        ]
+        "role": "neutral"
       },
       "mark-ink": {
         "displayName": "mark ink",
-        "role": "semantic",
-        "tonalRamp": [
-          "oklch(15% 0.0490 126.87)",
-          "oklch(26% 0.0490 126.87)",
-          "oklch(38% 0.0490 126.87)",
-          "oklch(49% 0.0490 126.87)",
-          "oklch(61% 0.0490 126.87)",
-          "oklch(72% 0.0490 126.87)",
-          "oklch(84% 0.0490 126.87)",
-          "oklch(95% 0.0490 126.87)"
-        ]
+        "role": "neutral"
       },
       "danger": {
         "displayName": "danger",
-        "role": "semantic",
-        "tonalRamp": [
-          "oklch(15% 0.1793 21.80)",
-          "oklch(26% 0.1793 21.80)",
-          "oklch(38% 0.1793 21.80)",
-          "oklch(49% 0.1793 21.80)",
-          "oklch(61% 0.1793 21.80)",
-          "oklch(72% 0.1793 21.80)",
-          "oklch(84% 0.1793 21.80)",
-          "oklch(95% 0.1793 21.80)"
-        ]
+        "role": "neutral"
       },
       "danger-soft": {
         "displayName": "danger soft",
-        "role": "semantic",
-        "tonalRamp": [
-          "oklch(15% 0.0162 17.44)",
-          "oklch(26% 0.0162 17.44)",
-          "oklch(38% 0.0162 17.44)",
-          "oklch(49% 0.0162 17.44)",
-          "oklch(61% 0.0162 17.44)",
-          "oklch(72% 0.0162 17.44)",
-          "oklch(84% 0.0162 17.44)",
-          "oklch(95% 0.0162 17.44)"
-        ]
+        "role": "neutral"
       },
       "nav": {
         "displayName": "nav",
-        "role": "neutral",
-        "tonalRamp": [
-          "oklch(15% 0.0000 89.88)",
-          "oklch(26% 0.0000 89.88)",
-          "oklch(38% 0.0000 89.88)",
-          "oklch(49% 0.0000 89.88)",
-          "oklch(61% 0.0000 89.88)",
-          "oklch(72% 0.0000 89.88)",
-          "oklch(84% 0.0000 89.88)",
-          "oklch(95% 0.0000 89.88)"
-        ]
+        "role": "neutral"
       },
       "action": {
         "displayName": "action",
-        "role": "primary",
-        "tonalRamp": [
-          "oklch(15% 0.0074 118.33)",
-          "oklch(26% 0.0074 118.33)",
-          "oklch(38% 0.0074 118.33)",
-          "oklch(49% 0.0074 118.33)",
-          "oklch(61% 0.0074 118.33)",
-          "oklch(72% 0.0074 118.33)",
-          "oklch(84% 0.0074 118.33)",
-          "oklch(95% 0.0074 118.33)"
-        ]
+        "role": "primary"
       },
       "action-ink": {
         "displayName": "action ink",
-        "role": "primary",
-        "tonalRamp": [
-          "oklch(15% 0.0000 89.88)",
-          "oklch(26% 0.0000 89.88)",
-          "oklch(38% 0.0000 89.88)",
-          "oklch(49% 0.0000 89.88)",
-          "oklch(61% 0.0000 89.88)",
-          "oklch(72% 0.0000 89.88)",
-          "oklch(84% 0.0000 89.88)",
-          "oklch(95% 0.0000 89.88)"
-        ]
+        "role": "primary"
+      },
+      "art-ground": {
+        "displayName": "art ground",
+        "role": "neutral"
+      },
+      "art-line": {
+        "displayName": "art line",
+        "role": "neutral"
+      },
+      "art-paper": {
+        "displayName": "art paper",
+        "role": "neutral"
+      },
+      "art-leaf": {
+        "displayName": "art leaf",
+        "role": "neutral"
+      },
+      "art-clay": {
+        "displayName": "art clay",
+        "role": "neutral"
+      },
+      "art-skin": {
+        "displayName": "art skin",
+        "role": "neutral"
+      },
+      "art-hair": {
+        "displayName": "art hair",
+        "role": "neutral"
+      },
+      "art-window": {
+        "displayName": "art window",
+        "role": "neutral"
+      },
+      "art-gold": {
+        "displayName": "art gold",
+        "role": "neutral"
+      },
+      "preview-bg": {
+        "displayName": "preview bg",
+        "role": "neutral"
       },
       "dark-background": {
         "displayName": "dark background",
-        "role": "neutral",
-        "tonalRamp": [
-          "oklch(15% 0.0059 121.94)",
-          "oklch(26% 0.0059 121.94)",
-          "oklch(38% 0.0059 121.94)",
-          "oklch(49% 0.0059 121.94)",
-          "oklch(61% 0.0059 121.94)",
-          "oklch(72% 0.0059 121.94)",
-          "oklch(84% 0.0059 121.94)",
-          "oklch(95% 0.0059 121.94)"
-        ]
+        "role": "neutral"
       },
       "dark-surface": {
         "displayName": "dark surface",
-        "role": "neutral",
-        "tonalRamp": [
-          "oklch(15% 0.0076 118.37)",
-          "oklch(26% 0.0076 118.37)",
-          "oklch(38% 0.0076 118.37)",
-          "oklch(49% 0.0076 118.37)",
-          "oklch(61% 0.0076 118.37)",
-          "oklch(72% 0.0076 118.37)",
-          "oklch(84% 0.0076 118.37)",
-          "oklch(95% 0.0076 118.37)"
-        ]
+        "role": "neutral"
       },
       "dark-soft": {
         "displayName": "dark soft",
-        "role": "neutral",
-        "tonalRamp": [
-          "oklch(15% 0.0144 118.70)",
-          "oklch(26% 0.0144 118.70)",
-          "oklch(38% 0.0144 118.70)",
-          "oklch(49% 0.0144 118.70)",
-          "oklch(61% 0.0144 118.70)",
-          "oklch(72% 0.0144 118.70)",
-          "oklch(84% 0.0144 118.70)",
-          "oklch(95% 0.0144 118.70)"
-        ]
+        "role": "neutral"
       },
       "dark-ink": {
         "displayName": "dark ink",
-        "role": "neutral",
-        "tonalRamp": [
-          "oklch(15% 0.0094 113.16)",
-          "oklch(26% 0.0094 113.16)",
-          "oklch(38% 0.0094 113.16)",
-          "oklch(49% 0.0094 113.16)",
-          "oklch(61% 0.0094 113.16)",
-          "oklch(72% 0.0094 113.16)",
-          "oklch(84% 0.0094 113.16)",
-          "oklch(95% 0.0094 113.16)"
-        ]
+        "role": "neutral"
       },
       "dark-muted": {
         "displayName": "dark muted",
-        "role": "neutral",
-        "tonalRamp": [
-          "oklch(15% 0.0184 117.39)",
-          "oklch(26% 0.0184 117.39)",
-          "oklch(38% 0.0184 117.39)",
-          "oklch(49% 0.0184 117.39)",
-          "oklch(61% 0.0184 117.39)",
-          "oklch(72% 0.0184 117.39)",
-          "oklch(84% 0.0184 117.39)",
-          "oklch(95% 0.0184 117.39)"
-        ]
+        "role": "neutral"
       },
       "dark-accent": {
         "displayName": "dark accent",
-        "role": "primary",
-        "tonalRamp": [
-          "oklch(15% 0.0492 121.68)",
-          "oklch(26% 0.0492 121.68)",
-          "oklch(38% 0.0492 121.68)",
-          "oklch(49% 0.0492 121.68)",
-          "oklch(61% 0.0492 121.68)",
-          "oklch(72% 0.0492 121.68)",
-          "oklch(84% 0.0492 121.68)",
-          "oklch(95% 0.0492 121.68)"
-        ]
+        "role": "primary"
       },
       "dark-accent-hover": {
         "displayName": "dark accent hover",
-        "role": "primary",
-        "tonalRamp": [
-          "oklch(15% 0.0386 120.17)",
-          "oklch(26% 0.0386 120.17)",
-          "oklch(38% 0.0386 120.17)",
-          "oklch(49% 0.0386 120.17)",
-          "oklch(61% 0.0386 120.17)",
-          "oklch(72% 0.0386 120.17)",
-          "oklch(84% 0.0386 120.17)",
-          "oklch(95% 0.0386 120.17)"
-        ]
+        "role": "primary"
       },
       "dark-line": {
         "displayName": "dark line",
-        "role": "neutral",
-        "tonalRamp": [
-          "oklch(15% 0.0189 119.77)",
-          "oklch(26% 0.0189 119.77)",
-          "oklch(38% 0.0189 119.77)",
-          "oklch(49% 0.0189 119.77)",
-          "oklch(61% 0.0189 119.77)",
-          "oklch(72% 0.0189 119.77)",
-          "oklch(84% 0.0189 119.77)",
-          "oklch(95% 0.0189 119.77)"
-        ]
+        "role": "neutral"
       },
       "dark-focus": {
         "displayName": "dark focus",
-        "role": "neutral",
-        "tonalRamp": [
-          "oklch(15% 0.0492 121.68)",
-          "oklch(26% 0.0492 121.68)",
-          "oklch(38% 0.0492 121.68)",
-          "oklch(49% 0.0492 121.68)",
-          "oklch(61% 0.0492 121.68)",
-          "oklch(72% 0.0492 121.68)",
-          "oklch(84% 0.0492 121.68)",
-          "oklch(95% 0.0492 121.68)"
-        ]
+        "role": "neutral"
       },
       "dark-mark": {
         "displayName": "dark mark",
-        "role": "semantic",
-        "tonalRamp": [
-          "oklch(15% 0.0380 124.61)",
-          "oklch(26% 0.0380 124.61)",
-          "oklch(38% 0.0380 124.61)",
-          "oklch(49% 0.0380 124.61)",
-          "oklch(61% 0.0380 124.61)",
-          "oklch(72% 0.0380 124.61)",
-          "oklch(84% 0.0380 124.61)",
-          "oklch(95% 0.0380 124.61)"
-        ]
+        "role": "neutral"
       },
       "dark-mark-ink": {
         "displayName": "dark mark ink",
-        "role": "semantic",
-        "tonalRamp": [
-          "oklch(15% 0.0392 118.20)",
-          "oklch(26% 0.0392 118.20)",
-          "oklch(38% 0.0392 118.20)",
-          "oklch(49% 0.0392 118.20)",
-          "oklch(61% 0.0392 118.20)",
-          "oklch(72% 0.0392 118.20)",
-          "oklch(84% 0.0392 118.20)",
-          "oklch(95% 0.0392 118.20)"
-        ]
+        "role": "neutral"
       },
       "dark-danger": {
         "displayName": "dark danger",
-        "role": "semantic",
-        "tonalRamp": [
-          "oklch(15% 0.0980 13.09)",
-          "oklch(26% 0.0980 13.09)",
-          "oklch(38% 0.0980 13.09)",
-          "oklch(49% 0.0980 13.09)",
-          "oklch(61% 0.0980 13.09)",
-          "oklch(72% 0.0980 13.09)",
-          "oklch(84% 0.0980 13.09)",
-          "oklch(95% 0.0980 13.09)"
-        ]
+        "role": "neutral"
       },
       "dark-danger-soft": {
         "displayName": "dark danger soft",
-        "role": "semantic",
-        "tonalRamp": [
-          "oklch(15% 0.0327 6.85)",
-          "oklch(26% 0.0327 6.85)",
-          "oklch(38% 0.0327 6.85)",
-          "oklch(49% 0.0327 6.85)",
-          "oklch(61% 0.0327 6.85)",
-          "oklch(72% 0.0327 6.85)",
-          "oklch(84% 0.0327 6.85)",
-          "oklch(95% 0.0327 6.85)"
-        ]
+        "role": "neutral"
       },
       "dark-nav": {
         "displayName": "dark nav",
-        "role": "neutral",
-        "tonalRamp": [
-          "oklch(15% 0.0077 118.44)",
-          "oklch(26% 0.0077 118.44)",
-          "oklch(38% 0.0077 118.44)",
-          "oklch(49% 0.0077 118.44)",
-          "oklch(61% 0.0077 118.44)",
-          "oklch(72% 0.0077 118.44)",
-          "oklch(84% 0.0077 118.44)",
-          "oklch(95% 0.0077 118.44)"
-        ]
+        "role": "neutral"
       },
       "dark-action": {
         "displayName": "dark action",
-        "role": "primary",
-        "tonalRamp": [
-          "oklch(15% 0.0094 113.16)",
-          "oklch(26% 0.0094 113.16)",
-          "oklch(38% 0.0094 113.16)",
-          "oklch(49% 0.0094 113.16)",
-          "oklch(61% 0.0094 113.16)",
-          "oklch(72% 0.0094 113.16)",
-          "oklch(84% 0.0094 113.16)",
-          "oklch(95% 0.0094 113.16)"
-        ]
+        "role": "primary"
       },
       "dark-action-ink": {
         "displayName": "dark action ink",
-        "role": "primary",
-        "tonalRamp": [
-          "oklch(15% 0.0076 118.37)",
-          "oklch(26% 0.0076 118.37)",
-          "oklch(38% 0.0076 118.37)",
-          "oklch(49% 0.0076 118.37)",
-          "oklch(61% 0.0076 118.37)",
-          "oklch(72% 0.0076 118.37)",
-          "oklch(84% 0.0076 118.37)",
-          "oklch(95% 0.0076 118.37)"
-        ]
+        "role": "primary"
+      },
+      "dark-art-ground": {
+        "displayName": "dark art ground",
+        "role": "neutral"
+      },
+      "dark-art-line": {
+        "displayName": "dark art line",
+        "role": "neutral"
+      },
+      "dark-art-paper": {
+        "displayName": "dark art paper",
+        "role": "neutral"
+      },
+      "dark-art-leaf": {
+        "displayName": "dark art leaf",
+        "role": "neutral"
+      },
+      "dark-art-clay": {
+        "displayName": "dark art clay",
+        "role": "neutral"
+      },
+      "dark-art-skin": {
+        "displayName": "dark art skin",
+        "role": "neutral"
+      },
+      "dark-art-hair": {
+        "displayName": "dark art hair",
+        "role": "neutral"
+      },
+      "dark-art-window": {
+        "displayName": "dark art window",
+        "role": "neutral"
+      },
+      "dark-art-gold": {
+        "displayName": "dark art gold",
+        "role": "neutral"
+      },
+      "dark-preview-bg": {
+        "displayName": "dark preview bg",
+        "role": "neutral"
+      },
+      "night-vignette": {
+        "displayName": "night vignette",
+        "role": "neutral"
+      },
+      "night-card-border": {
+        "displayName": "night card border",
+        "role": "neutral"
+      },
+      "night-banner-border": {
+        "displayName": "night banner border",
+        "role": "neutral"
+      },
+      "night-action-hover": {
+        "displayName": "night action hover",
+        "role": "primary"
       }
     },
     "typographyMeta": {
@@ -479,44 +258,78 @@
     },
     "shadows": [
       {
-        "name": "flat",
-        "value": "none",
-        "purpose": "Ambos temas organizan el espacio con separadores y diferencias tonales."
+        "name": "paper-light",
+        "value": "0 12px 36px rgb(79 67 43 / 7%)",
+        "purpose": "Papel y superficies de día."
+      },
+      {
+        "name": "paper-dark",
+        "value": "0 16px 40px rgb(8 15 27 / 22%)",
+        "purpose": "Papel y superficies de noche."
+      },
+      {
+        "name": "night-preview",
+        "value": "0 9px 32px rgb(9 13 23 / 40%), 0 0 24px rgb(147 125 190 / 9%)",
+        "purpose": "Ejemplo de portada nocturna."
       }
     ],
     "motion": [
       {
         "name": "button",
-        "value": "background 0.18s ease, transform 0.18s ease",
-        "purpose": "Respuesta de botones."
+        "value": "background 180ms ease, transform 180ms ease",
+        "purpose": "Hover −1px solo con hover y pointer:fine."
+      },
+      {
+        "name": "hero",
+        "value": "650ms cubic-bezier(.16,1,.3,1)",
+        "purpose": "Entrada única del titular."
+      },
+      {
+        "name": "card",
+        "value": "750ms cubic-bezier(.23,1,.32,1)",
+        "purpose": "Apertura de ejemplo."
+      },
+      {
+        "name": "correction",
+        "value": "700ms 300ms cubic-bezier(.23,1,.32,1)",
+        "purpose": "Cambio del ejemplo."
+      },
+      {
+        "name": "stars",
+        "value": "1800ms ease-in-out 2; delay <=900ms",
+        "purpose": "Fin máximo 4500ms, después estáticas."
       },
       {
         "name": "paper-arrive",
-        "value": "0.32s ease-out; translateY(5px) to translateY(0)",
-        "purpose": "Entrada de papel solo desde 881px."
+        "value": "320ms ease-out; translateY(5px) to translateY(0)",
+        "purpose": "Entrada heredada de papel desde 881px."
       },
       {
         "name": "loading",
         "value": "spin 1.1s linear infinite",
-        "purpose": "Petición en curso."
+        "purpose": "Solo indicador durante petición."
       },
       {
         "name": "reduced-motion",
-        "value": "animation:none;transition:none;scroll-behavior:auto",
-        "purpose": "Respeta prefers-reduced-motion."
+        "value": "animation:none!important;transition:none!important;scroll-behavior:auto",
+        "purpose": "Contenido estático y desplazamiento inmediato."
       }
     ],
     "breakpoints": [
       {
-        "name": "compact-desktop",
+        "name": "compact-workspace",
         "value": "1180px"
+      },
+      {
+        "name": "compact-landing",
+        "value": "1100px"
       },
       {
         "name": "stack-with-sidebar",
         "value": "881px–1000px"
       },
       {
-        "name": "mobile-header",
+        "name": "mobile-header-and-landing-stack",
         "value": "880px"
       },
       {
@@ -541,7 +354,17 @@
         "danger-soft": "{colors.danger-soft}",
         "nav": "{colors.nav}",
         "action": "{colors.action}",
-        "action-ink": "{colors.action-ink}"
+        "action-ink": "{colors.action-ink}",
+        "art-ground": "{colors.art-ground}",
+        "art-line": "{colors.art-line}",
+        "art-paper": "{colors.art-paper}",
+        "art-leaf": "{colors.art-leaf}",
+        "art-clay": "{colors.art-clay}",
+        "art-skin": "{colors.art-skin}",
+        "art-hair": "{colors.art-hair}",
+        "art-window": "{colors.art-window}",
+        "art-gold": "{colors.art-gold}",
+        "preview-bg": "{colors.preview-bg}"
       },
       "dark": {
         "bg": "{colors.dark-background}",
@@ -559,10 +382,124 @@
         "danger-soft": "{colors.dark-danger-soft}",
         "nav": "{colors.dark-nav}",
         "action": "{colors.dark-action}",
-        "action-ink": "{colors.dark-action-ink}"
+        "action-ink": "{colors.dark-action-ink}",
+        "art-ground": "{colors.dark-art-ground}",
+        "art-line": "{colors.dark-art-line}",
+        "art-paper": "{colors.dark-art-paper}",
+        "art-leaf": "{colors.dark-art-leaf}",
+        "art-clay": "{colors.dark-art-clay}",
+        "art-skin": "{colors.dark-art-skin}",
+        "art-hair": "{colors.dark-art-hair}",
+        "art-window": "{colors.dark-art-window}",
+        "art-gold": "{colors.dark-art-gold}",
+        "preview-bg": "{colors.dark-preview-bg}"
       }
     },
-    "previewNotes": "Los snippets reflejan el aspecto; no ejecutan guardado, autenticación ni selección de explicaciones. Las variables CSS heredan del tema de la aplicación; los fallbacks muestran claro. La fuente requiere los recursos autoalojados del proyecto."
+    "previewNotes": "Snippets describen aspecto, no ejecutan guardado, acceso ni cambio de tema. CSS variables heredan de la app; fallbacks muestran claro. Fuentes autoalojadas del proyecto. Capturas actuales de portada en 1440px y 390px revisadas en ambos temas; capturas anteriores de otras vistas respaldan estructura, no todos los acabados actuales.",
+    "themePreference": {
+      "initial": "saved manual choice, otherwise prefers-color-scheme",
+      "followSystem": "until a manual choice",
+      "storage": "diario.theme",
+      "source": "frontend/src/lib/theme.ts; frontend/src/App.tsx"
+    },
+    "illustrations": {
+      "asset": "frontend/src/assets/journal-illustrations.webp",
+      "grid": "3x2; top light, bottom dark",
+      "dimensions": "1536x1024",
+      "bytes": 224658,
+      "alpha": true,
+      "provenance": [
+        "frontend/src/assets/journal-illustrations.provenance.json",
+        "frontend/src/assets/journal-illustrations.webp.json"
+      ],
+      "preparation": "User supplied sheet prepared with image_gen to remove labels/backgrounds, then encoded as WebP; not an untouched original."
+    },
+    "contrastChecks": [
+      {
+        "theme": "light",
+        "foreground": "ink",
+        "background": "bg",
+        "ratio": 12.48,
+        "scope": "Calculated sRGB text pair; not a full accessibility audit."
+      },
+      {
+        "theme": "light",
+        "foreground": "muted",
+        "background": "bg",
+        "ratio": 5.44,
+        "scope": "Calculated sRGB text pair; not a full accessibility audit."
+      },
+      {
+        "theme": "light",
+        "foreground": "muted",
+        "background": "surface",
+        "ratio": 5.87,
+        "scope": "Calculated sRGB text pair; not a full accessibility audit."
+      },
+      {
+        "theme": "light",
+        "foreground": "accent",
+        "background": "surface",
+        "ratio": 6.06,
+        "scope": "Calculated sRGB text pair; not a full accessibility audit."
+      },
+      {
+        "theme": "light",
+        "foreground": "action-ink",
+        "background": "action",
+        "ratio": 6.06,
+        "scope": "Calculated sRGB text pair; not a full accessibility audit."
+      },
+      {
+        "theme": "light",
+        "foreground": "mark-ink",
+        "background": "mark",
+        "ratio": 7.49,
+        "scope": "Calculated sRGB text pair; not a full accessibility audit."
+      },
+      {
+        "theme": "dark",
+        "foreground": "ink",
+        "background": "bg",
+        "ratio": 14.4,
+        "scope": "Calculated sRGB text pair; not a full accessibility audit."
+      },
+      {
+        "theme": "dark",
+        "foreground": "muted",
+        "background": "bg",
+        "ratio": 9.89,
+        "scope": "Calculated sRGB text pair; not a full accessibility audit."
+      },
+      {
+        "theme": "dark",
+        "foreground": "muted",
+        "background": "surface",
+        "ratio": 9.1,
+        "scope": "Calculated sRGB text pair; not a full accessibility audit."
+      },
+      {
+        "theme": "dark",
+        "foreground": "accent",
+        "background": "surface",
+        "ratio": 8.88,
+        "scope": "Calculated sRGB text pair; not a full accessibility audit."
+      },
+      {
+        "theme": "dark",
+        "foreground": "action-ink",
+        "background": "action",
+        "ratio": 9.87,
+        "scope": "Calculated sRGB text pair; not a full accessibility audit."
+      },
+      {
+        "theme": "dark",
+        "foreground": "mark-ink",
+        "background": "mark",
+        "ratio": 7.2,
+        "scope": "Calculated sRGB text pair; not a full accessibility audit."
+      }
+    ]
   },
   "components": [
     {
@@ -571,7 +508,7 @@
       "refersTo": "button-primary",
       "description": "Guardar o empezar una entrada.",
       "html": "<button class=\"ds-primary\">Guardar mi día</button>",
-      "css": ".ds-primary{font-family:'Inter Variable',sans-serif;border:0;min-height:46px;padding:11px 19px;border-radius:3px;background:var(--action,#242521);color:var(--action-ink,#fff);font-size:15px;font-weight:550;line-height:1.5;cursor:pointer;transition:background .18s ease}.ds-primary:hover{background:var(--ink,#242521)}.ds-primary:focus-visible,.ds-outline:focus-visible,.ds-field:focus-visible,.ds-nav:focus-visible,.ds-mark:focus-visible,.ds-prompt button:focus-visible{outline:3px solid var(--focus,#687653);outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none}}"
+      "css": ".ds-primary{font-family:'Inter Variable',sans-serif;border:0;min-height:46px;padding:11px 19px;border-radius:9px;background:var(--action,#302d28);color:var(--action-ink,#fffdf7);font-size:15px;font-weight:550;line-height:1.5;cursor:pointer;transition:background .18s ease}.ds-primary:hover{background:var(--accent-hover,#3e5136)}.ds-primary:focus-visible,.ds-outline:focus-visible,.ds-field:focus-visible,.ds-nav:focus-visible,.ds-mark:focus-visible,.ds-prompt button:focus-visible{outline:3px solid var(--focus,#647b55);outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none}}:host-context([data-theme=\"dark\"]) .ds-primary:hover{background:#ffe4b3}"
     },
     {
       "name": "Botón secundario",
@@ -579,14 +516,14 @@
       "refersTo": "button-outline",
       "description": "Acciones secundarias sin competir con guardar.",
       "html": "<button class=\"ds-outline\">Volver a mi diario</button>",
-      "css": ".ds-outline{font-family:'Inter Variable',sans-serif;min-height:46px;padding:11px 19px;border:1px solid var(--line,#e2e3db);border-radius:3px;background:var(--surface,#fff);color:var(--ink,#242521);font-size:15px;font-weight:550;cursor:pointer}.ds-outline:hover{background:var(--soft,#f0f0ea)}.ds-primary:focus-visible,.ds-outline:focus-visible,.ds-field:focus-visible,.ds-nav:focus-visible,.ds-mark:focus-visible,.ds-prompt button:focus-visible{outline:3px solid var(--focus,#687653);outline-offset:3px}"
+      "css": ".ds-outline{font-family:'Inter Variable',sans-serif;min-height:46px;padding:11px 19px;border:1px solid var(--line,#dcd7c8);border-radius:9px;background:var(--surface,#fffdf7);color:var(--ink,#302d28);font-size:15px;font-weight:550;cursor:pointer}.ds-outline:hover{background:var(--soft,#eeeade)}.ds-primary:focus-visible,.ds-outline:focus-visible,.ds-field:focus-visible,.ds-nav:focus-visible,.ds-mark:focus-visible,.ds-prompt button:focus-visible{outline:3px solid var(--focus,#647b55);outline-offset:3px}"
     },
     {
       "name": "Campo",
       "kind": "input",
       "description": "Campo de formulario con label visible.",
       "html": "<label class=\"ds-label\">Nombre<input class=\"ds-field\" autocomplete=\"given-name\" placeholder=\"Tu nombre\"></label>",
-      "css": ".ds-label{font-family:'Inter Variable',sans-serif;display:grid;gap:8px;color:var(--ink,#242521);font-size:14px;font-weight:550}.ds-field{font-family:'Inter Variable',sans-serif;padding:12px;border:1px solid var(--line,#e2e3db);border-radius:3px;background:var(--surface,#fff);color:var(--ink,#242521)}.ds-field:hover{border-color:var(--focus,#687653)}.ds-primary:focus-visible,.ds-outline:focus-visible,.ds-field:focus-visible,.ds-nav:focus-visible,.ds-mark:focus-visible,.ds-prompt button:focus-visible{outline:3px solid var(--focus,#687653);outline-offset:3px}"
+      "css": ".ds-label{font-family:'Inter Variable',sans-serif;display:grid;gap:8px;color:var(--ink,#302d28);font-size:14px;font-weight:550}.ds-field{font-family:'Inter Variable',sans-serif;padding:12px;border:1px solid var(--line,#dcd7c8);border-radius:9px;background:var(--surface,#fffdf7);color:var(--ink,#302d28)}.ds-field:hover{border-color:var(--focus,#647b55)}.ds-primary:focus-visible,.ds-outline:focus-visible,.ds-field:focus-visible,.ds-nav:focus-visible,.ds-mark:focus-visible,.ds-prompt button:focus-visible{outline:3px solid var(--focus,#647b55);outline-offset:3px}"
     },
     {
       "name": "Navegación activa",
@@ -594,7 +531,7 @@
       "refersTo": "navigation-active",
       "description": "Ubicación actual del espacio de trabajo.",
       "html": "<nav aria-label=\"Diario\"><a class=\"ds-nav\" href=\"#escribir\" aria-current=\"page\">Mi diario</a></nav>",
-      "css": ".ds-nav{font-family:'Inter Variable',sans-serif;display:flex;align-items:center;min-height:44px;padding:12px 14px;border-radius:3px;background:transparent;color:var(--ink,#242521);font-size:15px;font-weight:500;text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1px}.ds-nav:hover{color:var(--ink,#242521)}.ds-primary:focus-visible,.ds-outline:focus-visible,.ds-field:focus-visible,.ds-nav:focus-visible,.ds-mark:focus-visible,.ds-prompt button:focus-visible{outline:3px solid var(--focus,#687653);outline-offset:3px}"
+      "css": ".ds-nav{font-family:'Inter Variable',sans-serif;display:flex;align-items:center;min-height:44px;padding:12px 14px;border-radius:8px;background:var(--soft,#eeeade);color:var(--accent,#536749);font-size:15px;font-weight:500;text-decoration:none;text-underline-offset:7px;text-decoration-thickness:1px}.ds-nav:hover{color:var(--ink,#302d28)}.ds-primary:focus-visible,.ds-outline:focus-visible,.ds-field:focus-visible,.ds-nav:focus-visible,.ds-mark:focus-visible,.ds-prompt button:focus-visible{outline:3px solid var(--focus,#647b55);outline-offset:3px}"
     },
     {
       "name": "Corrección inline",
@@ -602,7 +539,7 @@
       "refersTo": "correction-mark",
       "description": "Fragmento seleccionable que enlaza con una explicación en la aplicación.",
       "html": "<p class=\"ds-text\" lang=\"en\">Yesterday I <button class=\"ds-mark\" aria-pressed=\"false\" aria-label=\"Ver explicación de went\">went</button> to class.</p>",
-      "css": ".ds-text{font-family:'Inter Variable',sans-serif;font-size:20px;line-height:1.9;color:var(--ink,#242521)}.ds-mark{font:inherit;display:inline;background:var(--mark,#ecefdc);color:var(--mark-ink,#3c482b);border:0;border-bottom:1px solid var(--accent,#5b654c);border-radius:3px;padding:0 2px;cursor:pointer}.ds-mark:hover,.ds-mark[aria-pressed=true]{outline:2px solid var(--accent,#5b654c);outline-offset:2px}.ds-primary:focus-visible,.ds-outline:focus-visible,.ds-field:focus-visible,.ds-nav:focus-visible,.ds-mark:focus-visible,.ds-prompt button:focus-visible{outline:3px solid var(--focus,#687653);outline-offset:3px}"
+      "css": ".ds-text{font-family:'Inter Variable',sans-serif;font-size:20px;line-height:1.9;color:var(--ink,#302d28)}.ds-mark{font:inherit;display:inline;background:var(--mark,#dce4d1);color:var(--mark-ink,#35492f);border:0;border-bottom:1px solid var(--accent,#536749);border-radius:3px;padding:0 2px;cursor:pointer}.ds-mark:hover,.ds-mark[aria-pressed=true]{outline:2px solid var(--accent,#536749);outline-offset:2px}.ds-primary:focus-visible,.ds-outline:focus-visible,.ds-field:focus-visible,.ds-nav:focus-visible,.ds-mark:focus-visible,.ds-prompt button:focus-visible{outline:3px solid var(--focus,#647b55);outline-offset:3px}"
     },
     {
       "name": "Acompañante de escritura",
@@ -610,7 +547,7 @@
       "refersTo": "writing-prompt",
       "description": "Pregunta breve según el nivel elegido.",
       "html": "<aside class=\"ds-prompt\"><p lang=\"en\">What made you smile today?</p><button>Otra idea →</button></aside>",
-      "css": ".ds-prompt{font-family:'Inter Variable',sans-serif;padding:20px 0;border-top:1px solid var(--line,#e2e3db);border-bottom:1px solid var(--line,#e2e3db);border-radius:0;background:transparent;color:var(--ink,#242521)}.ds-prompt p{margin:14px 0 10px;font-family:'Instrument Serif',Georgia,serif;font-size:28px;font-weight:400;line-height:1.4}.ds-prompt button{font-family:'Inter Variable',sans-serif;border:0;background:none;color:var(--accent,#5b654c);font-size:13px;font-weight:550;min-height:44px;cursor:pointer}.ds-prompt button:hover{text-decoration:underline}.ds-primary:focus-visible,.ds-outline:focus-visible,.ds-field:focus-visible,.ds-nav:focus-visible,.ds-mark:focus-visible,.ds-prompt button:focus-visible{outline:3px solid var(--focus,#687653);outline-offset:3px}"
+      "css": ".ds-prompt{font-family:'Inter Variable',sans-serif;padding:20px 0;border-top:1px solid var(--line,#dcd7c8);border-bottom:1px solid var(--line,#dcd7c8);border-radius:0;background:transparent;color:var(--ink,#302d28)}.ds-prompt p{margin:14px 0 10px;font-family:'Instrument Serif',Georgia,serif;font-size:28px;font-weight:400;line-height:1.4}.ds-prompt button{font-family:'Inter Variable',sans-serif;border:0;background:none;color:var(--accent,#536749);font-size:13px;font-weight:550;min-height:44px;cursor:pointer}.ds-prompt button:hover{text-decoration:underline}.ds-primary:focus-visible,.ds-outline:focus-visible,.ds-field:focus-visible,.ds-nav:focus-visible,.ds-mark:focus-visible,.ds-prompt button:focus-visible{outline:3px solid var(--focus,#647b55);outline-offset:3px}"
     },
     {
       "name": "Papel del editor",
@@ -618,43 +555,51 @@
       "refersTo": "editor",
       "description": "Superficie de escritura amplia y estable.",
       "html": "<label class=\"ds-paper\"><span>Tu página de hoy</span><textarea class=\"ds-editor\" aria-label=\"Escribe tu día en inglés\" placeholder=\"Today I…\"></textarea></label>",
-      "css": ".ds-paper{font-family:'Inter Variable',sans-serif;display:block;border:1px solid var(--line,#e2e3db);border-radius:3px;overflow:hidden;background:var(--surface,#fff);color:var(--ink,#242521)}.ds-paper>span{display:block;padding:17px 24px;border-bottom:1px solid var(--line,#e2e3db);font-size:13px;font-weight:550}.ds-editor{font-family:'Inter Variable',sans-serif;display:block;box-sizing:border-box;width:100%;min-height:280px;padding:30px 30px 18px;border:0;background:var(--surface,#fff);color:var(--ink,#242521);font-size:20px;line-height:1.85;resize:vertical}.ds-editor:focus-visible{outline:2px solid var(--accent,#5b654c);outline-offset:-4px}@media(max-width:640px){.ds-editor{font-size:18px;padding:24px 21px}}"
+      "css": ".ds-paper{font-family:'Inter Variable',sans-serif;display:block;border:1px solid var(--line,#dcd7c8);border-radius:10px;overflow:hidden;background:var(--surface,#fffdf7);color:var(--ink,#302d28)}.ds-paper>span{display:block;padding:17px 24px;border-bottom:1px solid var(--line,#dcd7c8);font-size:13px;font-weight:550}.ds-editor{font-family:'Inter Variable',sans-serif;display:block;box-sizing:border-box;width:100%;min-height:365px;padding:30px 30px 18px;border:0;background:var(--surface,#fffdf7);color:var(--ink,#302d28);font-size:20px;line-height:1.85;resize:vertical}.ds-editor:focus-visible{outline:2px solid var(--accent,#536749);outline-offset:-4px}@media(max-width:640px){.ds-editor{font-size:18px;padding:24px 21px}}.ds-paper{box-shadow:var(--shadow,0 12px 36px rgb(79 67 43 / 7%))}"
+    },
+    {
+      "name": "Ejemplo nocturno de portada",
+      "kind": "card",
+      "refersTo": "landing-card",
+      "description": "Papel sólido sobre cielo azul, con borde iluminado y pie de tarjeta oscuro; no representa la cabecera pública.",
+      "html": "<article class=\"ds-night-example\"><p class=\"ds-night-label\">Ejemplo · A2</p><p class=\"ds-night-writing\" lang=\"en\">Yesterday <mark>I went</mark> to the park.</p><div class=\"ds-night-footer\">Escribe · entiende · guarda</div></article>",
+      "css": ".ds-night-example{font-family:\"Inter Variable\",sans-serif;color:#f6eddf;background:#1b2537;border:1px solid #9e93bc;border-radius:11px;overflow:hidden;box-shadow:0 9px 32px rgb(9 13 23 / 40%),0 0 24px rgb(147 125 190 / 9%)}.ds-night-label{margin:0;padding:15px 18px;font-size:12px;border-bottom:1px solid #45546a}.ds-night-writing{margin:0;padding:23px;font-size:19px;line-height:1.9}.ds-night-writing mark{background:#4d4868;color:#f0e7ff}.ds-night-footer{padding:13px 18px;font-size:11px;background:#131b29;border-top:1px solid #45546a}"
     }
   ],
   "narrative": {
-    "northStar": "Un cuaderno personal legible",
-    "overview": "La escritura ocupa el centro. Instrument Serif en títulos y marca, Inter en el diario y los controles, blanco y tinta con oliva discreto acompañan el hábito de contar el día y entender cambios concretos. La dirección aprobada está en `.impeccable/surfaces/diario-redesign.md`; los valores se extraen de `frontend/src/styles/theme.css` y `fonts.css`.\n\nLa aplicación combina un espacio de trabajo con navegación estable, un historial para releer y una portada que muestra el producto mediante un ejemplo rotulado. El tema oscuro conserva la jerarquía y utiliza los colores de su propio conjunto.",
+    "northStar": "Diario de día y de noche",
+    "overview": "**Creative North Star: \"Diario de día y de noche\"**\n\nUn diario personal ilustrado donde contar lo vivido y entender pequeños cambios del inglés. Las referencias aportadas por la usuaria gobiernan el ambiente: papel crema y salvia durante el día; azul noche, lavanda y luz cálida de noche. Instrument Serif acompaña títulos y marca; Inter mantiene legibles la escritura y los controles.\n\nEl contrato aprobado está en `.impeccable/surfaces/diario-redesign.md`. Los tokens provienen de `frontend/src/styles/theme.css`, sus ajustes finales de `journal.css` y las fuentes de `fonts.css`. Se conserva el orden funcional del editor, historial, correcciones, progreso y acceso.",
     "keyCharacteristics": [
-      "Texto de escritura amplio y explicaciones cercanas al cambio.",
-      "Tinta para acciones principales, oliva discreto para cambios y aprendizaje.",
-      "Navegación lateral en escritorio y cabecera compacta en móvil.",
-      "Temas claro y oscuro, sin vídeo de fondo."
+      "Crema y salvia de día; azul noche, lavanda y luz cálida de noche.",
+      "Seis escenas según el tema, preparadas desde la referencia de la usuaria.",
+      "Escritura amplia, navegación estable e historial en filas."
     ],
     "rules": [
       {
-        "name": "The Meaningful Color Rule",
-        "body": "El color comunica acción, selección o estado; acompaña etiquetas, texto y bordes para que el significado no dependa solo del tono.",
-        "section": "colors"
+        "name": "Writing First",
+        "body": "Inter 20px/18px en editor; mantener texto estable.",
+        "section": "typography"
       },
       {
-        "name": "The Writing First Rule",
-        "body": "No reducir el texto del diario para acomodar controles secundarios.",
-        "section": "typography"
+        "name": "User Reference",
+        "body": "Referencias de la usuaria gobiernan paleta e ilustraciones.",
+        "section": "colors"
       }
     ],
     "dos": [
-      "Mantener el diario legible y las explicaciones conectadas al cambio.",
-      "Conservar la misma jerarquía en claro, oscuro y móvil.",
+      "Respetar las referencias ilustradas de la usuaria y mantener las seis escenas con procedencia documentada.",
+      "Mantener jerarquía, orden funcional y legibilidad en claro, oscuro y móvil.",
+      "Distinguir el pie oscuro de la tarjeta de la cabecera pública transparente.",
       "Mostrar guardado, espera, error y estado vacío con texto explícito.",
-      "Diferenciar entradas en la cuenta de borradores locales y datos de demo."
+      "Diferenciar entradas en cuenta, borradores locales y datos de demo."
     ],
     "donts": [
-      "No reintroducir vídeo, Nunito o el acento verde azulado.",
+      "No sustituir las escenas por iconos SVG simplificados ni incrustar el mockup como página.",
+      "No añadir vídeo, parallax o destellos decorativos infinitos.",
       "No usar serif en el texto editable ni convertir el historial en tarjetas.",
-      "No presentar reglas limitadas como corrección contextual con IA.",
-      "No presentar puntajes como diagnóstico o certificación MCER.",
+      "No presentar reglas limitadas como corrección contextual con IA ni puntajes como certificación MCER.",
       "No inventar testimonios, rachas ni estadísticas.",
-      "No animar el texto mientras se escribe o se lee."
+      "No animar el texto durante la escritura o lectura."
     ]
   }
 }

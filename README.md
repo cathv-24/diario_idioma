@@ -42,7 +42,7 @@ La demo de GitHub Pages usa su propio corrector local y guarda el historial en e
 - [`backend/apidiario/`](backend/apidiario/): API en Java 21 y Spring Boot 4.0.8, con Spring Data JPA, PostgreSQL y Swagger.
 - [`automations/`](automations/): flujos n8n preparados localmente para métricas de creación y un informe semanal agregado en Neon, sin textos personales ni mensajes. No están habilitados en cloud.
 
-El diario combina navegación lateral, correcciones seleccionables y tema oscuro. El [sistema visual](DESIGN.md) documenta la fusión editorial y su adaptación móvil.
+El diario combina navegación lateral, correcciones seleccionables y temas de día y noche: crema/salvia y azul/lavanda con luz cálida. Las seis ilustraciones se prepararon desde la referencia aportada; el tema sigue al dispositivo hasta una elección manual, que queda guardada. El [sistema visual](DESIGN.md) documenta colores, tipografía, movimiento breve y adaptación móvil.
 
 El formulario de acceso aparece mientras se comprueba la sesión en segundo plano. Al empezar a iniciar sesión o crear cuenta se cancela esa comprobación previa, que tiene un límite de 15 segundos. Si una petición de acceso tarda más de 4 segundos, aparece un aviso para mantener la página abierta. Esto permite usar el formulario sin esperar a que termine la comprobación; el servidor gratuito todavía puede necesitar tiempo para despertar.
 
@@ -105,7 +105,7 @@ npm test
 npm run build
 ```
 
-La validación actual del frontend registró **17 pruebas correctas**, incluidas las del corrector, los rangos de corrección y el arranque del acceso. Los resultados de pruebas y la revisión del código local no demuestran por sí solos que los cambios estén publicados.
+La validación actual del frontend registró **18 pruebas correctas**, incluidas las del corrector, los rangos de corrección, el arranque del acceso y la preferencia de tema. Los resultados de pruebas y la revisión del código local no demuestran por sí solos que los cambios estén publicados.
 
 ## Neon y n8n
 
@@ -153,4 +153,4 @@ Se verificaron en la publicación real el registro, acceso, guardado, correccion
 
 Esta separación evita esperar al arranque de Render para recibir la interfaz. Las operaciones que necesitan la API todavía pueden tardar después de un período de inactividad del backend gratuito. La medición HTTP del HTML fue de unos 0,35 segundos en una prueba puntual; no equivale al tiempo total de renderizado ni garantiza ese resultado en todas las redes.
 
-El [sistema visual](DESIGN.md) documenta la fusión editorial; [PRODUCT.md](PRODUCT.md) conserva el alcance y las limitaciones del corrector.
+El [sistema visual](DESIGN.md) documenta el diario ilustrado de día y de noche; [PRODUCT.md](PRODUCT.md) conserva el alcance y las limitaciones del corrector.
