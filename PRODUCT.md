@@ -34,8 +34,10 @@ Dirección aprobada: un cuaderno personal legible. Instrument Serif en títulos 
 
 ## Publication and evidence
 
-URL principal: [Diario de Idiomas](https://diario-idiomas.onrender.com). Render sirve frontend y backend bajo el mismo dominio; Neon conserva las entradas. El estado publicado de la aplicación no implica que todos los cambios locales estén desplegados.
+URL principal: [Diario de Idiomas](https://diario-idiomas.vercel.app). Vercel Hobby sirve el frontend estático; Render Free mantiene la API y Neon conserva las entradas. El dominio anterior de Render también sigue sirviendo la aplicación. Los commits de main despliegan automáticamente el frontend mediante la integración GitHub, autorizada exclusivamente para cathv-24/diario_idioma.
 
-`vercel.json` prepara un frontend estático con proxy de `/api` hacia Render. Esa alternativa aún no está desplegada ni conectada. Falta conocer el dominio definitivo y permitir su `FRONTEND_ORIGIN` exacto en Render; no hay una URL Vercel confirmada ni se afirma que esa conexión ya funcione.
+`vercel.json` reenvía `/api` a Render bajo el mismo origen. `FRONTEND_ORIGIN` permite exactamente https://diario-idiomas.vercel.app y https://diario-idiomas.onrender.com. La sesión Secure/HttpOnly/SameSite=Lax y la protección CSRF se conservan; las credenciales de Neon permanecen en Render.
 
-La validación anterior informó 12 pruebas de backend con Tomcat/H2 y la integración opcional de n8n. La validación actual del frontend informó 17 pruebas correctas. Las pruebas H2 no prueban persistencia real en PostgreSQL/Neon ni la conexión entre Vercel y Render. La documentación del rediseño se contrasta con el código local; su revisión visual y despliegue requieren su propia evidencia.
+El formulario aparece sin esperar la comprobación de sesión en segundo plano. Esa comprobación se cancela al iniciar un acceso nuevo y tiene un límite de 15 segundos. La API gratuita aún puede tardar al despertar; separar el frontend no elimina ese arranque en frío.
+
+Validación: 17 pruebas actuales de frontend; 12 pruebas previas de backend con Tomcat/H2; registro, inicio de sesión, guardado y recuperación real del historial desde Vercel hasta Neon. Las pruebas H2 por sí solas no prueban persistencia en PostgreSQL. La revisión independiente aprobó la fusión local y los cambios de arranque; la comprobación de publicación se documenta aparte.

@@ -143,10 +143,14 @@ El plan gratuito de Render puede suspender el servicio tras inactividad; la prim
 
 ## Aplicación pública
 
-[Abre Diario de Idiomas](https://diario-idiomas.onrender.com/#escribir). Crea tu cuenta y usa el mismo correo y contraseña en tus dispositivos. El servicio funciona en el plan gratuito de Render, con las entradas persistidas en Neon. La primera apertura tras inactividad puede tardar.
+[Abre Diario de Idiomas](https://diario-idiomas.vercel.app/#escribir). Crea tu cuenta y usa el mismo correo y contraseña en tus dispositivos. El frontend está en Vercel Hobby, la API en Render Free y las entradas en Neon. La API puede tardar al despertar tras inactividad.
 
-### Frontend estático en Vercel: preparado, pendiente
+### Frontend estático en Vercel
 
-`vercel.json` prepara la compilación del frontend y un proxy de `/api` hacia Render, para mantener las peticiones del navegador bajo el dominio del frontend. Aún no está desplegado ni conectado. Falta conocer el dominio definitivo y permitir su `FRONTEND_ORIGIN` exacto en Render antes de verificar registro, acceso, CSRF, cookies y entradas de extremo a extremo. No hay una URL Vercel confirmada ni se afirma que CORS ya esté configurado para ella.
+El frontend está publicado en [Vercel](https://diario-idiomas.vercel.app), plan Hobby, y la API permanece en [Render](https://diario-idiomas.onrender.com/api/health), plan Free. `vercel.json` compila React y reenvía `/api` a Render bajo el mismo origen del navegador. La API permite exactamente el dominio de Vercel y el dominio anterior de Render. No se guardan credenciales de Neon en Vercel ni en el cliente.
 
-Esta separación puede servir los archivos estáticos sin esperar al arranque de Render; las operaciones que necesitan la API todavía dependen del backend gratuito. El diseño local y sus tokens están en [DESIGN.md](DESIGN.md); el alcance y los límites del producto, en [PRODUCT.md](PRODUCT.md).
+Se verificaron en la publicación real el registro, acceso, guardado, correcciones y recuperación del historial después de volver a iniciar sesión. La sesión usa una cookie Secure, HttpOnly y SameSite=Lax; una solicitud de acceso sin CSRF fue rechazada. [Evidencia y límites](backend/apidiario/docs/DESPLIEGUE_PUBLICO.md).
+
+Esta separación evita esperar al arranque de Render para recibir la interfaz. Las operaciones que necesitan la API todavía pueden tardar después de un período de inactividad del backend gratuito. La medición HTTP del HTML fue de unos 0,35 segundos en una prueba puntual; no equivale al tiempo total de renderizado ni garantiza ese resultado en todas las redes.
+
+El [sistema visual](DESIGN.md) documenta la fusión editorial; [PRODUCT.md](PRODUCT.md) conserva el alcance y las limitaciones del corrector.
