@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import { ArrowRight, LoaderCircle, BookOpen } from "lucide-react";
 import * as api from "../lib/api";
@@ -8,17 +8,29 @@ import guide from "../lib/levels.json";
 export default function AuthPanel({
   onProfile,
   onError,
+  checkingSession = false,
+  onBegin,
 }: {
   onProfile: (profile: Profile) => void;
   onError: (message: string) => void;
+  checkingSession?: boolean;
+  onBegin?: () => void;
 }) {
   const [mode, setMode] = useState<"login" | "register">("login");
   const [busy, setBusy] = useState(false);
+  const [slow, setSlow] = useState(false);
+  useEffect(() => {
+    setSlow(false);
+    if (!busy) return;
+    const timer = setTimeout(() => setSlow(true), 4000);
+    return () => clearTimeout(timer);
+  }, [busy]);
   const [level, setLevel] = useState<Level>("A2");
   const register = !api.apiMode || mode === "register";
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (busy) return;
+    onBegin?.();
     const data = new FormData(event.currentTarget);
     setBusy(true);
     onError("");
@@ -94,6 +106,13 @@ export default function AuthPanel({
           </div>
         )}
         <form onSubmit={submit}>
+          {api.apiMode && (
+            <p className="session-status" role="status">
+              {checkingSession
+                ? "Comprobando si ya tienes una sesión abierta…"
+                : null}
+            </p>
+          )}
           {register && (
             <label>
               Tu nombre
@@ -167,6 +186,12 @@ export default function AuthPanel({
               </>
             )}
           </button>
+          {slow && (
+            <p className="small-muted" role="status">
+              El servidor está tardando en responder. Mantén esta página
+              abierta; no necesitas enviar otra vez.
+            </p>
+          )}
           {api.apiMode && !register && (
             <p className="small-muted">
               Los perfiles de prueba anteriores no tenían contraseña. Para usar

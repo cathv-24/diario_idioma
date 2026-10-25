@@ -12,14 +12,16 @@ Y con el historial puedo ver cómo voy mejorando con el tiempo. Quizás en agost
 
 ## 🌐 Pruébalo aquí
 
-**👉 https://cathv-24.github.io/diario_idioma/**
+[Abre Diario de Idiomas](https://diario-idiomas.onrender.com)
 
-Funciona directo en el navegador, no necesitas instalar nada. Escribe algo en inglés, dale a "Corregir mi día" y listo. Tu historial se guarda en tu propio navegador.
+Funciona en el navegador, sin instalar nada. Crea una cuenta, escribe tu día en inglés y guarda la entrada para revisar sus correcciones. Tu historial queda en tu cuenta y puedes abrirlo desde distintos dispositivos. El servicio gratuito puede tardar en despertar tras un periodo de inactividad.
+
+La [demo de GitHub Pages](https://cathv-24.github.io/diario_idioma/) es una versión separada: corrige y guarda en ese navegador, sin cuentas cloud ni conexión a Neon.
 
 
 ## Qué hace hoy
 
-La aplicación tiene una demo en el navegador y un backend local. La idea de fondo es la misma: escribir, recibir una explicación y guardar la entrada para volver a leerla después.
+La aplicación conectada tiene cuentas privadas y un backend publicado en Render con almacenamiento en Neon. También conserva una demo local separada. La idea de fondo es la misma: escribir, recibir una explicación y guardar la entrada para volver a leerla después.
 
 - Escribes tu día en inglés y solicitas la corrección.
 - El backend guarda el texto original, el corregido y las correcciones en PostgreSQL.
@@ -27,18 +29,22 @@ La aplicación tiene una demo en el navegador y un backend local. La idea de fon
 - Tu borrador conserva el texto, la fecha y la entrada que estás editando al recargar.
 - Puedes exportar tu historial como JSON y ver un gráfico de las últimas 12 entradas.
 - Cada corrección tiene una explicación y una categoría. Las explicaciones y las sugerencias de vocabulario se adaptan al nivel elegido, de A1 a C2.
+- Los cambios que pueden localizarse con seguridad se resaltan en el texto. Al seleccionarlos se enfoca su explicación; puedes alternar entre original y corregido.
 - La API ofrece un resumen de errores por categoría y un puntaje orientativo. Ese puntaje no mide tu dominio del inglés.
 
 El corrector actual funciona con **reglas limitadas**. Detecta casos como `goed`, `eated`, `recieve`, el pronombre `i` y errores concretos de ortografía. Todavía no comprende todo el texto ni revisa conectores de forma general. La corrección contextual con IA y una vista para comparar la evolución entre meses forman parte de lo que quiero desarrollar.
 
-La demo de GitHub Pages usa su propio corrector local y guarda el historial en el navegador. **No está conectada a una API pública ni a Neon directamente.** En desarrollo, React consume Spring Boot y el backend guarda en PostgreSQL o Neon. Las credenciales de base de datos nunca llegan al navegador.
+La demo de GitHub Pages usa su propio corrector local y guarda el historial en el navegador. **No está conectada al backend publicado ni a Neon.** En la aplicación conectada, React consume Spring Boot y el backend guarda en Neon; en desarrollo puede usarse PostgreSQL local. Las credenciales de base de datos nunca llegan al navegador.
 
 ## Cómo está organizado
 
 - [`frontend/`](frontend/): interfaz en React, Vite, TypeScript y Tailwind CSS. Sustituye al frontend Angular a partir del nuevo alcance de octubre de 2026.
 - [`backend/apidiario/`](backend/apidiario/): API en Java 21 y Spring Boot 4.0.8, con Spring Data JPA, PostgreSQL y Swagger.
-- [`automations/`](automations/): flujos n8n para registrar métricas de creación y guardar un informe semanal agregado en Neon, sin enviar textos personales ni mensajes.
+- [`automations/`](automations/): flujos n8n preparados localmente para métricas de creación y un informe semanal agregado en Neon, sin textos personales ni mensajes. No están habilitados en cloud.
 
+El diario combina navegación lateral, correcciones seleccionables y tema oscuro. El [sistema visual](DESIGN.md) documenta la fusión editorial y su adaptación móvil.
+
+El formulario de acceso aparece mientras se comprueba la sesión en segundo plano. Al empezar a iniciar sesión o crear cuenta se cancela esa comprobación previa, que tiene un límite de 15 segundos. Si una petición de acceso tarda más de 4 segundos, aparece un aviso para mantener la página abierta. Esto permite usar el formulario sin esperar a que termine la comprobación; el servidor gratuito todavía puede necesitar tiempo para despertar.
 
 ## Ejecutar el backend
 
@@ -67,9 +73,9 @@ Con H2, los datos desaparecen al detener el servidor.
 
 Una vez iniciado el backend:
 
-- [Swagger](http://localhost:8080/swagger-ui/index.html)
-- [OpenAPI](http://localhost:8080/v3/api-docs)
-- `GET /api/usuarios`: permite consultar el identificador del perfil de demostración.
+- [Swagger](http://localhost:8080/swagger-ui/index.html), con una sesión autenticada.
+- [OpenAPI](http://localhost:8080/v3/api-docs), con una sesión autenticada.
+- Crea tu cuenta e inicia sesión desde la aplicación. `GET /api/usuarios` está denegado; no es un directorio público ni una forma de obtener identificadores.
 
 ### Compilar y ejecutar las pruebas
 
@@ -79,7 +85,7 @@ Desde `backend/apidiario`:
 .\mvnw.cmd clean verify
 ```
 
-Se verificaron **12 pruebas sin fallos**, incluyendo peticiones HTTP con Tomcat/H2 y la integración opcional con n8n. Las pruebas automatizadas no usan tu base personal.
+La validación anterior registró **12 pruebas sin fallos**, incluyendo peticiones HTTP con Tomcat/H2 y la integración opcional con n8n. Las pruebas automatizadas no usan tu base personal. Esa ejecución con H2 no demuestra persistencia real en PostgreSQL o Neon ni que un workflow esté activo en cloud.
 
 ## Ejecutar el frontend local
 
@@ -99,15 +105,17 @@ npm test
 npm run build
 ```
 
+La validación actual del frontend registró **17 pruebas correctas**, incluidas las del corrector, los rangos de corrección y el arranque del acceso. Los resultados de pruebas y la revisión del código local no demuestran por sí solos que los cambios estén publicados.
+
 ## Neon y n8n
 
-La conexión de Spring a Neon se configura de forma privada con TLS. El proyecto de desarrollo es `diario-idiomas`, rama `diario-app`, base `diario_idiomas`. No se migran automáticamente los datos de tu PostgreSQL anterior.
+El backend publicado en Render está conectado a Neon. La conexión de Spring se configura de forma privada con TLS. No se migran automáticamente los datos de tu PostgreSQL anterior.
 
 - [Configuración y flujos n8n](automations/README.md)
 - [Esquema de métricas](automations/sql/001_automation_schema.sql)
 - [Verificación del frontend](frontend/VALIDACION.md)
 
-El webhook registra metadatos de las entradas nuevas de forma idempotente. El informe semanal guarda actividad agregada del motor, no un diagnóstico de aprendizaje. Ambos flujos requieren una instancia de n8n en ejecución; subir los JSON al repositorio no los activa por sí solo.
+Los flujos locales están preparados para registrar metadatos de entradas nuevas de forma idempotente y guardar actividad semanal agregada del motor, no un diagnóstico de aprendizaje. Requieren una instancia de n8n en ejecución; subir los JSON al repositorio no los activa. En Render no se envían eventos hasta configurar una instancia remota privada.
 
 ## Guías del backend
 
@@ -123,7 +131,7 @@ La versión conectada incluye registro e inicio de sesión, contraseñas con BCr
 
 ### Escritura cotidiana y niveles
 
-El editor utiliza Inter para facilitar la lectura. No se añade ni penaliza la falta de punto final. La guía A1–C2 incluye gramática, vocabulario, expresión oral y otras habilidades a partir del material aportado; el nivel se elige por autoevaluación y orienta las preguntas de escritura. No se estima ni certifica el nivel MCER con el puntaje del corrector. Las entradas históricas conservan sus correcciones; al editarlas se aplican las reglas actuales.
+El editor utiliza Inter Variable para facilitar la lectura; Instrument Serif se reserva para títulos, marca y preguntas. No se añade ni penaliza la falta de punto final. La guía A1–C2 incluye gramática, vocabulario, expresión oral y otras habilidades a partir del material aportado; el nivel se elige por autoevaluación y orienta las preguntas de escritura. No se estima ni certifica el nivel MCER con el puntaje del corrector. Las entradas históricas conservan sus correcciones; al editarlas se aplican las reglas actuales.
 
 ## Publicación para varias personas
 
@@ -136,3 +144,9 @@ El plan gratuito de Render puede suspender el servicio tras inactividad; la prim
 ## Aplicación pública
 
 [Abre Diario de Idiomas](https://diario-idiomas.onrender.com/#escribir). Crea tu cuenta y usa el mismo correo y contraseña en tus dispositivos. El servicio funciona en el plan gratuito de Render, con las entradas persistidas en Neon. La primera apertura tras inactividad puede tardar.
+
+### Frontend estático en Vercel: preparado, pendiente
+
+`vercel.json` prepara la compilación del frontend y un proxy de `/api` hacia Render, para mantener las peticiones del navegador bajo el dominio del frontend. Aún no está desplegado ni conectado. Falta conocer el dominio definitivo y permitir su `FRONTEND_ORIGIN` exacto en Render antes de verificar registro, acceso, CSRF, cookies y entradas de extremo a extremo. No hay una URL Vercel confirmada ni se afirma que CORS ya esté configurado para ella.
+
+Esta separación puede servir los archivos estáticos sin esperar al arranque de Render; las operaciones que necesitan la API todavía dependen del backend gratuito. El diseño local y sus tokens están en [DESIGN.md](DESIGN.md); el alcance y los límites del producto, en [PRODUCT.md](PRODUCT.md).

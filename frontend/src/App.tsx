@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import {
+  Home,
+  Info,
+  Sun,
+  Moon,
   ArrowUpRight,
   ArrowRight,
   ArrowLeft,
   BookOpen,
   PenLine,
   BarChart3,
-  Leaf,
   Search,
   Check,
   CheckCheck,
@@ -30,7 +33,7 @@ import AuthPanel from "./components/AuthPanel";
 import LevelGuide from "./components/LevelGuide";
 import levelGuide from "./lib/levels.json";
 import { practice } from "./lib/practice";
-import CinematicVideo from "./components/CinematicVideo";
+import InlineCorrections from "./components/InlineCorrections";
 import * as api from "./lib/api";
 import { categoryNames, levels, localDate, wordCount } from "./lib/types";
 import type { Entry, Level, Profile, Category } from "./lib/types";
@@ -80,6 +83,21 @@ function readDraft(profileId?: number): {
 }
 
 export default function App() {
+  const [activeCorrection, setActiveCorrection] = useState<number | null>(null);
+  const [theme, setTheme] = useState(() => {
+    try {
+      return localStorage.getItem("diario.theme") || "light";
+    } catch {
+      return "light";
+    }
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem("diario.theme", theme);
+    } catch {
+      /* Preferencia opcional. */
+    }
+  }, [theme]);
   const [view, setView] = useState<View>(currentView);
   const [authLoading, setAuthLoading] = useState(true);
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -104,12 +122,24 @@ export default function App() {
   const [tab, setTab] = useState<"corregido" | "original">("corregido");
   const [copied, setCopied] = useState(false);
   const editor = useRef<HTMLTextAreaElement>(null);
-  const draftSnapshot = useRef({profile, text, date, editing});
-  draftSnapshot.current = {profile, text, date, editing};
+  const sessionCheck = useRef<AbortController | null>(null);
+  const draftSnapshot = useRef({ profile, text, date, editing });
+  draftSnapshot.current = { profile, text, date, editing };
   const flushDraft = () => {
     const current = draftSnapshot.current;
     if (!current.profile) return;
-    try { localStorage.setItem(`diario.v3.draft.${current.profile.idUsuario}`, JSON.stringify({text:current.text,date:current.date,editing:current.editing})); } catch { /* El texto sigue en el editor si el almacenamiento está lleno. */ }
+    try {
+      localStorage.setItem(
+        `diario.v3.draft.${current.profile.idUsuario}`,
+        JSON.stringify({
+          text: current.text,
+          date: current.date,
+          editing: current.editing,
+        }),
+      );
+    } catch {
+      /* El texto sigue en el editor si el almacenamiento está lleno. */
+    }
   };
   useEffect(() => {
     const expired = () => {
@@ -123,6 +153,9 @@ export default function App() {
     return () => window.removeEventListener("diario:session-expired", expired);
   }, []);
   useEffect(() => {
+    let active = true;
+    const controller = new AbortController();
+    sessionCheck.current = controller;
     const fn = () => {
       setView(currentView());
       setMobile(false);
@@ -130,12 +163,15 @@ export default function App() {
     };
     window.addEventListener("hashchange", fn);
     void api
-      .loadProfile()
+      .loadProfile(controller.signal)
       .then((p) => {
+        if (!active || controller.signal.aborted) return;
         setProfile(p);
         if (p) {
           const draft = readDraft(p.idUsuario);
-          setText(draft.text); setDate(draft.date); setEditing(draft.editing);
+          setText(draft.text);
+          setDate(draft.date);
+          setEditing(draft.editing);
           setLevel(p.nivel);
           if (!location.hash) {
             location.hash = "escribir";
@@ -143,9 +179,17 @@ export default function App() {
           }
         }
       })
-      .catch((e) => setError(e.message))
-      .finally(() => setAuthLoading(false));
-    return () => window.removeEventListener("hashchange", fn);
+      .catch((e) => {
+        if (active && !controller.signal.aborted) setError(e.message);
+      })
+      .finally(() => {
+        if (active && !controller.signal.aborted) setAuthLoading(false);
+      });
+    return () => {
+      active = false;
+      controller.abort();
+      window.removeEventListener("hashchange", fn);
+    };
   }, []);
   useEffect(() => {
     if (!profile) return;
@@ -345,14 +389,37 @@ export default function App() {
           aria-current={view === key ? "page" : undefined}
           className={view === key ? "active" : ""}
         >
+          {key === "inicio" ? (
+            <Home size={18} />
+          ) : key === "escribir" ? (
+            <PenLine size={18} />
+          ) : key === "historial" ? (
+            <BookOpen size={18} />
+          ) : key === "progreso" ? (
+            <BarChart3 size={18} />
+          ) : (
+            <Info size={18} />
+          )}
           {labels[key]}
         </a>
       ))}
     </>
   );
   return (
-    <>
-      <a className="skip-link" href="#contenido">
+    <div
+      className={`app ${view !== "inicio" ? "workspace-app" : ""}`}
+      data-theme={theme}
+    >
+      <a
+        className="skip-link"
+        href="#contenido"
+        onClick={(event) => {
+          event.preventDefault();
+          const content = document.getElementById("contenido");
+          content?.focus({ preventScroll: true });
+          content?.scrollIntoView({ block: "start", behavior: "instant" });
+        }}
+      >
         Saltar al contenido
       </a>
       <header
@@ -371,6 +438,15 @@ export default function App() {
             {nav}
           </nav>
           <div className="nav-actions">
+            <button
+              className="icon-button theme-toggle"
+              aria-label={
+                theme === "light" ? "Activar modo oscuro" : "Activar modo claro"
+              }
+              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+            >
+              {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
+            </button>
             <button className="button dark nav-cta" onClick={newEntry}>
               {profile ? "Escribir mi día" : "Empezar mi diario"}
               <ArrowUpRight size={15} />
@@ -404,167 +480,127 @@ export default function App() {
           </button>
         </div>
       )}
-      <main id="contenido">
+      <main id="contenido" tabIndex={-1}>
         {view === "inicio" ? (
           <>
-            <section className="hero">
-              <CinematicVideo />
+            <section className="hero section-shell">
               <div className="hero-content">
-                <h1 className="animate-fade-rise">
-                  Tus días merecen
-                  <br /> <em>otras palabras.</em>
+                <h1>
+                  Tu día, tus palabras.
+                  <br />
+                  <em>Tu inglés, un poco mejor.</em>
                 </h1>
-                <p className="hero-description animate-fade-rise-delay">
-                  Un espacio para soltar lo que sientes y descubrir
-                  <br className="desktop-break" /> lo que puedes decir. Escribe
-                  tu día. Aprende inglés, a tu ritmo.
+                <p className="hero-description">
+                  Escribe lo que viviste, entiende tus errores y vuelve a tus
+                  recuerdos. Un pequeño espacio para ti y para el inglés que
+                  estás aprendiendo.
                 </p>
-                <button
-                  className="button dark hero-cta animate-fade-rise-delay-2"
-                  onClick={newEntry}
-                >
-                  Empieza con tu día
-                  <ArrowUpRight size={19} />
+                <button className="button dark hero-cta" onClick={newEntry}>
+                  Empezar mi diario
+                  <ArrowRight size={18} />
                 </button>
-                <span className="hero-caption">
-                  Unas líneas para ti. Un paso más en tu inglés.
-                </span>
+                <p className="hero-caption">
+                  <BookOpen size={16} /> Un diario personal. Una forma de
+                  practicar.
+                </p>
               </div>
-              <div className="hero-bottom">
-                <span>
-                  <span className="live-dot" />
-                  TU HISTORIA, A TU RITMO
-                </span>
-                <a
-                  href="#como-funciona"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById("como-funciona")?.scrollIntoView({
-                      behavior: window.matchMedia(
-                        "(prefers-reduced-motion: reduce)",
-                      ).matches
-                        ? "instant"
-                        : "smooth",
-                    });
-                  }}
-                >
-                  Un pequeño hábito, una nueva voz
-                  <ArrowRight size={15} />
-                </a>
+              <div
+                className="landing-example"
+                aria-label="Ejemplo de una entrada y sus correcciones"
+              >
+                <div className="demo-toolbar">
+                  <span>
+                    <PenLine size={16} />
+                    Una pequeña historia
+                  </span>
+                  <span>Ejemplo · A2</span>
+                </div>
+                <p className="demo-question">What made you smile today?</p>
+                <p className="demo-writing" lang="en">
+                  Yesterday <del>i goed</del> <mark>I went</mark> to the park.
+                  <br />I felt happy and a little more relaxed.
+                </p>
+                <div className="demo-explanation">
+                  <CheckCircle2 size={20} />
+                  <div>
+                    <strong>Una forma nueva de contar lo mismo</strong>
+                    <p>
+                      El pasado de «go» es «went». Tu historia conserva tu voz.
+                    </p>
+                  </div>
+                </div>
+                <div className="demo-footer">
+                  <span>
+                    <CheckCheck size={16} />
+                    Escribe · entiende · guarda
+                  </span>
+                  <span>Sin punto final obligatorio</span>
+                </div>
               </div>
             </section>
-            <section className="intro-section section-shell" id="como-funciona">
-              <div className="intro-heading">
+            <section className="how-section section-shell" id="como-funciona">
+              <div className="section-heading">
                 <h2>
-                  No necesitas tener
+                  Lo que te pasa también
                   <br />
-                  un día extraordinario.
-                  <br />
-                  <em>Solo algo que contar.</em>
+                  puede enseñarte inglés.
                 </h2>
-                <div className="intro-copy">
-                  <p>
-                    A veces escribes para recordar. Otras, para entenderte. Aquí
-                    también escribes para aprender.
-                  </p>
-                  <p>
-                    Cuéntalo como te salga. Recibe correcciones claras, guarda
-                    tus palabras y vuelve a ellas cuando quieras. Sin prisa. Sin
-                    una página en blanco que te juzgue.
-                  </p>
-                  <button className="text-link" onClick={newEntry}>
-                    Hacer espacio para mis palabras
-                    <ArrowUpRight size={17} />
-                  </button>
-                </div>
+                <p>
+                  El hábito es escribir. El aprendizaje está en entender un
+                  pequeño cambio cada vez.
+                </p>
               </div>
-              <div className="process-strip">
-                <div>
+              <ol className="learning-steps">
+                <li>
                   <PenLine size={23} />
-                  <h3>Escribe con libertad.</h3>
-                  <p>
-                    Lo bueno, lo difícil o ese detalle que no quieres olvidar.
-                    En inglés, como puedas.
-                  </p>
-                </div>
-                <div>
+                  <div>
+                    <h3>Haz espacio para tu día</h3>
+                    <p>
+                      Una conversación, algo que sentiste o ese detalle que
+                      quieres recordar. Escribe en inglés, como puedas.
+                    </p>
+                  </div>
+                </li>
+                <li>
                   <BookOpen size={23} />
-                  <h3>Entiende cada cambio.</h3>
-                  <p>
-                    El texto corregido y el porqué, con explicaciones que
-                    acompañan tu nivel.
-                  </p>
-                </div>
-                <div>
-                  <Leaf size={23} />
-                  <h3>Vuelve y mira tu camino.</h3>
-                  <p>
-                    Tu historial conserva tus entradas. Las pequeñas mejoras
-                    también cuentan.
-                  </p>
-                </div>
-              </div>
-            </section>
-            <section className="example-section">
-              <div className="section-shell example-layout">
-                <div className="example-intro">
-                  <h2>
-                    Tu voz sigue siendo tuya.
-                    <br />
-                    <em>Solo aprende algo nuevo.</em>
-                  </h2>
-                  <p>
-                    Una corrección puede ser una invitación a entender, en lugar
-                    de una razón para dejar de escribir.
-                  </p>
-                  <div className="example-note">
-                    <span className="dot olive" />
-                    Un ejemplo del corrector por reglas
+                  <div>
+                    <h3>Entiende cada corrección</h3>
+                    <p>
+                      Compara tus palabras y explora las explicaciones, con
+                      preguntas de escritura según tu nivel.
+                    </p>
                   </div>
-                </div>
-                <div className="example-paper">
-                  <div className="paper-top">
-                    <span>Ejemplo · A2</span>
+                </li>
+                <li>
+                  <CalendarDays size={23} />
+                  <div>
+                    <h3>Vuelve a tus historias</h3>
+                    <p>
+                      Encuentra tus entradas y los temas que aparecen en tus
+                      correcciones. Tus palabras cuentan tu recorrido.
+                    </p>
                   </div>
-                  <p className="example-sentence">
-                    Yesterday <del>i goed</del> <mark>I went</mark> to the park.
-                    <br />
-                    It was a <del>beatiful</del> <mark>beautiful</mark>{" "}
-                    afternoon.
-                  </p>
-                  <div className="explanation">
-                    <Check size={17} />
-                    <div>
-                      <strong>Un pequeño cambio, una nueva herramienta.</strong>
-                      <p>
-                        El pasado de «go» es «went». Es irregular: no necesita
-                        «-ed».
-                      </p>
-                    </div>
-                  </div>
-                  <p className="paper-footnote">
-                    Las reglas reconocen errores específicos. No revisan toda la
-                    gramática ni el contexto.
-                  </p>
-                </div>
-              </div>
+                </li>
+              </ol>
+              <p className="honest-caption">
+                El corrector actual reconoce patrones concretos. No revisa todo
+                el contexto ni determina tu nivel de inglés.
+              </p>
             </section>
             <section className="closing section-shell">
-              <BookOpen size={30} strokeWidth={1.1} />
-              <h2>
-                Una página.
-                <br />
-                <em>Un poco más de ti.</em>
-              </h2>
-              <p>No tiene que ser perfecto para ser un comienzo.</p>
+              <BookOpen size={32} />
+              <div>
+                <h2>Empieza con algo de hoy.</h2>
+                <p>No necesitas una historia extraordinaria para escribir.</p>
+              </div>
               <button className="button dark" onClick={newEntry}>
                 Escribir mi primera entrada
-                <ArrowUpRight size={17} />
+                <ArrowRight size={18} />
               </button>
             </section>
           </>
         ) : (
-          <div className="workspace-shell">
+          <div className={`workspace-shell ${!profile ? "auth-shell" : ""}`}>
             <div className="workspace-top">
               {profile && (
                 <button
@@ -573,7 +609,7 @@ export default function App() {
                   onClick={async () => {
                     try {
                       flushDraft();
-                  await api.logout();
+                      await api.logout();
                       setProfile(null);
                       setEntries([]);
                       setSelected(null);
@@ -617,7 +653,7 @@ export default function App() {
                 <ChevronDown size={13} />
               </label>
             </div>
-            <LevelGuide level={level} />
+            {(view === "progreso" || !profile) && <LevelGuide level={level} />}
             {error && (
               <div className="error-banner" role="alert">
                 <AlertCircle size={19} />
@@ -661,8 +697,9 @@ export default function App() {
                   <strong>Una aplicación que también está aprendiendo.</strong>
                   <p>
                     Esta versión utiliza reglas de corrección limitadas. Su
-                    puntaje es orientativo. La versión conectada guarda tus entradas
-                    en una cuenta privada. La demo guarda los datos en este navegador.
+                    puntaje es orientativo. La versión conectada guarda tus
+                    entradas en una cuenta privada. La demo guarda los datos en
+                    este navegador.
                   </p>
                 </div>
                 <button className="button dark" onClick={newEntry}>
@@ -670,13 +707,13 @@ export default function App() {
                   <ArrowUpRight size={17} />
                 </button>
               </section>
-            ) : authLoading ? (
-              <div className="empty-state" role="status">
-                <LoaderCircle className="spin" size={26} />
-                <p>Abriendo tu diario…</p>
-              </div>
             ) : !profile ? (
               <AuthPanel
+                checkingSession={authLoading}
+                onBegin={() => {
+                  sessionCheck.current?.abort();
+                  setAuthLoading(false);
+                }}
                 onError={setError}
                 onProfile={(p) => {
                   setProfile(p);
@@ -695,12 +732,12 @@ export default function App() {
                 <div className="page-title">
                   <div>
                     <p className="greeting">
-                      Hola, {profile.nombre}. Este momento es tuyo.
+                      Hola, {profile.nombre}. ¿Qué te gustaría recordar?
                     </p>
                     <h1>
-                      {selected ? "Lo que escribiste," : "¿Cómo fue"}
-                      <br />
-                      <em>{selected ? "lo que aprendiste." : "tu día?"}</em>
+                      {selected
+                        ? "Tu historia, con algo nuevo."
+                        : "Un momento para tu día."}
                     </h1>
                   </div>
                   <span className="date-display">
@@ -725,12 +762,14 @@ export default function App() {
                         <div className="result-tabs">
                           <button
                             className={tab === "corregido" ? "selected" : ""}
+                            aria-pressed={tab === "corregido"}
                             onClick={() => setTab("corregido")}
                           >
                             Texto corregido
                           </button>
                           <button
                             className={tab === "original" ? "selected" : ""}
+                            aria-pressed={tab === "original"}
                             onClick={() => setTab("original")}
                           >
                             Tu original
@@ -746,11 +785,22 @@ export default function App() {
                         <p className="entry-date">
                           {dateLabel(selected.fecha)} · {selected.nivel}
                         </p>
-                        <p className="result-text" lang="en">
-                          {tab === "original"
-                            ? selected.textoOriginal
-                            : selected.textoCorregido}
-                        </p>
+                        <InlineCorrections
+                          entry={selected}
+                          original={tab === "original"}
+                          active={activeCorrection}
+                          onSelect={(index) => {
+                            setActiveCorrection(index);
+                            const element = document.getElementById(
+                              `correction-${index}`,
+                            );
+                            element?.focus({ preventScroll: true });
+                            element?.scrollIntoView({
+                              block: "nearest",
+                              behavior: "instant",
+                            });
+                          }}
+                        />
                         <div className="paper-actions">
                           <span>
                             {wordCount(selected.textoOriginal)} palabras
@@ -767,8 +817,7 @@ export default function App() {
                       <aside className="result-summary">
                         <div className="score">
                           <span>
-                            {selected.puntaje}
-                            <small>/100</small>
+                            <BookOpen size={24} />
                           </span>
                           <div>
                             <h3>
@@ -785,8 +834,8 @@ export default function App() {
                           </div>
                         </div>
                         <p className="score-note">
-                          Puntaje orientativo del motor por reglas; no mide tu
-                          nivel de inglés.
+                          Referencia del corrector: {selected.puntaje}/100. No
+                          mide tu nivel de inglés.
                         </p>
                         <h3>Qué corregimos y por qué</h3>
                         {!selected.correcciones.length ? (
@@ -796,7 +845,12 @@ export default function App() {
                           </p>
                         ) : (
                           selected.correcciones.map((c, i) => (
-                            <div className="correction" key={i}>
+                            <div
+                              className={`correction ${activeCorrection === i ? "is-active" : ""}`}
+                              key={i}
+                              id={`correction-${i}`}
+                              tabIndex={-1}
+                            >
                               <span className="category-tag">
                                 {c.categoriaTitulo}
                               </span>
@@ -919,7 +973,6 @@ export default function App() {
                         {level} · {practice[level].focus}
                       </p>
                       <div className="writing-prompt">
-                        <span>SI NO SABES POR DÓNDE EMPEZAR</span>
                         <p lang="en">
                           {
                             practice[level].prompts[
@@ -935,9 +988,13 @@ export default function App() {
                           <ArrowRight size={15} />
                         </button>
                       </div>
-                      <span className="companion-bottom">
-                        A tu ritmo. En tus palabras.
-                      </span>
+                      <div className="companion-bottom">
+                        <LevelGuide level={level} />
+                        <p>
+                          Tu diario es personal. Escribe sin buscar la frase
+                          perfecta.
+                        </p>
+                      </div>
                     </aside>
                   </section>
                 )}
@@ -973,13 +1030,10 @@ export default function App() {
               <>
                 <div className="page-title">
                   <div>
+                    <h1>Tus historias, a mano.</h1>
                     <p className="greeting">
                       Pequeñas historias. Un camino que continúa.
                     </p>
-                    <h1>
-                      Volver a<br />
-                      <em>tus palabras.</em>
-                    </h1>
                   </div>
                   <button className="button dark" onClick={newEntry}>
                     <Plus size={17} />
@@ -1087,8 +1141,12 @@ export default function App() {
                             <p lang="en">{e.textoCorregido.slice(0, 130)}</p>
                           </div>
                           <span className="entry-score">
-                            {e.puntaje}
-                            <small>/100</small>
+                            {e.correcciones.length}
+                            <small>
+                              {e.correcciones.length === 1
+                                ? "cambio"
+                                : "cambios"}
+                            </small>
                             <ArrowUpRight size={18} />
                           </span>
                         </button>
@@ -1137,14 +1195,14 @@ export default function App() {
               <>
                 <div className="page-title">
                   <div>
-                    <p className="greeting">
-                      Sin compararte. Solo acompañarte.
-                    </p>
                     <h1>
                       Lo pequeño
                       <br />
                       <em>también es progreso.</em>
                     </h1>
+                    <p className="greeting">
+                      Sin compararte. Solo acompañarte.
+                    </p>
                   </div>
                   <BarChart3 size={35} strokeWidth={1} />
                 </div>
@@ -1243,7 +1301,7 @@ export default function App() {
           <span>© {new Date().getFullYear()} Diario de Idiomas</span>
         </div>
       </footer>
-    </>
+    </div>
   );
 }
 
@@ -1271,14 +1329,14 @@ function ProgressChart({ entries }: { entries: Entry[] }) {
               x2="635"
               y1={height - 28 - (n * (height - 55)) / 100}
               y2={height - 28 - (n * (height - 55)) / 100}
-              stroke="#e8e9e5"
+              stroke="var(--line)"
               strokeDasharray="3 5"
             />
             <text
               x="3"
               y={height - 24 - (n * (height - 55)) / 100}
               fontSize="11"
-              fill="#6f6f6f"
+              fill="var(--muted)"
             >
               {n}
             </text>
@@ -1286,7 +1344,7 @@ function ProgressChart({ entries }: { entries: Entry[] }) {
         ))}
         <polyline
           fill="none"
-          stroke="#697459"
+          stroke="var(--accent)"
           strokeWidth="2.5"
           points={points.map((p) => `${p.x},${p.y}`).join(" ")}
         />
@@ -1296,7 +1354,7 @@ function ProgressChart({ entries }: { entries: Entry[] }) {
               cx={p.x}
               cy={p.y}
               r="4.5"
-              fill="#697459"
+              fill="var(--accent)"
               stroke="white"
               strokeWidth="2"
             >

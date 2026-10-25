@@ -1,1 +1,660 @@
-{"version":1,"name":"Diario de Idiomas","source":"user-pinned brief","tokens":{"colors":{"background":"#ffffff","foreground":"#171916","muted":"#6f6f6f","accent":"#697459","companion":"#30392e","line":"#e6e7e3"},"fonts":{"display":"Instrument Serif","body":"Inter"},"radii":{"panel":"4px","button":"999px"},"motion":{"entrance":"0.8s ease-out","delays":["0s","0.2s","0.4s"],"videoFadeSeconds":0.5,"hoverScale":1.03,"reducedMotion":"pause background video; remove entrance transforms"}},"surfaces":{"landing":{"mode":"persuade","visual":"cinematic white landscape"},"workspace":{"mode":"operate","visual":"quiet notebook; real data"}}}
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-25T00:58:54.793Z",
+  "title": "Design System: Diario de Idiomas",
+  "sourceFiles": [
+    "frontend/src/styles/theme.css",
+    "frontend/src/styles/fonts.css",
+    "frontend/src/App.tsx",
+    "frontend/src/components/InlineCorrections.tsx"
+  ],
+  "extensions": {
+    "colorMeta": {
+      "background": {
+        "displayName": "background",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0026 106.45)",
+          "oklch(26% 0.0026 106.45)",
+          "oklch(38% 0.0026 106.45)",
+          "oklch(49% 0.0026 106.45)",
+          "oklch(61% 0.0026 106.45)",
+          "oklch(72% 0.0026 106.45)",
+          "oklch(84% 0.0026 106.45)",
+          "oklch(95% 0.0026 106.45)"
+        ]
+      },
+      "surface": {
+        "displayName": "surface",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0000 89.88)",
+          "oklch(26% 0.0000 89.88)",
+          "oklch(38% 0.0000 89.88)",
+          "oklch(49% 0.0000 89.88)",
+          "oklch(61% 0.0000 89.88)",
+          "oklch(72% 0.0000 89.88)",
+          "oklch(84% 0.0000 89.88)",
+          "oklch(95% 0.0000 89.88)"
+        ]
+      },
+      "soft": {
+        "displayName": "soft",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0080 106.55)",
+          "oklch(26% 0.0080 106.55)",
+          "oklch(38% 0.0080 106.55)",
+          "oklch(49% 0.0080 106.55)",
+          "oklch(61% 0.0080 106.55)",
+          "oklch(72% 0.0080 106.55)",
+          "oklch(84% 0.0080 106.55)",
+          "oklch(95% 0.0080 106.55)"
+        ]
+      },
+      "ink": {
+        "displayName": "ink",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0074 118.33)",
+          "oklch(26% 0.0074 118.33)",
+          "oklch(38% 0.0074 118.33)",
+          "oklch(49% 0.0074 118.33)",
+          "oklch(61% 0.0074 118.33)",
+          "oklch(72% 0.0074 118.33)",
+          "oklch(84% 0.0074 118.33)",
+          "oklch(95% 0.0074 118.33)"
+        ]
+      },
+      "muted": {
+        "displayName": "muted",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0108 113.37)",
+          "oklch(26% 0.0108 113.37)",
+          "oklch(38% 0.0108 113.37)",
+          "oklch(49% 0.0108 113.37)",
+          "oklch(61% 0.0108 113.37)",
+          "oklch(72% 0.0108 113.37)",
+          "oklch(84% 0.0108 113.37)",
+          "oklch(95% 0.0108 113.37)"
+        ]
+      },
+      "accent": {
+        "displayName": "accent",
+        "role": "primary",
+        "tonalRamp": [
+          "oklch(15% 0.0404 125.57)",
+          "oklch(26% 0.0404 125.57)",
+          "oklch(38% 0.0404 125.57)",
+          "oklch(49% 0.0404 125.57)",
+          "oklch(61% 0.0404 125.57)",
+          "oklch(72% 0.0404 125.57)",
+          "oklch(84% 0.0404 125.57)",
+          "oklch(95% 0.0404 125.57)"
+        ]
+      },
+      "accent-hover": {
+        "displayName": "accent hover",
+        "role": "primary",
+        "tonalRamp": [
+          "oklch(15% 0.0391 127.14)",
+          "oklch(26% 0.0391 127.14)",
+          "oklch(38% 0.0391 127.14)",
+          "oklch(49% 0.0391 127.14)",
+          "oklch(61% 0.0391 127.14)",
+          "oklch(72% 0.0391 127.14)",
+          "oklch(84% 0.0391 127.14)",
+          "oklch(95% 0.0391 127.14)"
+        ]
+      },
+      "line": {
+        "displayName": "line",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0108 112.38)",
+          "oklch(26% 0.0108 112.38)",
+          "oklch(38% 0.0108 112.38)",
+          "oklch(49% 0.0108 112.38)",
+          "oklch(61% 0.0108 112.38)",
+          "oklch(72% 0.0108 112.38)",
+          "oklch(84% 0.0108 112.38)",
+          "oklch(95% 0.0108 112.38)"
+        ]
+      },
+      "focus": {
+        "displayName": "focus",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0547 125.86)",
+          "oklch(26% 0.0547 125.86)",
+          "oklch(38% 0.0547 125.86)",
+          "oklch(49% 0.0547 125.86)",
+          "oklch(61% 0.0547 125.86)",
+          "oklch(72% 0.0547 125.86)",
+          "oklch(84% 0.0547 125.86)",
+          "oklch(95% 0.0547 125.86)"
+        ]
+      },
+      "mark": {
+        "displayName": "mark",
+        "role": "semantic",
+        "tonalRamp": [
+          "oklch(15% 0.0253 114.16)",
+          "oklch(26% 0.0253 114.16)",
+          "oklch(38% 0.0253 114.16)",
+          "oklch(49% 0.0253 114.16)",
+          "oklch(61% 0.0253 114.16)",
+          "oklch(72% 0.0253 114.16)",
+          "oklch(84% 0.0253 114.16)",
+          "oklch(95% 0.0253 114.16)"
+        ]
+      },
+      "mark-ink": {
+        "displayName": "mark ink",
+        "role": "semantic",
+        "tonalRamp": [
+          "oklch(15% 0.0490 126.87)",
+          "oklch(26% 0.0490 126.87)",
+          "oklch(38% 0.0490 126.87)",
+          "oklch(49% 0.0490 126.87)",
+          "oklch(61% 0.0490 126.87)",
+          "oklch(72% 0.0490 126.87)",
+          "oklch(84% 0.0490 126.87)",
+          "oklch(95% 0.0490 126.87)"
+        ]
+      },
+      "danger": {
+        "displayName": "danger",
+        "role": "semantic",
+        "tonalRamp": [
+          "oklch(15% 0.1793 21.80)",
+          "oklch(26% 0.1793 21.80)",
+          "oklch(38% 0.1793 21.80)",
+          "oklch(49% 0.1793 21.80)",
+          "oklch(61% 0.1793 21.80)",
+          "oklch(72% 0.1793 21.80)",
+          "oklch(84% 0.1793 21.80)",
+          "oklch(95% 0.1793 21.80)"
+        ]
+      },
+      "danger-soft": {
+        "displayName": "danger soft",
+        "role": "semantic",
+        "tonalRamp": [
+          "oklch(15% 0.0162 17.44)",
+          "oklch(26% 0.0162 17.44)",
+          "oklch(38% 0.0162 17.44)",
+          "oklch(49% 0.0162 17.44)",
+          "oklch(61% 0.0162 17.44)",
+          "oklch(72% 0.0162 17.44)",
+          "oklch(84% 0.0162 17.44)",
+          "oklch(95% 0.0162 17.44)"
+        ]
+      },
+      "nav": {
+        "displayName": "nav",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0000 89.88)",
+          "oklch(26% 0.0000 89.88)",
+          "oklch(38% 0.0000 89.88)",
+          "oklch(49% 0.0000 89.88)",
+          "oklch(61% 0.0000 89.88)",
+          "oklch(72% 0.0000 89.88)",
+          "oklch(84% 0.0000 89.88)",
+          "oklch(95% 0.0000 89.88)"
+        ]
+      },
+      "action": {
+        "displayName": "action",
+        "role": "primary",
+        "tonalRamp": [
+          "oklch(15% 0.0074 118.33)",
+          "oklch(26% 0.0074 118.33)",
+          "oklch(38% 0.0074 118.33)",
+          "oklch(49% 0.0074 118.33)",
+          "oklch(61% 0.0074 118.33)",
+          "oklch(72% 0.0074 118.33)",
+          "oklch(84% 0.0074 118.33)",
+          "oklch(95% 0.0074 118.33)"
+        ]
+      },
+      "action-ink": {
+        "displayName": "action ink",
+        "role": "primary",
+        "tonalRamp": [
+          "oklch(15% 0.0000 89.88)",
+          "oklch(26% 0.0000 89.88)",
+          "oklch(38% 0.0000 89.88)",
+          "oklch(49% 0.0000 89.88)",
+          "oklch(61% 0.0000 89.88)",
+          "oklch(72% 0.0000 89.88)",
+          "oklch(84% 0.0000 89.88)",
+          "oklch(95% 0.0000 89.88)"
+        ]
+      },
+      "dark-background": {
+        "displayName": "dark background",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0059 121.94)",
+          "oklch(26% 0.0059 121.94)",
+          "oklch(38% 0.0059 121.94)",
+          "oklch(49% 0.0059 121.94)",
+          "oklch(61% 0.0059 121.94)",
+          "oklch(72% 0.0059 121.94)",
+          "oklch(84% 0.0059 121.94)",
+          "oklch(95% 0.0059 121.94)"
+        ]
+      },
+      "dark-surface": {
+        "displayName": "dark surface",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0076 118.37)",
+          "oklch(26% 0.0076 118.37)",
+          "oklch(38% 0.0076 118.37)",
+          "oklch(49% 0.0076 118.37)",
+          "oklch(61% 0.0076 118.37)",
+          "oklch(72% 0.0076 118.37)",
+          "oklch(84% 0.0076 118.37)",
+          "oklch(95% 0.0076 118.37)"
+        ]
+      },
+      "dark-soft": {
+        "displayName": "dark soft",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0144 118.70)",
+          "oklch(26% 0.0144 118.70)",
+          "oklch(38% 0.0144 118.70)",
+          "oklch(49% 0.0144 118.70)",
+          "oklch(61% 0.0144 118.70)",
+          "oklch(72% 0.0144 118.70)",
+          "oklch(84% 0.0144 118.70)",
+          "oklch(95% 0.0144 118.70)"
+        ]
+      },
+      "dark-ink": {
+        "displayName": "dark ink",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0094 113.16)",
+          "oklch(26% 0.0094 113.16)",
+          "oklch(38% 0.0094 113.16)",
+          "oklch(49% 0.0094 113.16)",
+          "oklch(61% 0.0094 113.16)",
+          "oklch(72% 0.0094 113.16)",
+          "oklch(84% 0.0094 113.16)",
+          "oklch(95% 0.0094 113.16)"
+        ]
+      },
+      "dark-muted": {
+        "displayName": "dark muted",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0184 117.39)",
+          "oklch(26% 0.0184 117.39)",
+          "oklch(38% 0.0184 117.39)",
+          "oklch(49% 0.0184 117.39)",
+          "oklch(61% 0.0184 117.39)",
+          "oklch(72% 0.0184 117.39)",
+          "oklch(84% 0.0184 117.39)",
+          "oklch(95% 0.0184 117.39)"
+        ]
+      },
+      "dark-accent": {
+        "displayName": "dark accent",
+        "role": "primary",
+        "tonalRamp": [
+          "oklch(15% 0.0492 121.68)",
+          "oklch(26% 0.0492 121.68)",
+          "oklch(38% 0.0492 121.68)",
+          "oklch(49% 0.0492 121.68)",
+          "oklch(61% 0.0492 121.68)",
+          "oklch(72% 0.0492 121.68)",
+          "oklch(84% 0.0492 121.68)",
+          "oklch(95% 0.0492 121.68)"
+        ]
+      },
+      "dark-accent-hover": {
+        "displayName": "dark accent hover",
+        "role": "primary",
+        "tonalRamp": [
+          "oklch(15% 0.0386 120.17)",
+          "oklch(26% 0.0386 120.17)",
+          "oklch(38% 0.0386 120.17)",
+          "oklch(49% 0.0386 120.17)",
+          "oklch(61% 0.0386 120.17)",
+          "oklch(72% 0.0386 120.17)",
+          "oklch(84% 0.0386 120.17)",
+          "oklch(95% 0.0386 120.17)"
+        ]
+      },
+      "dark-line": {
+        "displayName": "dark line",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0189 119.77)",
+          "oklch(26% 0.0189 119.77)",
+          "oklch(38% 0.0189 119.77)",
+          "oklch(49% 0.0189 119.77)",
+          "oklch(61% 0.0189 119.77)",
+          "oklch(72% 0.0189 119.77)",
+          "oklch(84% 0.0189 119.77)",
+          "oklch(95% 0.0189 119.77)"
+        ]
+      },
+      "dark-focus": {
+        "displayName": "dark focus",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0492 121.68)",
+          "oklch(26% 0.0492 121.68)",
+          "oklch(38% 0.0492 121.68)",
+          "oklch(49% 0.0492 121.68)",
+          "oklch(61% 0.0492 121.68)",
+          "oklch(72% 0.0492 121.68)",
+          "oklch(84% 0.0492 121.68)",
+          "oklch(95% 0.0492 121.68)"
+        ]
+      },
+      "dark-mark": {
+        "displayName": "dark mark",
+        "role": "semantic",
+        "tonalRamp": [
+          "oklch(15% 0.0380 124.61)",
+          "oklch(26% 0.0380 124.61)",
+          "oklch(38% 0.0380 124.61)",
+          "oklch(49% 0.0380 124.61)",
+          "oklch(61% 0.0380 124.61)",
+          "oklch(72% 0.0380 124.61)",
+          "oklch(84% 0.0380 124.61)",
+          "oklch(95% 0.0380 124.61)"
+        ]
+      },
+      "dark-mark-ink": {
+        "displayName": "dark mark ink",
+        "role": "semantic",
+        "tonalRamp": [
+          "oklch(15% 0.0392 118.20)",
+          "oklch(26% 0.0392 118.20)",
+          "oklch(38% 0.0392 118.20)",
+          "oklch(49% 0.0392 118.20)",
+          "oklch(61% 0.0392 118.20)",
+          "oklch(72% 0.0392 118.20)",
+          "oklch(84% 0.0392 118.20)",
+          "oklch(95% 0.0392 118.20)"
+        ]
+      },
+      "dark-danger": {
+        "displayName": "dark danger",
+        "role": "semantic",
+        "tonalRamp": [
+          "oklch(15% 0.0980 13.09)",
+          "oklch(26% 0.0980 13.09)",
+          "oklch(38% 0.0980 13.09)",
+          "oklch(49% 0.0980 13.09)",
+          "oklch(61% 0.0980 13.09)",
+          "oklch(72% 0.0980 13.09)",
+          "oklch(84% 0.0980 13.09)",
+          "oklch(95% 0.0980 13.09)"
+        ]
+      },
+      "dark-danger-soft": {
+        "displayName": "dark danger soft",
+        "role": "semantic",
+        "tonalRamp": [
+          "oklch(15% 0.0327 6.85)",
+          "oklch(26% 0.0327 6.85)",
+          "oklch(38% 0.0327 6.85)",
+          "oklch(49% 0.0327 6.85)",
+          "oklch(61% 0.0327 6.85)",
+          "oklch(72% 0.0327 6.85)",
+          "oklch(84% 0.0327 6.85)",
+          "oklch(95% 0.0327 6.85)"
+        ]
+      },
+      "dark-nav": {
+        "displayName": "dark nav",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.0077 118.44)",
+          "oklch(26% 0.0077 118.44)",
+          "oklch(38% 0.0077 118.44)",
+          "oklch(49% 0.0077 118.44)",
+          "oklch(61% 0.0077 118.44)",
+          "oklch(72% 0.0077 118.44)",
+          "oklch(84% 0.0077 118.44)",
+          "oklch(95% 0.0077 118.44)"
+        ]
+      },
+      "dark-action": {
+        "displayName": "dark action",
+        "role": "primary",
+        "tonalRamp": [
+          "oklch(15% 0.0094 113.16)",
+          "oklch(26% 0.0094 113.16)",
+          "oklch(38% 0.0094 113.16)",
+          "oklch(49% 0.0094 113.16)",
+          "oklch(61% 0.0094 113.16)",
+          "oklch(72% 0.0094 113.16)",
+          "oklch(84% 0.0094 113.16)",
+          "oklch(95% 0.0094 113.16)"
+        ]
+      },
+      "dark-action-ink": {
+        "displayName": "dark action ink",
+        "role": "primary",
+        "tonalRamp": [
+          "oklch(15% 0.0076 118.37)",
+          "oklch(26% 0.0076 118.37)",
+          "oklch(38% 0.0076 118.37)",
+          "oklch(49% 0.0076 118.37)",
+          "oklch(61% 0.0076 118.37)",
+          "oklch(72% 0.0076 118.37)",
+          "oklch(84% 0.0076 118.37)",
+          "oklch(95% 0.0076 118.37)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Instrument Serif",
+        "purpose": "Titulares de portada."
+      },
+      "headline": {
+        "displayName": "Instrument Serif",
+        "purpose": "Título del espacio de trabajo."
+      },
+      "editor": {
+        "displayName": "Inter Variable",
+        "purpose": "Texto del diario en escritorio."
+      },
+      "editor-mobile": {
+        "displayName": "Inter Variable móvil",
+        "purpose": "Texto del diario hasta 640px."
+      }
+    },
+    "shadows": [
+      {
+        "name": "flat",
+        "value": "none",
+        "purpose": "Ambos temas organizan el espacio con separadores y diferencias tonales."
+      }
+    ],
+    "motion": [
+      {
+        "name": "button",
+        "value": "background 0.18s ease, transform 0.18s ease",
+        "purpose": "Respuesta de botones."
+      },
+      {
+        "name": "paper-arrive",
+        "value": "0.32s ease-out; translateY(5px) to translateY(0)",
+        "purpose": "Entrada de papel solo desde 881px."
+      },
+      {
+        "name": "loading",
+        "value": "spin 1.1s linear infinite",
+        "purpose": "Petición en curso."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation:none;transition:none;scroll-behavior:auto",
+        "purpose": "Respeta prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact-desktop",
+        "value": "1180px"
+      },
+      {
+        "name": "stack-with-sidebar",
+        "value": "881px–1000px"
+      },
+      {
+        "name": "mobile-header",
+        "value": "880px"
+      },
+      {
+        "name": "single-column",
+        "value": "640px"
+      }
+    ],
+    "themeBindings": {
+      "light": {
+        "bg": "{colors.background}",
+        "surface": "{colors.surface}",
+        "soft": "{colors.soft}",
+        "ink": "{colors.ink}",
+        "muted": "{colors.muted}",
+        "accent": "{colors.accent}",
+        "accent-hover": "{colors.accent-hover}",
+        "line": "{colors.line}",
+        "focus": "{colors.focus}",
+        "mark": "{colors.mark}",
+        "mark-ink": "{colors.mark-ink}",
+        "danger": "{colors.danger}",
+        "danger-soft": "{colors.danger-soft}",
+        "nav": "{colors.nav}",
+        "action": "{colors.action}",
+        "action-ink": "{colors.action-ink}"
+      },
+      "dark": {
+        "bg": "{colors.dark-background}",
+        "surface": "{colors.dark-surface}",
+        "soft": "{colors.dark-soft}",
+        "ink": "{colors.dark-ink}",
+        "muted": "{colors.dark-muted}",
+        "accent": "{colors.dark-accent}",
+        "accent-hover": "{colors.dark-accent-hover}",
+        "line": "{colors.dark-line}",
+        "focus": "{colors.dark-focus}",
+        "mark": "{colors.dark-mark}",
+        "mark-ink": "{colors.dark-mark-ink}",
+        "danger": "{colors.dark-danger}",
+        "danger-soft": "{colors.dark-danger-soft}",
+        "nav": "{colors.dark-nav}",
+        "action": "{colors.dark-action}",
+        "action-ink": "{colors.dark-action-ink}"
+      }
+    },
+    "previewNotes": "Los snippets reflejan el aspecto; no ejecutan guardado, autenticación ni selección de explicaciones. Las variables CSS heredan del tema de la aplicación; los fallbacks muestran claro. La fuente requiere los recursos autoalojados del proyecto."
+  },
+  "components": [
+    {
+      "name": "Botón principal",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Guardar o empezar una entrada.",
+      "html": "<button class=\"ds-primary\">Guardar mi día</button>",
+      "css": ".ds-primary{font-family:'Inter Variable',sans-serif;border:0;min-height:46px;padding:11px 19px;border-radius:3px;background:var(--action,#242521);color:var(--action-ink,#fff);font-size:15px;font-weight:550;line-height:1.5;cursor:pointer;transition:background .18s ease}.ds-primary:hover{background:var(--ink,#242521)}.ds-primary:focus-visible,.ds-outline:focus-visible,.ds-field:focus-visible,.ds-nav:focus-visible,.ds-mark:focus-visible,.ds-prompt button:focus-visible{outline:3px solid var(--focus,#687653);outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none}}"
+    },
+    {
+      "name": "Botón secundario",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Acciones secundarias sin competir con guardar.",
+      "html": "<button class=\"ds-outline\">Volver a mi diario</button>",
+      "css": ".ds-outline{font-family:'Inter Variable',sans-serif;min-height:46px;padding:11px 19px;border:1px solid var(--line,#e2e3db);border-radius:3px;background:var(--surface,#fff);color:var(--ink,#242521);font-size:15px;font-weight:550;cursor:pointer}.ds-outline:hover{background:var(--soft,#f0f0ea)}.ds-primary:focus-visible,.ds-outline:focus-visible,.ds-field:focus-visible,.ds-nav:focus-visible,.ds-mark:focus-visible,.ds-prompt button:focus-visible{outline:3px solid var(--focus,#687653);outline-offset:3px}"
+    },
+    {
+      "name": "Campo",
+      "kind": "input",
+      "description": "Campo de formulario con label visible.",
+      "html": "<label class=\"ds-label\">Nombre<input class=\"ds-field\" autocomplete=\"given-name\" placeholder=\"Tu nombre\"></label>",
+      "css": ".ds-label{font-family:'Inter Variable',sans-serif;display:grid;gap:8px;color:var(--ink,#242521);font-size:14px;font-weight:550}.ds-field{font-family:'Inter Variable',sans-serif;padding:12px;border:1px solid var(--line,#e2e3db);border-radius:3px;background:var(--surface,#fff);color:var(--ink,#242521)}.ds-field:hover{border-color:var(--focus,#687653)}.ds-primary:focus-visible,.ds-outline:focus-visible,.ds-field:focus-visible,.ds-nav:focus-visible,.ds-mark:focus-visible,.ds-prompt button:focus-visible{outline:3px solid var(--focus,#687653);outline-offset:3px}"
+    },
+    {
+      "name": "Navegación activa",
+      "kind": "nav",
+      "refersTo": "navigation-active",
+      "description": "Ubicación actual del espacio de trabajo.",
+      "html": "<nav aria-label=\"Diario\"><a class=\"ds-nav\" href=\"#escribir\" aria-current=\"page\">Mi diario</a></nav>",
+      "css": ".ds-nav{font-family:'Inter Variable',sans-serif;display:flex;align-items:center;min-height:44px;padding:12px 14px;border-radius:3px;background:transparent;color:var(--ink,#242521);font-size:15px;font-weight:500;text-decoration:underline;text-underline-offset:7px;text-decoration-thickness:1px}.ds-nav:hover{color:var(--ink,#242521)}.ds-primary:focus-visible,.ds-outline:focus-visible,.ds-field:focus-visible,.ds-nav:focus-visible,.ds-mark:focus-visible,.ds-prompt button:focus-visible{outline:3px solid var(--focus,#687653);outline-offset:3px}"
+    },
+    {
+      "name": "Corrección inline",
+      "kind": "custom",
+      "refersTo": "correction-mark",
+      "description": "Fragmento seleccionable que enlaza con una explicación en la aplicación.",
+      "html": "<p class=\"ds-text\" lang=\"en\">Yesterday I <button class=\"ds-mark\" aria-pressed=\"false\" aria-label=\"Ver explicación de went\">went</button> to class.</p>",
+      "css": ".ds-text{font-family:'Inter Variable',sans-serif;font-size:20px;line-height:1.9;color:var(--ink,#242521)}.ds-mark{font:inherit;display:inline;background:var(--mark,#ecefdc);color:var(--mark-ink,#3c482b);border:0;border-bottom:1px solid var(--accent,#5b654c);border-radius:3px;padding:0 2px;cursor:pointer}.ds-mark:hover,.ds-mark[aria-pressed=true]{outline:2px solid var(--accent,#5b654c);outline-offset:2px}.ds-primary:focus-visible,.ds-outline:focus-visible,.ds-field:focus-visible,.ds-nav:focus-visible,.ds-mark:focus-visible,.ds-prompt button:focus-visible{outline:3px solid var(--focus,#687653);outline-offset:3px}"
+    },
+    {
+      "name": "Acompañante de escritura",
+      "kind": "card",
+      "refersTo": "writing-prompt",
+      "description": "Pregunta breve según el nivel elegido.",
+      "html": "<aside class=\"ds-prompt\"><p lang=\"en\">What made you smile today?</p><button>Otra idea →</button></aside>",
+      "css": ".ds-prompt{font-family:'Inter Variable',sans-serif;padding:20px 0;border-top:1px solid var(--line,#e2e3db);border-bottom:1px solid var(--line,#e2e3db);border-radius:0;background:transparent;color:var(--ink,#242521)}.ds-prompt p{margin:14px 0 10px;font-family:'Instrument Serif',Georgia,serif;font-size:28px;font-weight:400;line-height:1.4}.ds-prompt button{font-family:'Inter Variable',sans-serif;border:0;background:none;color:var(--accent,#5b654c);font-size:13px;font-weight:550;min-height:44px;cursor:pointer}.ds-prompt button:hover{text-decoration:underline}.ds-primary:focus-visible,.ds-outline:focus-visible,.ds-field:focus-visible,.ds-nav:focus-visible,.ds-mark:focus-visible,.ds-prompt button:focus-visible{outline:3px solid var(--focus,#687653);outline-offset:3px}"
+    },
+    {
+      "name": "Papel del editor",
+      "kind": "custom",
+      "refersTo": "editor",
+      "description": "Superficie de escritura amplia y estable.",
+      "html": "<label class=\"ds-paper\"><span>Tu página de hoy</span><textarea class=\"ds-editor\" aria-label=\"Escribe tu día en inglés\" placeholder=\"Today I…\"></textarea></label>",
+      "css": ".ds-paper{font-family:'Inter Variable',sans-serif;display:block;border:1px solid var(--line,#e2e3db);border-radius:3px;overflow:hidden;background:var(--surface,#fff);color:var(--ink,#242521)}.ds-paper>span{display:block;padding:17px 24px;border-bottom:1px solid var(--line,#e2e3db);font-size:13px;font-weight:550}.ds-editor{font-family:'Inter Variable',sans-serif;display:block;box-sizing:border-box;width:100%;min-height:280px;padding:30px 30px 18px;border:0;background:var(--surface,#fff);color:var(--ink,#242521);font-size:20px;line-height:1.85;resize:vertical}.ds-editor:focus-visible{outline:2px solid var(--accent,#5b654c);outline-offset:-4px}@media(max-width:640px){.ds-editor{font-size:18px;padding:24px 21px}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Un cuaderno personal legible",
+    "overview": "La escritura ocupa el centro. Instrument Serif en títulos y marca, Inter en el diario y los controles, blanco y tinta con oliva discreto acompañan el hábito de contar el día y entender cambios concretos. La dirección aprobada está en `.impeccable/surfaces/diario-redesign.md`; los valores se extraen de `frontend/src/styles/theme.css` y `fonts.css`.\n\nLa aplicación combina un espacio de trabajo con navegación estable, un historial para releer y una portada que muestra el producto mediante un ejemplo rotulado. El tema oscuro conserva la jerarquía y utiliza los colores de su propio conjunto.",
+    "keyCharacteristics": [
+      "Texto de escritura amplio y explicaciones cercanas al cambio.",
+      "Tinta para acciones principales, oliva discreto para cambios y aprendizaje.",
+      "Navegación lateral en escritorio y cabecera compacta en móvil.",
+      "Temas claro y oscuro, sin vídeo de fondo."
+    ],
+    "rules": [
+      {
+        "name": "The Meaningful Color Rule",
+        "body": "El color comunica acción, selección o estado; acompaña etiquetas, texto y bordes para que el significado no dependa solo del tono.",
+        "section": "colors"
+      },
+      {
+        "name": "The Writing First Rule",
+        "body": "No reducir el texto del diario para acomodar controles secundarios.",
+        "section": "typography"
+      }
+    ],
+    "dos": [
+      "Mantener el diario legible y las explicaciones conectadas al cambio.",
+      "Conservar la misma jerarquía en claro, oscuro y móvil.",
+      "Mostrar guardado, espera, error y estado vacío con texto explícito.",
+      "Diferenciar entradas en la cuenta de borradores locales y datos de demo."
+    ],
+    "donts": [
+      "No reintroducir vídeo, Nunito o el acento verde azulado.",
+      "No usar serif en el texto editable ni convertir el historial en tarjetas.",
+      "No presentar reglas limitadas como corrección contextual con IA.",
+      "No presentar puntajes como diagnóstico o certificación MCER.",
+      "No inventar testimonios, rachas ni estadísticas.",
+      "No animar el texto mientras se escribe o se lee."
+    ]
+  }
+}

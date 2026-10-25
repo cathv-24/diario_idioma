@@ -7,9 +7,16 @@ export const apiMode = Boolean(base);
 export const STORAGE_KEY = "diario.v2.entries";
 const PROFILE_KEY = "diario.v2.profile";
 export class SessionExpiredError extends Error {}
-async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
+async function request<T>(
+  path: string,
+  options: RequestInit = {},
+  timeout = 90000,
+): Promise<T> {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 90000);
+  const abort = () => controller.abort();
+  if (options.signal?.aborted) abort();
+  else options.signal?.addEventListener("abort", abort, { once: true });
+  const timer = setTimeout(abort, timeout);
   try {
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
@@ -62,6 +69,7 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     throw error;
   } finally {
     clearTimeout(timer);
+    options.signal?.removeEventListener("abort", abort);
   }
 }
 export async function login(email: string, password: string): Promise<Profile> {
@@ -99,10 +107,12 @@ function saveLocal(entries: Entry[]) {
     );
   }
 }
-export async function loadProfile(): Promise<Profile | null> {
+export async function loadProfile(
+  signal?: AbortSignal,
+): Promise<Profile | null> {
   if (apiMode) {
     try {
-      return await request<Profile>("/auth/me");
+      return await request<Profile>("/auth/me", { signal }, 15000);
     } catch (error) {
       if (error instanceof SessionExpiredError) return null;
       throw error;
