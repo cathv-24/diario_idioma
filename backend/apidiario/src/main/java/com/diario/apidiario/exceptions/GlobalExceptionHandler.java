@@ -48,6 +48,11 @@ public class GlobalExceptionHandler {
         return error(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
+    @ExceptionHandler(CorreccionIaNoDisponibleException.class)
+    public ResponseEntity<?> iaNoDisponible(CorreccionIaNoDisponibleException ex) {
+        return error(HttpStatus.SERVICE_UNAVAILABLE, ex.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> inesperado(Exception ex) {
         log.error("Error inesperado al procesar una solicitud", ex);

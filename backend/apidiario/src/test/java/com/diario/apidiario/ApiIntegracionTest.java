@@ -89,4 +89,22 @@ class ApiIntegracionTest {
   var login=session.send("POST","/api/auth/login","username="+URLEncoder.encode(email,StandardCharsets.UTF_8)+"&password="+URLEncoder.encode("aB3!xY7?",StandardCharsets.UTF_8));
   assertEquals(204,login.statusCode(),login.body());
  }
+ @Test void sincronizaAprendizajeSinCompartirloConOtraCuenta() throws Exception {
+  var first=new Session();String mail=email();first.register(mail);first.login(mail);
+  String state="{\"unidadActual\":\"e7\",\"lecturasCompletadas\":[\"e6\",\"e7\"],\"palabrasGuardadas\":[\"instead\"]}";
+  var saved=first.send("PUT","/api/aprendizaje",state);assertEquals(200,saved.statusCode(),saved.body());
+  var second=new Session();second.login(mail);
+  var loaded=second.send("GET","/api/aprendizaje",null);assertEquals(200,loaded.statusCode());assertTrue(loaded.body().contains("instead"));assertTrue(loaded.body().contains("e7"));
+  var other=new Session();String otherMail=email();other.register(otherMail);other.login(otherMail);
+  assertFalse(other.send("GET","/api/aprendizaje",null).body().contains("instead"));
+  assertEquals(400,first.send("PUT","/api/aprendizaje","{\"unidadActual\":\"e99\",\"lecturasCompletadas\":[],\"palabrasGuardadas\":[]}").statusCode());
+  assertEquals(401,new Session().send("GET","/api/aprendizaje",null).statusCode());
+ }
+ @Test void iaDesactivadaNoEnviaNiGuardaLaEntrada() throws Exception {
+  var session=new Session();String mail=email();long user=session.register(mail);session.login(mail);
+  assertTrue(session.send("GET","/api/correccion/disponibilidad",null).body().contains("false"));
+  var result=session.send("POST","/api/entrada","{\"idUsuario\":"+user+",\"texto\":\"A private moment\",\"usarIa\":true}");
+  assertEquals(503,result.statusCode(),result.body());
+  assertEquals("[]",session.send("GET","/api/entradas/"+user,null).body());
+ }
 }

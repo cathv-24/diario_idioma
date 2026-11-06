@@ -5,6 +5,7 @@ import * as api from "../lib/api";
 import { levels } from "../lib/types";
 import type { Level, Profile } from "../lib/types";
 import guide from "../lib/levels.json";
+import PlacementCheck from "./PlacementCheck";
 export default function AuthPanel({
   onProfile,
   onError,
@@ -26,7 +27,13 @@ export default function AuthPanel({
     return () => clearTimeout(timer);
   }, [busy]);
   const [level, setLevel] = useState<Level>("A2");
+  const [checkingLevel, setCheckingLevel] = useState(false);
+  const [fields, setFields] = useState({ nombre: "", email: "", password: "" });
   const register = !api.apiMode || mode === "register";
+  if (checkingLevel && register) return <PlacementCheck onBack={() => setCheckingLevel(false)} onFinish={(suggested) => {
+    setLevel(suggested);
+    setCheckingLevel(false);
+  }} />;
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (busy) return;
@@ -118,6 +125,8 @@ export default function AuthPanel({
               Tu nombre
               <input
                 name="nombre"
+                value={fields.nombre}
+                onChange={e => setFields({ ...fields, nombre: e.target.value })}
                 required
                 maxLength={80}
                 autoComplete="given-name"
@@ -130,6 +139,8 @@ export default function AuthPanel({
             Correo electrónico
             <input
               name="email"
+              value={fields.email}
+              onChange={e => setFields({ ...fields, email: e.target.value })}
               type="email"
               required
               maxLength={100}
@@ -142,6 +153,8 @@ export default function AuthPanel({
               Contraseña
               <input
                 name="password"
+                value={fields.password}
+                onChange={e => setFields({ ...fields, password: e.target.value })}
                 aria-label="Contraseña"
                 aria-describedby={register ? "password-help" : undefined}
                 type="password"
@@ -173,7 +186,13 @@ export default function AuthPanel({
                   </option>
                 ))}
               </select>
+              <span className="small-muted">Puedes elegirlo si ya lo conoces o hacer una orientación breve. Siempre podrás cambiarlo.</span>
             </label>
+          )}
+          {register && (
+            <button type="button" className="text-link placement-open" disabled={busy} onClick={() => setCheckingLevel(true)}>
+              No sé mi nivel: hacer orientación breve <ArrowRight size={16} />
+            </button>
           )}
           <button className="button dark" disabled={busy}>
             {busy ? (

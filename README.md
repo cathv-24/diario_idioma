@@ -38,6 +38,19 @@ La demo de GitHub Pages usa su propio corrector local y guarda el historial en e
 
 ## Cómo está organizado
 
+### Aprender practicando · primera entrega de noviembre
+
+La nueva sección **Mi camino** conecta el diario con doce relatos originales, vocabulario por tema, una consulta de verbos irregulares y sonidos. El orden temático parte del índice de Navigate Elementary aportado como referencia; no se reproducen sus ejercicios ni relatos. La primera ruta cubre fundamentos A1–A2. La ampliación de Pre-Intermediate e Intermediate sigue pendiente.
+
+- Al registrarte puedes hacer una orientación de ocho preguntas o elegir tu nivel. El resultado propone A1, A2 o B1 para empezar; no certifica un nivel general ni evalúa todas las habilidades.
+- Una lectura breve lleva a una pregunta, una pista gramatical opcional y una propuesta personal para el diario. Las correcciones recientes pueden recomendar un tema relacionado.
+- La unidad elegida, las lecturas completadas y las palabras guardadas se sincronizan por cuenta mediante `/api/aprendizaje`. En la demo se conservan únicamente en el navegador.
+- Los símbolos simples reproducen grabaciones IPA de J. C. Wells desde la International Phonetic Association. En diptongos y consonantes combinadas se reproduce una palabra de ejemplo mediante la voz del dispositivo; se indica en la interfaz.
+- La práctica oral guiada compara la frase esperada con palabras reconocidas por el navegador. El modo libre permite llevar la transcripción al diario. Requiere compatibilidad del navegador y consentimiento; no evalúa fonemas, acento o ritmo con precisión, ni almacena grabaciones.
+- La integración opcional de Gemini está conectada al guardado, con consentimiento por entrada, y **desactivada por defecto**. Necesita configuración de servidor y una revisión de sus condiciones para datos personales. No se ha verificado una llamada real ni se ha contratado un plan. El corrector de reglas continúa disponible.
+
+Esta entrega se verifica localmente antes de publicar. Detalles y límites: [aprendizaje práctico](docs/APRENDIZAJE.md).
+
 - [`frontend/`](frontend/): interfaz en React, Vite, TypeScript y Tailwind CSS. Sustituye al frontend Angular a partir del nuevo alcance de octubre de 2026.
 - [`backend/apidiario/`](backend/apidiario/): API en Java 21 y Spring Boot 4.0.8, con Spring Data JPA, PostgreSQL y Swagger.
 - [`automations/`](automations/): flujos n8n preparados localmente para métricas de creación y un informe semanal agregado en Neon, sin textos personales ni mensajes. No están habilitados en cloud.

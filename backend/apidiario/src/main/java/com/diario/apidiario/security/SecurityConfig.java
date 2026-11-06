@@ -75,7 +75,7 @@ public class SecurityConfig {
 
      .accessDeniedHandler((req,res,ex) -> {res.setStatus(403);res.setContentType("application/json;charset=UTF-8");res.getWriter().write("{\"mensaje\":\"Solicitud no autorizada; vuelve a iniciar sesión\"}");}))
 
-   .headers(h -> h.contentSecurityPolicy(c -> c.policyDirectives("default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self' https://d8j0ntlcm91z4.cloudfront.net; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'")));
+   .headers(h -> h.contentSecurityPolicy(c -> c.policyDirectives("default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self' https://d8j0ntlcm91z4.cloudfront.net https://www.internationalphoneticassociation.org; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'")));
 
   return http.build();
 

@@ -4,6 +4,7 @@ import App from "./App";
 import "./styles/fonts.css";
 import "./styles/theme.css";
 import "./styles/journal.css";
+import "./styles/learning.css";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <App />

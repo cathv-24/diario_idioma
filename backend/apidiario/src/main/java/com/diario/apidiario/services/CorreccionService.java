@@ -8,5 +8,7 @@ public interface CorreccionService {
     ResultadoCorreccion corregir(String texto, NivelIngles nivel);
 
     // Resultado interno: no es entidad y no se guarda directamente con JPA.
-    record ResultadoCorreccion(String textoCorregido, List<CorreccionDTO> correcciones) {}
+    record ResultadoCorreccion(String textoCorregido, List<CorreccionDTO> correcciones,
+                               NivelIngles nivelEscrituraEstimado, String confianzaNivel,
+                               String evidenciaNivel, String metodoCorreccion) {}
 }

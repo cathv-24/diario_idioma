@@ -29,6 +29,8 @@ public class EntradaDiarioServiceImpl implements EntradaDiarioService {
     @Autowired
     private CorreccionService correccionService;
     @Autowired
+    private CorreccionIaService correccionIaService;
+    @Autowired
     private VocabularioService vocabularioService;
     @Autowired
     private ApplicationEventPublisher events;
@@ -92,8 +94,14 @@ public class EntradaDiarioServiceImpl implements EntradaDiarioService {
         entrada.setFecha(request.getFecha() == null ? LocalDate.now() : request.getFecha());
         entrada.setNivel(entrada.getUsuario().getNivel());
         entrada.setTextoOriginal(texto);
-        CorreccionService.ResultadoCorreccion resultado = correccionService.corregir(texto, entrada.getNivel());
+        CorreccionService.ResultadoCorreccion resultado = request.isUsarIa()
+                ? correccionIaService.corregir(texto, entrada.getNivel())
+                : correccionService.corregir(texto, entrada.getNivel());
         entrada.setTextoCorregido(resultado.textoCorregido());
+        entrada.setMetodoCorreccion(resultado.metodoCorreccion());
+        entrada.setNivelEscrituraEstimado(resultado.nivelEscrituraEstimado());
+        entrada.setConfianzaNivel(resultado.confianzaNivel());
+        entrada.setEvidenciaNivel(resultado.evidenciaNivel());
         for (CorreccionDTO dto : resultado.correcciones()) {
             Correccion correccion = new Correccion();
             correccion.setCategoria(dto.getCategoria());
@@ -129,7 +137,10 @@ public class EntradaDiarioServiceImpl implements EntradaDiarioService {
                 .sorted(Comparator.comparingLong(ResumenTemaDTO::getCantidad).reversed()).toList();
         return new EntradaCorregidaDTO(entrada.getIdEntrada(), entrada.getFecha(), entrada.getFechaCreacion(),
                 entrada.getNivel(), entrada.getTextoOriginal(), entrada.getTextoCorregido(), entrada.getPuntaje(),
-                "Motor de reglas: " + correcciones.size() + " correcciones detectadas. El puntaje no mide tu nivel de ingles.",
-                correcciones, temas, vocabularioService.sugerir(entrada.getTextoOriginal(), entrada.getNivel()));
+                ("IA".equals(entrada.getMetodoCorreccion()) ? "Revision contextual con IA: " : "Motor de reglas: ")
+                        + correcciones.size() + " correcciones detectadas. El puntaje no mide tu nivel de ingles.",
+                correcciones, temas, vocabularioService.sugerir(entrada.getTextoOriginal(), entrada.getNivel()),
+                entrada.getMetodoCorreccion() == null ? "REGLAS" : entrada.getMetodoCorreccion(),
+                entrada.getNivelEscrituraEstimado(), entrada.getConfianzaNivel(), entrada.getEvidenciaNivel());
     }
 }

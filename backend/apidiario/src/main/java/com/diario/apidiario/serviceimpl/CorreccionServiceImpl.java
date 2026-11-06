@@ -12,10 +12,19 @@ import java.util.regex.Pattern;
 /** Motor educativo limitado a patrones concretos; no comprende todo el ingles. */
 @Service
 public class CorreccionServiceImpl implements CorreccionService {
+    private final EvaluadorEscritura evaluador = new EvaluadorEscritura();
+
     @Override
     public ResultadoCorreccion corregir(String texto, NivelIngles nivel) {
         List<CorreccionDTO> correcciones = new ArrayList<>();
         String t = texto;
+        t = reemplazar(t, Pattern.compile("\\btoday was a day,\\s*very strange\\b", Pattern.CASE_INSENSITIVE),
+                "today was a very strange day", CategoriaError.GRAMATICA,
+                explicar(nivel, "En inglés, strange va antes de day.", "Put strange before day in this phrase."), correcciones);
+        t = palabra(t, "bofriend", "boyfriend", CategoriaError.ORTOGRAFIA,
+                "Se escribe boyfriend.", "The correct spelling is boyfriend.", nivel, correcciones);
+        t = palabra(t, "boyfreind", "boyfriend", CategoriaError.ORTOGRAFIA,
+                "Se escribe boyfriend.", "The correct spelling is boyfriend.", nivel, correcciones);
         t = palabra(t, "goed", "went", CategoriaError.GRAMATICA,
                 "El pasado de go es went.", "The past of go is went.", nivel, correcciones);
         t = palabra(t, "eated", "ate", CategoriaError.GRAMATICA,
@@ -40,7 +49,9 @@ public class CorreccionServiceImpl implements CorreccionService {
                     explicar(nivel, "Empieza el texto con mayuscula.", "Start the text with a capital letter."));
             t = mayuscula + t.substring(1);
         }
-        return new ResultadoCorreccion(t, correcciones);
+        var evaluacion = evaluador.evaluar(texto);
+        return new ResultadoCorreccion(t, correcciones, evaluacion.nivel(), evaluacion.confianza(),
+                evaluacion.evidencia(), "REGLAS");
     }
 
     private String palabra(String texto, String original, String alternativa, CategoriaError categoria,
@@ -54,8 +65,14 @@ public class CorreccionServiceImpl implements CorreccionService {
         Matcher matcher = patron.matcher(texto);
         StringBuilder resultado = new StringBuilder();
         while (matcher.find()) {
-            agregar(correcciones, categoria, matcher.group(), alternativa, explicacion);
-            matcher.appendReplacement(resultado, Matcher.quoteReplacement(alternativa));
+            String reemplazo = alternativa;
+            if (Character.isUpperCase(matcher.group().charAt(0))) {
+                reemplazo = alternativa.substring(0, 1).toUpperCase(java.util.Locale.ROOT) + alternativa.substring(1);
+            }
+            if (!matcher.group().equals(reemplazo)) {
+                agregar(correcciones, categoria, matcher.group(), reemplazo, explicacion);
+            }
+            matcher.appendReplacement(resultado, Matcher.quoteReplacement(reemplazo));
         }
         matcher.appendTail(resultado);
         return resultado.toString();

@@ -25,4 +25,8 @@ private String mensaje;
 private List<CorreccionDTO> correcciones;
 private List<ResumenTemaDTO> temasAMejorar;
 private List<SugerenciaDTO> sugerenciasVocabulario;
+private String metodoCorreccion;
+private NivelIngles nivelEscrituraEstimado;
+private String confianzaNivel;
+private String evidenciaNivel;
 }

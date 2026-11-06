@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import {
   Home,
@@ -28,6 +28,7 @@ import {
   HardDrive,
   Copy,
   CheckCircle2,
+  Compass,
 } from "lucide-react";
 import AuthPanel from "./components/AuthPanel";
 import Landing from "./components/Landing";
@@ -39,11 +40,15 @@ import InlineCorrections from "./components/InlineCorrections";
 import * as api from "./lib/api";
 import { categoryNames, levels, localDate, wordCount } from "./lib/types";
 import type { Entry, Level, Profile, Category } from "./lib/types";
-type View = "inicio" | "escribir" | "historial" | "progreso" | "acerca";
+import AiConsent from "./components/AiConsent";
+import { recommendUnit } from "./lib/learning";
+const LearningHub = lazy(() => import("./components/LearningHub"));
+type View = "inicio" | "escribir" | "historial" | "camino" | "progreso" | "acerca";
 const labels: Record<View, string> = {
   inicio: "Inicio",
   escribir: "Mi diario",
   historial: "Historial",
+  camino: "Mi camino",
   progreso: "Mi progreso",
   acerca: "La idea",
 };
@@ -130,6 +135,9 @@ export default function App() {
   const [level, setLevel] = useState<Level>("A2");
   const [tab, setTab] = useState<"corregido" | "original">("corregido");
   const [copied, setCopied] = useState(false);
+  const [learningPrompt, setLearningPrompt] = useState("");
+  const [useAi, setUseAi] = useState(false);
+  useEffect(() => { setUseAi(false); }, [text, profile?.idUsuario]);
   const editor = useRef<HTMLTextAreaElement>(null);
   const sessionCheck = useRef<AbortController | null>(null);
   const draftSnapshot = useRef({ profile, text, date, editing });
@@ -247,6 +255,7 @@ export default function App() {
     setEditing(undefined);
     setDate(localDate());
     setError("");
+    setUseAi(false);
     go("escribir");
   };
   const changeLevel = async (value: Level) => {
@@ -274,7 +283,7 @@ export default function App() {
     setSaving(true);
     setError("");
     try {
-      const result = await api.saveEntry(profile, text, date, editing);
+      const result = await api.saveEntry(profile, text, date, editing, useAi);
       setEntries((list) => [
         result,
         ...list.filter((x) => x.idEntrada !== result.idEntrada),
@@ -283,7 +292,7 @@ export default function App() {
       setEditing(undefined);
       setText("");
       setTab("corregido");
-      setNotice("Entrada corregida y guardada en tu historial.");
+      setNotice(result.metodoCorreccion === "IA" ? "Entrada revisada con IA y guardada en tu historial." : "Entrada revisada con reglas y guardada en tu historial.");
     } catch (e) {
       setError(
         e instanceof Error
@@ -404,6 +413,8 @@ export default function App() {
             <PenLine size={18} />
           ) : key === "historial" ? (
             <BookOpen size={18} />
+          ) : key === "camino" ? (
+            <Compass size={18} />
           ) : key === "progreso" ? (
             <BarChart3 size={18} />
           ) : (
@@ -623,6 +634,15 @@ export default function App() {
                   setNotice("Tu diario está listo.");
                 }}
               />
+            ) : view === "camino" ? (
+              <Suspense fallback={<p role="status">Abriendo tu camino…</p>}>
+                <LearningHub profile={profile} entries={entries} onWrite={(idea, transcript) => {
+                  if (transcript && text.trim() && !window.confirm("Tienes un borrador. ¿Quieres reemplazarlo por el texto de tu práctica oral?")) return;
+                  setLearningPrompt(idea);
+                  if (transcript) setText(transcript);
+                  newEntry();
+                }} />
+              </Suspense>
             ) : view === "escribir" ? (
               <>
                 <div className="page-title">
@@ -733,6 +753,9 @@ export default function App() {
                           Referencia del corrector: {selected.puntaje}/100. No
                           mide tu nivel de inglés.
                         </p>
+                        <p className="small-muted">{selected.metodoCorreccion === "IA" ? "Revisión contextual con IA: comprueba las sugerencias antes de adoptarlas." : "Revisión con reglas limitadas. Puedes activar la revisión contextual con IA en una nueva entrada cuando esté disponible."}</p>
+                        {selected.nivelEscrituraEstimado && <p className="small-muted">Esta muestra escrita: {selected.nivelEscrituraEstimado} orientativo. {selected.evidenciaNivel}</p>}
+                        <a className="text-link result-practice-link" href="#camino">Seguir con una práctica relacionada <ArrowRight size={16} /></a>
                         <h3>Qué corregimos y por qué</h3>
                         {!selected.correcciones.length ? (
                           <p className="small-muted">
@@ -850,6 +873,7 @@ export default function App() {
                           )}
                         </button>
                       </div>
+                      <AiConsent checked={useAi} disabled={saving} onChange={setUseAi} />
                       {editing && (
                         <button
                           type="button"
@@ -870,7 +894,7 @@ export default function App() {
                       </p>
                       <div className="writing-prompt">
                         <p lang="en">
-                          {
+                          {learningPrompt ||
                             practice[level].prompts[
                               prompt % practice[level].prompts.length
                             ]
@@ -878,12 +902,13 @@ export default function App() {
                         </p>
                         <button
                           className="text-link light"
-                          onClick={() => setPrompt(prompt + 1)}
+                          onClick={() => { setLearningPrompt(""); setPrompt(prompt + 1); }}
                         >
                           Otra idea
                           <ArrowRight size={15} />
                         </button>
                       </div>
+                      <div className="diary-learning-link"><p>Una pausa que puede ayudarte: <strong>{recommendUnit(entries, level).unit.title}</strong></p><a className="text-link" href="#camino">Leer, escuchar o probar palabras <ArrowRight size={15} /></a></div>
                       <div className="companion-bottom">
                         <LevelGuide level={level} />
                         <p>

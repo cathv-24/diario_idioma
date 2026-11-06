@@ -13,6 +13,7 @@ const apiMock = vi.hoisted(() => ({
   loadProfile: vi.fn(),
   login: vi.fn(),
   listEntries: vi.fn(),
+  correctionCapabilities: vi.fn().mockResolvedValue({ ia: false }),
 }));
 vi.mock("../lib/api", () => ({ apiMode: true, ...apiMock }));
 import App from "../App";

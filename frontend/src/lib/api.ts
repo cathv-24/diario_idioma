@@ -1,5 +1,6 @@
 import type { Entry, Level, Profile } from "./types";
 import { correctEntry } from "./corrector";
+import { defaultUnit, type LearningState } from "./learning";
 const base =
   import.meta.env.VITE_API_URL?.replace(/\/$/, "") ||
   (import.meta.env.DEV ? "/api" : "");
@@ -166,11 +167,12 @@ export async function saveEntry(
   texto: string,
   fecha: string,
   id?: number,
+  usarIa = false,
 ): Promise<Entry> {
   if (apiMode)
     return request<Entry>(id ? `/entrada/${id}` : "/entrada", {
       method: id ? "PUT" : "POST",
-      body: JSON.stringify({ idUsuario: profile.idUsuario, texto, fecha }),
+      body: JSON.stringify({ idUsuario: profile.idUsuario, texto, fecha, usarIa }),
     });
   const entry = correctEntry(texto, profile.nivel, fecha, id);
   saveLocal([
@@ -182,4 +184,22 @@ export async function saveEntry(
 export async function deleteEntry(id: number): Promise<void> {
   if (apiMode) return request(`/entrada/${id}`, { method: "DELETE" });
   saveLocal(readLocal().filter((e) => e.idEntrada !== id));
+}
+
+export async function loadLearning(profile: Profile): Promise<LearningState> {
+  const initial = { unidadActual: defaultUnit(profile.nivel), lecturasCompletadas: [], palabrasGuardadas: [] };
+  if (apiMode) {
+    const data = await request<LearningState>("/aprendizaje");
+    return { ...data, unidadActual: data.unidadActual || initial.unidadActual };
+  }
+  const stored = localStorage.getItem(`diario.learning.${profile.idUsuario}`);
+  return stored ? JSON.parse(stored) : initial;
+}
+export async function saveLearning(profile: Profile, state: LearningState): Promise<LearningState> {
+  if (apiMode) return request<LearningState>("/aprendizaje", { method: "PUT", body: JSON.stringify(state) });
+  localStorage.setItem(`diario.learning.${profile.idUsuario}`, JSON.stringify(state));
+  return state;
+}
+export function correctionCapabilities(): Promise<{ ia: boolean }> {
+  return request("/correccion/disponibilidad");
 }

@@ -43,6 +43,19 @@ public class EntradaDiario {
 
     private int puntaje;
 
+    @Column(length = 12)
+    private String metodoCorreccion;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 2)
+    private NivelIngles nivelEscrituraEstimado;
+
+    @Column(length = 16)
+    private String confianzaNivel;
+
+    @Column(columnDefinition = "TEXT")
+    private String evidenciaNivel;
+
     @OneToMany(mappedBy = "entrada", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Correccion> correcciones = new ArrayList<>();
 

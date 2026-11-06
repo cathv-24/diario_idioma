@@ -21,4 +21,7 @@ public class EntradaRequestDTO {
     @Size(max = 10000, message = "El texto admite hasta 10000 caracteres")
     @Schema(example = "Yesterday i goed to the park. I was very happy.")
     private String texto;
+
+    // Solo se envía a Gemini cuando la persona lo acepta para esta entrada.
+    private boolean usarIa;
 }
